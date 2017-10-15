@@ -28,3 +28,21 @@ export function maxLengthHandler(fieldState, schema) {
     .value.length}`;
   throwError(fieldState.value, errorText);
 }
+
+export function includeHandler(fieldState, schema) {
+    const isValid = is.include(fieldState.value, schema.include);
+    if (isValid) return;
+  
+    const errorText = `${NAME_PLACEHOLDER} should include ${schema.include}. Current: ${fieldState
+      .value}`;
+    throwError(fieldState.value, errorText);
+  }
+
+  export function excludeHandler(fieldState, schema) {
+    const isValid = is.not.include(fieldState.value, schema.exclude);
+    if (isValid) return;
+  
+    const errorText = `${NAME_PLACEHOLDER} should not include ${schema.exclude}. Current: ${fieldState
+      .value}`;
+    throwError(fieldState.value, errorText);
+  }

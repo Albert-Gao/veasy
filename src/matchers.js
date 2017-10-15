@@ -4,7 +4,9 @@ import * as normal from './normalHandlers';
 
 export const stringMatcher = {
   minLength: string.minLengthHandler,
-  maxLength: string.maxLengthHandler
+  maxLength: string.maxLengthHandler,
+  include: string.includeHandler,
+  exclude: string.excludeHandler  
 };
 
 export const numberMatcher = {
