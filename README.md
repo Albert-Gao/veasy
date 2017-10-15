@@ -4,17 +4,14 @@ An easy to use yet comprehensive react form validation library which make your c
 
 ## Why use
 
-- Except the schema, adding a few lines, then you are good to go :)
-- 3 API to remember.
-- Clean JSX hierarchy
+- Except the schema, just add a few lines, then you are good to go :)
 - Declarative way to define your validation rule.
+- Clean JSX hierarchy since validation is decoupled from the components
 - Comprehensive validation rule
 
-I found that the other existing react form validation solution either requires to add so many different kinds of their components or using prop extensively, they all add too much noise to the JSX hierarchy.
+I found that the other existing react form validation solution either requires to add so many different kinds of  components to wrap or using prop extensively so the JSX becomes pretty heavy, they all add too much noise to the JSX hierarchy.
 
-I think validation is something which should be decoupled from components tree as much as possible. When something happens, it just tells me whether the result is I want or not, so that I can use to render the different status of field item. And would be better if it could automatically bind that `props` and `setState()` for me.
-
-That's all for what `easyV.js` does, you give me the schema, and then `onChange` invokes, it will tell you status of a field item and according error message, which you could use to render the different status of the field.
+I think validation is something which should be decoupled from components tree as much as possible. That's all for what `easyV.js` does, you give me the schema, and then `onChange` invokes, it will tell you status of a field item and according error message, which you could use to render the different status of the field. Even better, it will automatically bind the `props` and invoke `setState()` for me.
 
 So I built this library.
 
