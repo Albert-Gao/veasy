@@ -74,11 +74,13 @@ handleFieldChange = e => {
     />
 </BindStatus>
 ```
+
 The `FieldsBinding` component will pass 2 `props` to your field item:
+
 - status: `ok`, `error`, `normal`, which you can use inside the field item component to change the CSS style according the status.
 - errorText: It will display the error message.
 
-6. Then you are good to go, at runtime, everytime the value of the `title` input changes, it will be validated by `easyV` and then set the `status` and `errorText` back the the `props` of the `title` component. It will jusy works. This is pretty much all of it.
+6. Then you are good to go, at runtime, everytime the value of the `title` input changes, it will be validated by `easyV` and then set the `status` and `errorText` back to the `props` of the `title` component. It will jusy works. This is pretty much all of it.
 
 ## How does easyV.js work
 
