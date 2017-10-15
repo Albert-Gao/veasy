@@ -84,6 +84,8 @@ The `FieldsBinding` component will pass 2 `props` to your field item:
 6. Then you are good to go, this is pretty much all of it.
 
 ## TODO:
+[] Add the table of all rules.
+[] Need to add a minimal working example.
 [] Let user define the name of `status` and `errorText`
 [] Let user customize the error message.
 [] The `FieldItem` should be able to do more.
