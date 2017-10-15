@@ -42,7 +42,7 @@ describe('Test the validate method - Number', () => {
     mockSetState.mockReset();
   });
 
-  test('min should work - error case', async () => {
+  test('min should work - [int]error case', async () => {
     const fv = new EasyV(mockComponent, mockSchema);
     await fv.validate(mockTarget);
     expect(mockSetState.mock.calls.length).toBe(1);
@@ -60,7 +60,45 @@ describe('Test the validate method - Number', () => {
     });
   });
 
-  test('max should work - error case', async () => {
+  test('min should work - [float]error case', async () => {
+    mockTarget.value = '0.5';
+    const fv = new EasyV(mockComponent, mockSchema);
+    await fv.validate(mockTarget);
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: false,
+        fields: {
+          age: {
+            status: 'error',
+            errorText: 'age should be greater than 1. Current: 0.5',
+            value: '0.5'
+          }
+        }
+      }
+    });
+  });
+
+  test('min should work - [negative]error case', async () => {
+    mockTarget.value = '-15';
+    const fv = new EasyV(mockComponent, mockSchema);
+    await fv.validate(mockTarget);
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: false,
+        fields: {
+          age: {
+            status: 'error',
+            errorText: 'age should be greater than 1. Current: -15',
+            value: '-15'
+          }
+        }
+      }
+    });
+  });
+
+  test('max should work - [int]error case', async () => {
     mockTarget.value = '7';
     const fv = new EasyV(mockComponent, mockSchema);
     await fv.validate(mockTarget);
@@ -73,6 +111,46 @@ describe('Test the validate method - Number', () => {
             status: 'error',
             errorText: 'age should be less than 5. Current: 7',
             value: '7'
+          }
+        }
+      }
+    });
+  });
+
+  test('max should work - [float]error case', async () => {
+    mockTarget.value = '9.91';
+    const fv = new EasyV(mockComponent, mockSchema);
+    await fv.validate(mockTarget);
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: false,
+        fields: {
+          age: {
+            status: 'error',
+            errorText: 'age should be less than 5. Current: 9.91',
+            value: '9.91'
+          }
+        }
+      }
+    });
+  });
+
+  test('max should work - [negative]error case', async () => {
+    mockTarget.value = '-7';
+    delete mockSchema.age.number.min;
+    mockSchema.age.number.max = '-10';
+    const fv = new EasyV(mockComponent, mockSchema);
+    await fv.validate(mockTarget);
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: false,
+        fields: {
+          age: {
+            status: 'error',
+            errorText: 'age should be less than -10. Current: -7',
+            value: '-7'
           }
         }
       }
