@@ -12,13 +12,13 @@ An easy to use yet comprehensive react form validation library which make your c
 
 I found that the other existing react form validation solution either requires to add so many different kinds of their components or using prop extensively, they all add too much noise to the JSX hierarchy.
 
-I think validation is something which should be decoupled from components tree as much as possible. When something happens, it just tells me whether the result is I want or not, and use that result to render the different status of field item. 
+I think validation is something which should be decoupled from components tree as much as possible. When something happens, it just tells me whether the result is I want or not, so that I can use to render the different status of field item. And would be better if it could automatically bind that `props` and `setState()` for me.
 
 That's all for what `easyV.js` does, you give me the schema, and then `onChange` invokes, it will tell you status of a field item and according error message, which you could use to render the different status of the field.
 
 So I built this library.
 
-## Idea of easyV.js
+## How does easyV.js work
 
 1. Get your defined rule sets from schema.
 1. Get the value to check from `onChange` method
@@ -30,6 +30,16 @@ So I built this library.
     - Form status according to all the status of the fields item.
 
 ## How to use
+
+### Brief
+
+A high level abstraction of what you need to do would be:
+
+1. Write your schema
+2. Define the look of your field item according to its status: `ok`, `error`, `normal`
+3. 3 lines to setup `easyV`, then everything happens automatically :)
+
+### Step by step
 
 1.  Write a schema like below, `title` is the `name` of the field item you want to check
 
