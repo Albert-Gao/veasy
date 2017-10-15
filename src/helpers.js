@@ -3,7 +3,7 @@
 // This file contain any `private` method for the index.js
 
 import is from 'is_js';
-import { stringMatcher } from './matchers';
+import { stringMatcher, numberMatcher, normalMatcher } from './matchers';
 
 export const NAME_PLACEHOLDER = '#{NAME}#';
 
@@ -179,8 +179,16 @@ function runMatchers(matcher, fieldState, schema) {
  * @param {object} fieldState 
  * @param {object} schema 
  */
-export function runStringMatchers(fieldState, schema) {
+function runStringMatchers(fieldState, schema) {
   runMatchers(stringMatcher, fieldState, schema.string);
+}
+
+function runNumberMatchers(fieldState, schema) {
+    runMatchers(numberMatcher, fieldState, schema.number);
+}
+
+function runNormalMatchers(fieldState, schema) {
+    runMatchers(normalMatcher, fieldState, schema);
 }
 
 /**
@@ -196,7 +204,11 @@ export function validatorRunner(fieldInfo) {
   fieldState.value = value;
   if (is.propertyDefined(schema, 'string')) {
     runStringMatchers(fieldState, schema);
+  } else if (is.propertyDefined(schema, 'number')) {
+    runNumberMatchers(fieldState, schema);    
   }
+
+  runNormalMatchers(fieldState, schema);
 
   return fieldState;
 }

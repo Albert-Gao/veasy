@@ -6,9 +6,9 @@ An easy to use yet comprehensive react form validation library which make your c
 
 - Except the schema, adding a few lines, then you are good to go :)
 - 3 API to remember.
- - Clean JSX hierarchy
- - Declarative way to define your validation rule.
- - Comprehensive validation rule
+- Clean JSX hierarchy
+- Declarative way to define your validation rule.
+- Comprehensive validation rule
 
 I found that the other existing react form validation solution either requires to add so many different kinds of their components or using prop extensively, they all add too much noise to the JSX hierarchy.
 
