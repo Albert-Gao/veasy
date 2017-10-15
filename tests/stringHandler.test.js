@@ -81,6 +81,25 @@ describe('Test the validate method - String', () => {
     });
   });
 
+  test('minLength and maxLength should work - ok case', async () => {
+    mockTarget.value = 'js';
+    const fv = new EasyV(mockComponent, mockSchema);
+    await fv.validate(mockTarget);
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: true,
+        fields: {
+          title: {
+            status: 'ok',
+            errorText: '',
+            value: mockTarget.value
+          }
+        }
+      }
+    });
+  });
+
   test('Should test the 2 components case - one error and one right', async () => {
     mockSchema = {
       title: {
@@ -122,6 +141,86 @@ describe('Test the validate method - String', () => {
             status: 'error',
             errorText: 'desc error text' ,
             value: 'desc'
+          }
+        }
+      }
+    });
+  });
+
+  test('include should work - ok case', async () => {
+    mockSchema.title.string.include = 'love'
+    mockTarget.value = 'i love u!';
+    const fv = new EasyV(mockComponent, mockSchema);
+    await fv.validate(mockTarget);
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: true,
+        fields: {
+          title: {
+            status: 'ok',
+            errorText: '',
+            value: mockTarget.value
+          }
+        }
+      }
+    });
+  });
+
+  test('include should work - error case', async () => {
+    mockSchema.title.string.include = 'big'
+    mockTarget.value = 'i love u!';
+    const fv = new EasyV(mockComponent, mockSchema);
+    await fv.validate(mockTarget);
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: false,
+        fields: {
+          title: {
+            status: 'error',
+            errorText: 'title should include big. Current: i love u!',
+            value: mockTarget.value
+          }
+        }
+      }
+    });
+  });
+
+  test('exclude should work - error case', async () => {
+    mockSchema.title.string.exclude = 'love'
+    mockTarget.value = 'i love u!';
+    const fv = new EasyV(mockComponent, mockSchema);
+    await fv.validate(mockTarget);
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: false,
+        fields: {
+          title: {
+            status: 'error',
+            errorText: 'title should not include love. Current: i love u!',
+            value: mockTarget.value
+          }
+        }
+      }
+    });
+  });
+
+  test('exclude should work - ok case', async () => {
+    mockSchema.title.string.exclude = 'big'
+    mockTarget.value = 'i love u!';
+    const fv = new EasyV(mockComponent, mockSchema);
+    await fv.validate(mockTarget);
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: true,
+        fields: {
+          title: {
+            status: 'ok',
+            errorText: '',
+            value: mockTarget.value
           }
         }
       }
