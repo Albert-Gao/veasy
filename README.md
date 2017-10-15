@@ -4,7 +4,7 @@ An easy to use yet comprehensive react form validation library which make your c
 
 ## Why use
 
-- Except the schema, adding 3 lines, then you are good to go :)
+- Except the schema, adding a few lines, then you are good to go :)
 - 3 API to remember.
  - Clean JSX hierarchy
  - Declarative way to define your validation rule.
@@ -37,7 +37,7 @@ A high level abstraction of what you need to do would be:
 
 1. Write your schema
 2. Define the look of your field item according to its status: `ok`, `error`, `normal`
-3. 3 lines to setup `easyV`, then everything happens automatically :)
+3. Let `easyV` knows your rule and add a wrapper component, then everything happens automatically :)
 
 ### Step by step
 
