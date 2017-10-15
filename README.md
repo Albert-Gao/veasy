@@ -11,9 +11,7 @@ An easy to use yet comprehensive react form validation library which make your c
 
 I found that the other existing react form validation solution either requires to add so many different kinds of  components to wrap or using prop extensively so the JSX becomes pretty heavy, they all add too much noise to the JSX hierarchy.
 
-I think validation is something which should be decoupled from components tree as much as possible. That's all for what `easyV.js` does, you give me the schema, and then `onChange` invokes, it will tell you status of a field item and according error message, which you could use to render the different status of the field. Even better, it will automatically bind the `props` and invoke `setState()` for me.
-
-So I built this library.
+I think validation is something which should decoupled from the components tree. That's all for what `easyV.js` does, you give it the schema, and then `onChange` invokes, it will tell you status of a field item and its according error message. Even better, it will automatically bind the `props` to field item and invoke `setState()` for you.
 
 ## How to use
 
@@ -27,7 +25,7 @@ A high level abstraction of what you need to do would be:
 
 ### Step by step
 
-1.  Write a schema like below, `title` is the `name` of the field item you want to check
+1.  Write a schema like below, `title` is the `name` of the field item you want to check, see how easy it could be to validate the min and max length of a string?
 
 ```javascript
 const formSchema = {
@@ -66,6 +64,7 @@ handleFieldChange = e => {
 ```
 
 5. Wrap all your field item inside the `<FieldsBinding>` component.
+
 ```xml
 <BindStatus schema={formSchema} state={this.state}>
     <TextInput
