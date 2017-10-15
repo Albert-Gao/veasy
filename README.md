@@ -5,14 +5,16 @@ An easy to use yet comprehensive react form validation library which make your c
 ## Why use
 
 - Except the schema, adding 3 lines, then you are good to go :)
+- 3 API to remember.
  - Clean JSX hierarchy
  - Declarative way to define your validation rule.
- - Validation rule is just a plain javascript easy to modify
  - Comprehensive validation rule
 
 I found that the other existing react form validation solution either requires to add so many different kinds of their components or using prop extensively, they all add too much noise to the JSX hierarchy.
 
-I think validation is something which should be decoupled from components tree as much as possible. When something happens, it just tells me whether the result is I want or not, and use that result to render the different status of field item. That's all.
+I think validation is something which should be decoupled from components tree as much as possible. When something happens, it just tells me whether the result is I want or not, and use that result to render the different status of field item. 
+
+That's all for what `easyV.js` does, you give me the schema, and then `onChange` invokes, it will tell you status of a field item and according error message, which you could use to render the different status of the field.
 
 So I built this library.
 
@@ -84,9 +86,10 @@ The `FieldsBinding` component will pass 2 `props` to your field item:
 6. Then you are good to go, this is pretty much all of it.
 
 ## TODO:
-[] Add the table of all rules.
-[] Need to add a minimal working example.
-[] Let user define the name of `status` and `errorText`
-[] Let user customize the error message.
-[] The `FieldItem` should be able to do more.
-[] Add user's own state when calling `createInitialState()`
+- [ ] Add the `getFieldsValue` method.
+- [ ] Add the table of all rules.
+- [ ] Need to add a minimal working example.
+- [ ] Let user define the name of `status` and `errorText`
+- [ ] Let user customize the error message.
+- [ ] The `FieldItem` should be able to do more.
+- [ ] Add user's own state when calling `createInitialState()`
