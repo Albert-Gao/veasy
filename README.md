@@ -18,17 +18,6 @@ That's all for what `easyV.js` does, you give me the schema, and then `onChange`
 
 So I built this library.
 
-## How does easyV.js work
-
-1. Get your defined rule sets from schema.
-1. Get the value to check from `onChange` method
-1. The background `matchRunner` will match your schema against the value.
-1. Validation result will be saved to the state, and calling `setState` automatically. Including:
-    - Final value
-    - Field status: `normal`, `ok`, `error`
-    - Error text
-    - Form status according to all the status of the fields item.
-
 ## How to use
 
 ### Brief
@@ -94,6 +83,17 @@ The `FieldsBinding` component will pass 2 `props` to your field item:
 - errorText: It will display the error message.
 
 6. Then you are good to go, this is pretty much all of it.
+
+## How does easyV.js work
+
+1. Get your defined rule sets from schema.
+1. Get the value to check from `onChange` method
+1. The background `matchRunner` will match your schema against the value.
+1. Validation result will be saved to the state, and calling `setState` automatically. Including:
+    - Final value
+    - Field status: `normal`, `ok`, `error`
+    - Error text
+    - Form status according to all the status of the fields item.
 
 ## TODO:
 - [ ] Add the `getFieldsValue` method.
