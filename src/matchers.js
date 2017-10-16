@@ -3,10 +3,14 @@ import * as number from './numberHandlers';
 import * as normal from './normalHandlers';
 
 export const stringMatcher = {
-  minLength: string.minLengthHandler,
-  maxLength: string.maxLengthHandler,
-  include: string.includeHandler,
-  exclude: string.excludeHandler  
+    minLength: string.minLengthHandler,
+    maxLength: string.maxLengthHandler,
+    include: string.includeHandler,
+    exclude: string.excludeHandler,
+    startWith: string.startWithHandler,
+    notStartWith: string.notStartWithHandler,
+    endWith: string.endWithHandler,
+    notEndWith: string.notEndWithHandler
 };
 
 export const numberMatcher = {
