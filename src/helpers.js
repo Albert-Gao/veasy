@@ -318,7 +318,6 @@ export function startValidating(target, schema, formStatus, update) {
         let newComponentState = createNewState(formStatus, fieldState);
         newComponentState = checkIsFormOK(newComponentState);
         update(newComponentState);
-        return newComponentState;
       }
     });
 }

@@ -1,20 +1,14 @@
+import PropTypes from 'prop-types';
 /* eslint-disable react/forbid-prop-types,import/no-extraneous-dependencies */
 import React from 'react';
-import PropTypes from 'prop-types';
 import * as lib from './helpers';
 
 export default class EasyValidator extends React.Component {
-  validate(target) {
-    const { schema, formStatus, update } = this.props;
-    lib.startValidating( target, schema, formStatus, update )
-  }
-
-  handleOnChange = e =>  (this.validate(e.target));
-
-  render() {
-    const names = Object.keys(this.props.schema);
-    const { fields } = this.props.formStatus;    
-    const newChild = React.Children.map(this.props.children, child => {
+  getChildren = () => {
+    const { schema, formStatus, children } = this.props;
+    const names = Object.keys(schema);
+    const { fields } = formStatus;
+    const newChild = React.Children.map(children, child => {
       const childName = child.props.name;
       if (names.includes(childName)) {
         return React.cloneElement(child, {
@@ -25,7 +19,19 @@ export default class EasyValidator extends React.Component {
       }
       return child;
     });
-    return <section onChange={this.handleOnChange}>{newChild}</section>;
+    return newChild;
+  };
+
+  handleOnChange = e => (this.validate(e.target));
+
+  validate(target) {
+    const { schema, formStatus, update } = this.props;
+    lib.startValidating(target, schema, formStatus, update)
+  }
+
+  render() {
+    const newChildren = this.getChildren();
+    return <section onChange={this.handleOnChange}>{newChildren}</section>;
   }
 }
 
