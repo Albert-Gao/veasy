@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test the <EasyValidator /> snapshot tests using 3rd. 1`] = `
+<EasyValidator
+  formStatus={
+    Object {
+      "fields": Object {
+        "title": Object {
+          "errorText": "",
+          "status": "normal",
+          "value": "",
+        },
+      },
+      "isFormOK": false,
+    }
+  }
+  schema={
+    Object {
+      "title": Object {
+        "string": Object {
+          "default": "",
+          "minLength": 1,
+        },
+      },
+    }
+  }
+  update={[Function]}
+>
+  <section
+    onChange={[Function]}
+  >
+    <input
+      hint=""
+      key=".0"
+      name="title"
+      status="normal"
+      value=""
+    />
+    <input
+      key=".1"
+    />
+    <input
+      key=".2"
+    />
+  </section>
+</EasyValidator>
+`;
+
+exports[`Test the <EasyValidator /> snapshot tests using facebook render. 1`] = `
+<section
+  onChange={[Function]}
+>
+  <input
+    hint=""
+    name="title"
+    status="normal"
+    value=""
+  />
+  <input />
+  <input />
+</section>
+`;
+
+exports[`Test the <EasyValidator /> snapshot tests. 1`] = `
+"<EasyValidator schema={{...}} formStatus={{...}} update={[Function]}>
+  <section onChange={[Function]}>
+    <input name=\\"title\\" status=\\"normal\\" hint=\\"\\" value=\\"\\" />
+    <input />
+    <input />
+  </section>
+</EasyValidator>"
+`;
