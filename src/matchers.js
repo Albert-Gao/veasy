@@ -15,7 +15,12 @@ export const stringMatcher = {
 
 export const numberMatcher = {
     min: number.minHandler,
-    max: number.maxHandler
+    max: number.maxHandler,
+    equal: number.equalHandler,
+    notEqual: number.notEqualHandler,
+    isPositive: number.isPositiveHandler,
+    isNegative: number.isNegativeHandler,
+    isInt: number.isIntHandler
 };
 
 export const normalMatcher = {
