@@ -3,7 +3,7 @@
 // This file contain any `private` method for the index.js
 
 import is from 'is_js';
-import { normalMatcher, numberMatcher, stringMatcher } from './matchers';
+import {normalMatcher, numberMatcher, stringMatcher} from './matchers';
 
 export const NAME_PLACEHOLDER = '#{NAME}#';
 
@@ -16,7 +16,7 @@ export const NAME_PLACEHOLDER = '#{NAME}#';
  * @returns {string}
  */
 export function getConstructorErrorMessage(paramName, value) {
-    return `[Form Validation - ${paramName}] Expect: non empty object. Actual: ${value}`;
+  return `[Form Validation - ${paramName}] Expect: non empty object. Actual: ${value}`;
 }
 
 /**
@@ -26,7 +26,7 @@ export function getConstructorErrorMessage(paramName, value) {
  * @returns {boolean}
  */
 function isNonEmptyObject(obj) {
-    return is.object(obj) && is.not.empty(obj);
+  return is.object(obj) && is.not.empty(obj);
 }
 
 /**
@@ -37,30 +37,30 @@ function isNonEmptyObject(obj) {
  * @param {object} schema
  */
 export function typeCheck(component, schema) {
-    const isComponentValid = isNonEmptyObject(component);
-    const isSchemaValid = isNonEmptyObject(schema);
+  const isComponentValid = isNonEmptyObject(component);
+  const isSchemaValid = isNonEmptyObject(schema);
 
-    if (!isComponentValid) {
-        throw new Error(
-            getConstructorErrorMessage('Parameter component', component)
-        );
+  if (!isComponentValid) {
+    throw new Error(
+      getConstructorErrorMessage('Parameter component', component)
+    );
+  }
+
+  if (!isSchemaValid) {
+    throw new Error(getConstructorErrorMessage('Parameter schema', schema));
+  }
+
+  Object.keys(schema).forEach(prop => {
+    if (!isNonEmptyObject(schema[prop])) {
+      throw new Error(
+        getConstructorErrorMessage(`schema.${prop}`, schema[prop])
+      );
     }
-
-    if (!isSchemaValid) {
-        throw new Error(getConstructorErrorMessage('Parameter schema', schema));
-    }
-
-    Object.keys(schema).forEach(prop => {
-        if (!isNonEmptyObject(schema[prop])) {
-            throw new Error(
-                getConstructorErrorMessage(`schema.${prop}`, schema[prop])
-            );
-        }
-    });
+  });
 }
 
 export function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 /**
@@ -71,19 +71,19 @@ export function capitalizeFirstLetter(string) {
  * @returns {boolean | string}
  */
 export function createInitialValue(schema) {
-    if (is.propertyDefined(schema, 'default')) {
-        return schema.default;
-    }
-    switch (schema.type) {
-        case 'boolean':
-            return true;
-        case 'string':
-            return '';
-        case 'number':
-            return '0';
-        default:
-            return '';
-    }
+  if (is.propertyDefined(schema, 'default')) {
+    return schema.default;
+  }
+  switch (schema.type) {
+    case 'boolean':
+      return true;
+    case 'string':
+      return '';
+    case 'number':
+      return '0';
+    default:
+      return '';
+  }
 }
 
 /**
@@ -95,14 +95,14 @@ export function createInitialValue(schema) {
  * @returns {object}
  */
 export function createNewFieldState(needValue = false, fieldSchema) {
-    const result = {
-        status: 'normal',
-        errorText: ''
-    };
-    if (needValue) {
-        result.value = createInitialValue(fieldSchema);
-    }
-    return result;
+  const result = {
+    status: 'normal',
+    errorText: ''
+  };
+  if (needValue) {
+    result.value = createInitialValue(fieldSchema);
+  }
+  return result;
 }
 
 /**
@@ -114,9 +114,9 @@ export function createNewFieldState(needValue = false, fieldSchema) {
  * @returns {boolean}
  */
 export function shouldChange(oldState, newState) {
-    const isErrorDifferent = oldState.status !== newState.status;
-    const isValueDifferent = oldState.value !== newState.value;
-    return isErrorDifferent || isValueDifferent;
+  const isErrorDifferent = oldState.status !== newState.status;
+  const isValueDifferent = oldState.value !== newState.value;
+  return isErrorDifferent || isValueDifferent;
 }
 
 /**
@@ -128,11 +128,11 @@ export function shouldChange(oldState, newState) {
  * @returns {never}
  */
 export function throwError(value, errorText) {
-    const result = createNewFieldState();
-    result.value = value;
-    result.status = 'error';
-    result.errorText = errorText;
-    throw result;
+  const result = createNewFieldState();
+  result.value = value;
+  result.status = 'error';
+  result.errorText = errorText;
+  throw result;
 }
 
 /**
@@ -144,10 +144,10 @@ export function throwError(value, errorText) {
  * @returns {object}
  */
 export function addNameToResult(name, result) {
-    if (result.status === 'error') {
-        result.errorText = result.errorText.replace(NAME_PLACEHOLDER, name);
-    }
-    return { [name]: result };
+  if (result.status === 'error') {
+    result.errorText = result.errorText.replace(NAME_PLACEHOLDER, name);
+  }
+  return { [name]: result };
 }
 
 /**
@@ -164,17 +164,17 @@ export function addNameToResult(name, result) {
  * @param {object} schema
  */
 function runMatchers(matcher, fieldState, schema) {
-    Object.keys(schema).forEach(ruleInSchema => {
-        if (is.propertyDefined(matcher, ruleInSchema)) {
-            matcher[ruleInSchema](fieldState, schema);
-        } else if (
-            ruleInSchema !== 'default' &&
-            ruleInSchema !== 'string' &&
-            ruleInSchema !== 'number'
-        ) {
-            throwError(fieldState.value, `No such rule: ${ruleInSchema}`);
-        }
-    });
+  Object.keys(schema).forEach(ruleInSchema => {
+    if (is.propertyDefined(matcher, ruleInSchema)) {
+      matcher[ruleInSchema](fieldState, schema);
+    } else if (
+      ruleInSchema !== 'default' &&
+      ruleInSchema !== 'string' &&
+      ruleInSchema !== 'number'
+    ) {
+      throwError(fieldState.value, `No such rule: ${ruleInSchema}`);
+    }
+  });
 }
 
 /**
@@ -186,15 +186,15 @@ function runMatchers(matcher, fieldState, schema) {
  * @param {object} schema
  */
 function runStringMatchers(fieldState, schema) {
-    runMatchers(stringMatcher, fieldState, schema.string);
+  runMatchers(stringMatcher, fieldState, schema.string);
 }
 
 function runNumberMatchers(fieldState, schema) {
-    runMatchers(numberMatcher, fieldState, schema.number);
+  runMatchers(numberMatcher, fieldState, schema.number);
 }
 
 function runNormalMatchers(fieldState, schema) {
-    runMatchers(normalMatcher, fieldState, schema);
+  runMatchers(normalMatcher, fieldState, schema);
 }
 
 /**
@@ -206,17 +206,17 @@ function runNormalMatchers(fieldState, schema) {
  * @returns {object}
  */
 export function validatorRunner(value, schema) {
-    const fieldState = createNewFieldState();
-    fieldState.value = value;
-    if (is.propertyDefined(schema, 'string')) {
-        runStringMatchers(fieldState, schema);
-    } else if (is.propertyDefined(schema, 'number')) {
-        runNumberMatchers(fieldState, schema);
-    }
+  const fieldState = createNewFieldState();
+  fieldState.value = value;
+  if (is.propertyDefined(schema, 'string')) {
+    runStringMatchers(fieldState, schema);
+  } else if (is.propertyDefined(schema, 'number')) {
+    runNumberMatchers(fieldState, schema);
+  }
 
-    runNormalMatchers(fieldState, schema);
+  runNormalMatchers(fieldState, schema);
 
-    return fieldState;
+  return fieldState;
 }
 
 /**
@@ -230,14 +230,14 @@ export function validatorRunner(value, schema) {
  * @returns {object}
  */
 export function checkFieldIsOK(fieldState) {
-    if (
-        fieldState.status !== 'error' &&
-        is.existy(fieldState.value) &&
-        is.not.empty(fieldState.value)
-    ) {
-        fieldState.status = 'ok';
-    }
-    return fieldState;
+  if (
+    fieldState.status !== 'error' &&
+    is.existy(fieldState.value) &&
+    is.not.empty(fieldState.value)
+  ) {
+    fieldState.status = 'ok';
+  }
+  return fieldState;
 }
 
 /**
@@ -250,17 +250,17 @@ export function checkFieldIsOK(fieldState) {
  * @returns {object}
  */
 export function createNewState(oldComponentState, fieldState) {
-    const fieldName = Object.keys(fieldState)[0];
-    const fieldInsideState = fieldState[fieldName];
-    return {
-        formStatus: {
-            isFormOK: oldComponentState.isFormOK,
-            fields: {
-                ...oldComponentState.fields,
-                [fieldName]: fieldInsideState
-            }
-        }
-    };
+  const fieldName = Object.keys(fieldState)[0];
+  const fieldInsideState = fieldState[fieldName];
+  return {
+    formStatus: {
+      isFormOK: oldComponentState.isFormOK,
+      fields: {
+        ...oldComponentState.fields,
+        [fieldName]: fieldInsideState
+      }
+    }
+  };
 }
 
 /**
@@ -273,52 +273,52 @@ export function createNewState(oldComponentState, fieldState) {
  * @returns {object}}
  */
 export function checkIsFormOK(componentState) {
-    const { fields } = componentState.formStatus;
-    const properties = Object.keys(fields);
-    let isError = false;
-    properties.some(prop => {
-        if (fields[prop].status === 'error') {
-            isError = true;
-            return true;
-        }
-        return false;
-    });
-    if (!isError) {
-        componentState.formStatus.isFormOK = true;
+  const { fields } = componentState.formStatus;
+  const properties = Object.keys(fields);
+  let isError = false;
+  properties.some(prop => {
+    if (fields[prop].status === 'error') {
+      isError = true;
+      return true;
     }
-    return componentState;
+    return false;
+  });
+  if (!isError) {
+    componentState.formStatus.isFormOK = true;
+  }
+  return componentState;
 }
 
 export function restoreErrorStatus(fieldState) {
-    if (fieldState.status === 'error' && is.empty(fieldState.value)) {
-        fieldState.status = 'normal';
-        fieldState.errorText = '';
-    }
-    return fieldState;
+  if (fieldState.status === 'error' && is.empty(fieldState.value)) {
+    fieldState.status = 'normal';
+    fieldState.errorText = '';
+  }
+  return fieldState;
 }
 
 export function startValidating(target, schema, formStatus, update) {
-    const propName = target.name;
-    const targetSchema = schema[propName];
+  const propName = target.name;
+  const targetSchema = schema[propName];
 
-    return Promise.resolve({
-        value: target.value,
-        schema: targetSchema
+  return Promise.resolve({
+      value: target.value,
+      schema: targetSchema
     })
-        .then(({ value, schema }) => validatorRunner(value, schema))
-        .then(result => {
-            return checkFieldIsOK(result);
-        })
-        .then(result => restoreErrorStatus(result))
-        .catch(wrongResult => wrongResult)
-        .then(newFieldState => {
-            const oldFieldState = formStatus.fields[propName];
-            if (shouldChange(oldFieldState, newFieldState)) {
-                const fieldState = addNameToResult(propName, newFieldState);
-                let newComponentState = createNewState(formStatus, fieldState);
-                newComponentState = checkIsFormOK(newComponentState);
-                update(newComponentState);
-                return newComponentState;
-            }
-        });
+    .then(({ value, schema }) => validatorRunner(value, schema))
+    .then(result => {
+      return checkFieldIsOK(result);
+    })
+    .then(result => restoreErrorStatus(result))
+    .catch(wrongResult => wrongResult)
+    .then(newFieldState => {
+      const oldFieldState = formStatus.fields[propName];
+      if (shouldChange(oldFieldState, newFieldState)) {
+        const fieldState = addNameToResult(propName, newFieldState);
+        let newComponentState = createNewState(formStatus, fieldState);
+        newComponentState = checkIsFormOK(newComponentState);
+        update(newComponentState);
+        return newComponentState;
+      }
+    });
 }
