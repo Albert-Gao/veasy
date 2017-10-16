@@ -1,16 +1,30 @@
 // @ts-check
 import * as lib from './helpers';
 
-class FormValidator {
+export function createInitialState(schema) {
+  const initialState = {
+    formStatus: {
+      isFormOK: false,
+      fields: {}
+    }
+  };
+  const { fields } = initialState.formStatus;
+  Object.keys(schema).forEach(prop => {
+    fields[prop] = lib.createNewFieldState(true, schema[prop]);
+  });
+  return initialState;
+}
+
+class EasyV {
   /**
-     * Creates an instance of FormValidator.
-     * @param {object} component 
-     * @param {object} schema 
-     * @memberof FormValidator
-     */
+   * Creates an instance of FormValidator.
+   * @param {object} component
+   * @param {object} schema
+   * @memberof FormValidator
+   */
   constructor(component, schema) {
     lib.typeCheck(component, schema);
-    /** @type { { state:object, setState:a:Function } } */
+    /** @type { { state:object, setState:Function } } */
     this.component = component;
     /** @type { { formStatus: { isFormOK: boolean, fields: object } } } */
     this.schema = schema;
@@ -18,54 +32,28 @@ class FormValidator {
 
   /**
    * Create the initial state for a component
-   * 
+   *
    * @returns {object}
    * @memberof FormValidator
    */
   createInitialState() {
-    const initialState = {
-      formStatus: {
-        isFormOK: false,
-        fields: {}
-      }
-    };
-    const { fields } = initialState.formStatus;
-    Object.keys(this.schema).forEach(prop => {
-      fields[prop] = lib.createNewFieldState(true, this.schema[prop]);
-    });
-    return initialState;
+    return createInitialState(this.schema);
   }
 
   /**
    * The validate function, call this in your onChange() handler of the form component
-   * 
-   * @param {object} target 
+   *
+   * @param {object} target
    * @memberof FormValidator
    */
   validate(target) {
-    const propName = target.name;
-    const targetSchema = this.schema[propName];
-
-    return Promise.resolve({
-      value: target.value,
-      schema: targetSchema
-    })
-      .then(({ value, schema }) => lib.validatorRunner({ value, schema }))
-      .catch(wrongResult => wrongResult)
-      .then(result => {
-        const newFieldState = lib.checkFieldIsOK(result);
-        const oldFieldState = this.component.state.formStatus.fields[propName];
-        if (lib.shouldChange(oldFieldState, newFieldState)) {
-          const fieldState = lib.addNameToResult(propName, newFieldState);
-          let newComponentState = lib.createNewState(
-            this.component.state,
-            fieldState
-          );
-          newComponentState = lib.checkIsFormOK(newComponentState);
-          this.component.setState(newComponentState);
-        }
-      });
+    lib.startValidating(
+      target,
+      this.schema,
+      this.component.state.formStatus,
+      this.component.setState.bind(this.component)
+    );
   }
 }
 
-export default FormValidator;
+export default EasyV;
