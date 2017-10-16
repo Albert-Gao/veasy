@@ -25,5 +25,11 @@ export const numberMatcher = {
 
 export const normalMatcher = {
     enum: normal.enumHandler,
-    matchRegex: normal.matchRegexHandler
+    matchRegex: normal.matchRegexHandler,
+    isEmail: normal.isEmailHandler,
+    isUrl: normal.isUrlHandler,
+    isCreditCard: normal.isCreditCardHandler,
+    isHexColor: normal.isHexColorHandler,
+    notEmpty: normal.notEmptyHandler,
+    isIP: normal.isIPHandler
 };
