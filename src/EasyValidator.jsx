@@ -1,8 +1,9 @@
+/* eslint-disable react/forbid-prop-types,import/no-extraneous-dependencies */
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as lib from './helpers';
 
-export default class FieldsBinding extends React.Component {
+export default class EasyValidator extends React.Component {
   validate(target) {
     const { schema, formStatus, update } = this.props;
     lib.startValidating( target, schema, formStatus, update )
@@ -28,7 +29,7 @@ export default class FieldsBinding extends React.Component {
   }
 }
 
-FieldsBinding.propTypes = {
+EasyValidator.propTypes = {
   schema: PropTypes.object.isRequired,
   formStatus: PropTypes.object.isRequired,
   update: PropTypes.func.isRequired,
