@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import EasyV from '../src/index';
+import { startValidating } from '../src/helpers';
 
 describe('Test the validate method - Number', () => {
   let mockSchema;
@@ -43,8 +43,12 @@ describe('Test the validate method - Number', () => {
   });
 
   test('min should work - [int]error case', async () => {
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -62,8 +66,12 @@ describe('Test the validate method - Number', () => {
 
   test('min should work - [float]error case', async () => {
     mockTarget.value = '0.5';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -81,8 +89,12 @@ describe('Test the validate method - Number', () => {
 
   test('min should work - [negative]error case', async () => {
     mockTarget.value = '-15';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -100,8 +112,12 @@ describe('Test the validate method - Number', () => {
 
   test('max should work - [int]error case', async () => {
     mockTarget.value = '7';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -119,8 +135,12 @@ describe('Test the validate method - Number', () => {
 
   test('max should work - [float]error case', async () => {
     mockTarget.value = '9.91';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -140,8 +160,12 @@ describe('Test the validate method - Number', () => {
     mockTarget.value = '-7';
     delete mockSchema.age.number.min;
     mockSchema.age.number.max = '-10';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -155,5 +179,5 @@ describe('Test the validate method - Number', () => {
         }
       }
     });
-  });
+  });  
 });

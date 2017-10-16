@@ -1,5 +1,6 @@
 /* eslint-disable no-new */
-import EasyV from '../src/index';
+import { startValidating } from '../src/helpers';
+
 
 describe('Test the validate method - String', () => {
   let mockSchema;
@@ -44,8 +45,12 @@ describe('Test the validate method - String', () => {
 
   test('minLength should work - error case', async () => {
     mockTarget.value = '';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -63,8 +68,12 @@ describe('Test the validate method - String', () => {
 
   test('maxLength should work - error case', async () => {
     mockTarget.value = '123456789011';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -83,8 +92,12 @@ describe('Test the validate method - String', () => {
 
   test('minLength and maxLength should work - ok case', async () => {
     mockTarget.value = 'js';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -125,8 +138,12 @@ describe('Test the validate method - String', () => {
     };
 
     mockTarget.value = '';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -150,8 +167,12 @@ describe('Test the validate method - String', () => {
   test('include should work - ok case', async () => {
     mockSchema.title.string.include = 'love'
     mockTarget.value = 'i love u!';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -170,8 +191,12 @@ describe('Test the validate method - String', () => {
   test('include should work - error case', async () => {
     mockSchema.title.string.include = 'big'
     mockTarget.value = 'i love u!';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -190,8 +215,12 @@ describe('Test the validate method - String', () => {
   test('exclude should work - error case', async () => {
     mockSchema.title.string.exclude = 'love'
     mockTarget.value = 'i love u!';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -210,8 +239,12 @@ describe('Test the validate method - String', () => {
   test('exclude should work - ok case', async () => {
     mockSchema.title.string.exclude = 'big'
     mockTarget.value = 'i love u!';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {

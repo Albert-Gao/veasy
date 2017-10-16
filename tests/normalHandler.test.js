@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import EasyV from '../src/index';
+import { startValidating } from '../src/helpers';
 
 describe('Test the validate method - Normal', () => {
   let mockSchema;
@@ -13,7 +13,7 @@ describe('Test the validate method - Normal', () => {
         string: {
           default: ''
         },
-        enum: ['tom', 'jerry'],        
+        enum: ['tom', 'jerry']
       }
     };
     mockTarget = {
@@ -43,8 +43,13 @@ describe('Test the validate method - Normal', () => {
 
   test('enum should work - error case', async () => {
     mockTarget.value = 'not';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockComponent.state.formStatus,
+      mockComponent.setState
+    );
+
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -60,11 +65,38 @@ describe('Test the validate method - Normal', () => {
     });
   });
 
+  test('enum should work - ok case', async () => {
+    mockTarget.value = 'tom';
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
+    expect(mockSetState.mock.calls.length).toBe(1);
+    expect(mockSetState).toBeCalledWith({
+      formStatus: {
+        isFormOK: true,
+        fields: {
+          title: {
+            status: 'ok',
+            errorText: '',
+            value: mockTarget.value
+          }
+        }
+      }
+    });
+  });
+
   test('matchRegex should work - error case', async () => {
     mockSchema.title.matchRegex = /^([a-z0-9]{5,})$/;
     mockTarget.value = 'tom';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -85,8 +117,12 @@ describe('Test the validate method - Normal', () => {
     delete mockSchema.title.enum;
     mockSchema.title.matchRegex = /^([a-z0-9]{5,})$/;
     mockTarget.value = '9tom';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
@@ -105,8 +141,12 @@ describe('Test the validate method - Normal', () => {
   test('should set isOK:true when no error and value not empty - non-error case', async () => {
     mockSchema.title.matchRegex = /^([a-z]{5,})$/;
     mockTarget.value = 'jerry';
-    const fv = new EasyV(mockComponent, mockSchema);
-    await fv.validate(mockTarget);
+    await startValidating(
+        mockTarget,
+        mockSchema,
+        mockComponent.state.formStatus,
+        mockComponent.setState
+      );
     expect(mockSetState.mock.calls.length).toBe(1);
     expect(mockSetState).toBeCalledWith({
       formStatus: {
