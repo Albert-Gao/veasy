@@ -1,35 +1,16 @@
 /* eslint-disable import/no-extraneous-dependencies,react/jsx-filename-extension */
-import React from 'react';
-import Enzyme, { shallow, mount, render } from 'enzyme';
+import Enzyme, {mount, shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import React from 'react';
 import EasyValidator from '../src/EasyValidator';
 
 Enzyme.configure({ adapter: new Adapter() });
-
-function FieldsBinding(props) {
-  const names = Object.keys(props.schema);
-  return React.Children.map(
-    props.children,
-    (child) => {
-      const childName = child.props.name;
-      if (names.includes(childName)) {
-        const { fields } = props.formStatus;
-        return React.cloneElement(child, {
-          status: fields[childName].status,
-          hint: fields[childName].errorText,
-          value: fields[childName].value
-        });
-      }
-      return child;
-    }
-  );
-}
 
 describe('Test the <EasyValidator />', () => {
   let mockSchema;
   let mockTarget;
   let mockComponent;
-  let mockSetState = jest.fn();
+  const mockSetState = jest.fn();
 
   beforeEach(() => {
     mockSchema = {
@@ -59,6 +40,10 @@ describe('Test the <EasyValidator />', () => {
       },
       setState: mockSetState
     };
+  });
+
+  afterEach(() => {
+    mockSetState.mockReset();
   });
 
   test('should allows to set 3 props', () => {
