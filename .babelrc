@@ -1,7 +1,6 @@
 {
-    "presets": [ "env" ],
-    "ignore": [],
-    "plugins": [ "transform-object-rest-spread" ],
-    "sourceMaps": true,
-    "retainLines": true
+  "presets": ["env", "react"],
+  "plugins": ["transform-class-properties", "transform-object-rest-spread"],
+  "sourceMaps": true,
+  "retainLines": true
 }
