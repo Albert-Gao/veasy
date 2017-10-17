@@ -1,7 +1,7 @@
 // @ts-check
 import * as lib from './helpers';
 
-class EasyVLib {
+class EasyVClass {
   /**
    * Creates an instance of FormValidator.
    * @param {object} component
@@ -42,4 +42,4 @@ class EasyVLib {
   }
 }
 
-export default EasyVLib;
+export default EasyVClass;

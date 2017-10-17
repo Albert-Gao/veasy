@@ -1,6 +1,7 @@
 /* eslint-disable no-new */
 import { getConstructorErrorMessage } from '../src/helpers';
-import EasyV from '../src/EasyVLib';
+import EasyVClass from '../src/EasyVClass';
+const EasyV = EasyVClass;
 
 describe('test the constructor - Property component', () => {
   const schema = { dummy: { min: 0 } };
