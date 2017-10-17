@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import * as lib from './helpers';
 
-export default class EasyValidator extends React.Component {
+export default class EasyV extends React.Component {
   getChildren = () => {
     const { schema, formStatus, children } = this.props;
     const names = Object.keys(schema);
     const { fields } = formStatus;
-    const newChild = React.Children.map(children, child => {
+    return React.Children.map(children, child => {
       const childName = child.props.name;
       if (names.includes(childName)) {
         return React.cloneElement(child, {
@@ -19,7 +19,6 @@ export default class EasyValidator extends React.Component {
       }
       return child;
     });
-    return newChild;
   };
 
   handleOnChange = e => (this.validate(e.target));
@@ -35,9 +34,12 @@ export default class EasyValidator extends React.Component {
   }
 }
 
-EasyValidator.propTypes = {
+EasyV.propTypes = {
   schema: PropTypes.object.isRequired,
-  formStatus: PropTypes.object.isRequired,
+  formStatus: PropTypes.shape({
+    isFormOK: PropTypes.bool,
+    fields: PropTypes.object
+  }).isRequired,
   update: PropTypes.func.isRequired,
   children: PropTypes.any.isRequired
 };

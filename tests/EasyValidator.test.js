@@ -3,13 +3,12 @@ import Enzyme, {mount, shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import renderer from 'react-test-renderer';
 import React from 'react';
-import EasyValidator from '../src/EasyValidator';
+import EasyValidator from '../src/EasyV';
 import toJson from 'enzyme-to-json';
-
 
 Enzyme.configure({ adapter: new Adapter() });
 
-describe('Test the <EasyValidator />', () => {
+describe('Test the <EasyVLib />', () => {
   let mockSchema;
   let mockTarget;
   let mockComponent;
@@ -59,7 +58,6 @@ describe('Test the <EasyValidator />', () => {
         <input name="title" />
       </EasyValidator>
     );
-    console.log(wrapper.debug());
     expect(wrapper.find(EasyValidator)).toHaveLength(1);
     expect(wrapper.props().schema).toEqual(mockSchema);
     expect(wrapper.props().formStatus).toEqual(mockComponent.state.formStatus);

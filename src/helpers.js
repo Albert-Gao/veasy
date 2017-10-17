@@ -7,6 +7,7 @@ import {normalMatcher, numberMatcher, stringMatcher} from './matchers';
 
 export const NAME_PLACEHOLDER = '#{NAME}#';
 
+
 /**
  * Return error message for checking the parameters of the constructor.
  *
@@ -104,6 +105,21 @@ export function createNewFieldState(needValue = false, fieldSchema) {
   }
   return result;
 }
+
+export function createInitialState(schema) {
+  const initialState = {
+    formStatus: {
+      isFormOK: false,
+      fields: {}
+    }
+  };
+  const { fields } = initialState.formStatus;
+  Object.keys(schema).forEach(prop => {
+    fields[prop] = createNewFieldState(true, schema[prop]);
+  });
+  return initialState;
+}
+
 
 /**
  * Check if we should change the state or not.
@@ -245,7 +261,7 @@ export function checkFieldIsOK(fieldState) {
  * It will return a new object.
  *
  * @export
- * @param {object} oldComponentState
+ * @param {isFormOK: boolean, fields:{}} oldComponentState
  * @param {object} fieldState
  * @returns {object}
  */
@@ -297,27 +313,30 @@ export function restoreErrorStatus(fieldState) {
   return fieldState;
 }
 
+function updateWhenNeeded(newFieldState, propName, formStatus, update) {
+  const oldFieldState = formStatus.fields[propName];
+  if (shouldChange(oldFieldState, newFieldState)) {
+    const fieldState = addNameToResult(propName, newFieldState);
+    let newComponentState = createNewState(formStatus, fieldState);
+    newComponentState = checkIsFormOK(newComponentState);
+    update(newComponentState);
+  }
+}
+
 export function startValidating(target, schema, formStatus, update) {
   const propName = target.name;
   const targetSchema = schema[propName];
+  const fieldInfo = {
+    value: target.value,
+    schema: targetSchema
+  };
 
-  return Promise.resolve({
-      value: target.value,
-      schema: targetSchema
-    })
-    .then(({ value, schema }) => validatorRunner(value, schema))
-    .then(result => {
-      return checkFieldIsOK(result);
-    })
-    .then(result => restoreErrorStatus(result))
-    .catch(wrongResult => wrongResult)
-    .then(newFieldState => {
-      const oldFieldState = formStatus.fields[propName];
-      if (shouldChange(oldFieldState, newFieldState)) {
-        const fieldState = addNameToResult(propName, newFieldState);
-        let newComponentState = createNewState(formStatus, fieldState);
-        newComponentState = checkIsFormOK(newComponentState);
-        update(newComponentState);
-      }
-    });
+  return Promise.resolve(fieldInfo)
+    .then((info) => validatorRunner(info.value, info.schema))
+    .then(result1 => checkFieldIsOK(result1))
+    .then(result2 => restoreErrorStatus(result2))
+    .catch(errorState => errorState)
+    .then(newFieldState => updateWhenNeeded(
+      newFieldState, propName, formStatus, update))
 }
+

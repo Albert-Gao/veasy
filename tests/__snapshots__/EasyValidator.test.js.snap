@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test the <EasyValidator /> snapshot tests using 3rd. 1`] = `
-<EasyValidator
+exports[`Test the <EasyVLib /> snapshot tests using 3rd. 1`] = `
+<EasyV
   formStatus={
     Object {
       "fields": Object {
@@ -43,30 +43,15 @@ exports[`Test the <EasyValidator /> snapshot tests using 3rd. 1`] = `
       key=".2"
     />
   </section>
-</EasyValidator>
+</EasyV>
 `;
 
-exports[`Test the <EasyValidator /> snapshot tests using facebook render. 1`] = `
-<section
-  onChange={[Function]}
->
-  <input
-    hint=""
-    name="title"
-    status="normal"
-    value=""
-  />
-  <input />
-  <input />
-</section>
-`;
-
-exports[`Test the <EasyValidator /> snapshot tests. 1`] = `
-"<EasyValidator schema={{...}} formStatus={{...}} update={[Function]}>
+exports[`Test the <EasyVLib /> snapshot tests. 1`] = `
+"<EasyV schema={{...}} formStatus={{...}} update={[Function]}>
   <section onChange={[Function]}>
     <input name=\\"title\\" status=\\"normal\\" hint=\\"\\" value=\\"\\" />
     <input />
     <input />
   </section>
-</EasyValidator>"
+</EasyV>"
 `;
