@@ -12,7 +12,6 @@ class EasyVClass {
     lib.typeCheck(component, schema);
     /** @type { { state:object, setState:Function } } */
     this.component = component;
-    /** @type { { formStatus: { isFormOK: boolean, fields: object } } } */
     this.schema = schema;
   }
 
@@ -36,7 +35,7 @@ class EasyVClass {
     lib.startValidating(
       target,
       this.schema,
-      this.component.state.formStatus,
+      this.component.state,
       this.component.setState.bind(this.component)
     );
   }
