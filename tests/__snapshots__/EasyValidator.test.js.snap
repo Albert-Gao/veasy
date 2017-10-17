@@ -15,10 +15,8 @@ exports[`Test the <EasyVLib /> snapshot tests using 3rd. 1`] = `
   schema={
     Object {
       "title": Object {
-        "string": Object {
-          "default": "",
-          "minLength": 1,
-        },
+        "default": "",
+        "minLength": 1,
       },
     }
   }

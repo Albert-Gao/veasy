@@ -16,10 +16,8 @@ describe('Test the <EasyVLib />', () => {
   beforeEach(() => {
     mockSchema = {
       title: {
-        string: {
-          minLength: 1,
-          default: ''
-        }
+        minLength: 1,
+        default: ''
       }
     };
     mockTarget = {
