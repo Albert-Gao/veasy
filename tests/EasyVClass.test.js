@@ -1,6 +1,8 @@
 /* eslint-disable no-new */
-import { getConstructorErrorMessage } from '../src/helpers';
-import EasyV from '../src/EasyVLib';
+import * as lib from "../src/helpers";
+import EasyVClass from '../src/EasyVClass';
+const EasyV = EasyVClass;
+const { getConstructorErrorMessage } = lib;
 
 describe('test the constructor - Property component', () => {
   const schema = { dummy: { min: 0 } };
@@ -37,7 +39,7 @@ describe('test the constructor - Property component', () => {
     }).not.toThrow();
   });
 
-  test('Should throw when give an object which has an empty object as an property', () => {
+  test('Should throw when has an empty object as an property', () => {
     expect(() => {
       new EasyV({ name: {} }, schema);
     }).not.toThrow();
@@ -81,11 +83,32 @@ describe('test the constructor - Property schema', () => {
     );
   });
 
-  test('Should throw when give an object which has an empty object as an property', () => {
+  test('Should throw when give an empty object as an property', () => {
     expect(() => {
       new EasyV(component, { name: {}, age: 26 });
     }).toThrow(
-      '[Form Validation - schema.name] Expect: non empty object. Actual: [object Object]'
+      '[Form Validation - schema.name] ' +
+      'Expect: non empty object. Actual: [object Object]'
     );
+  });
+
+  test('Should invoke startValidating with correct signature', () => {
+    const mockUpdate = jest.fn();
+    lib.startValidating = mockUpdate;
+    const mockComponent = {
+      state: { name: 'albert' },
+      setState: () => {}
+    };
+    const mockSchema = { name: { isIP:false } };
+    const mockTarget = { abc: 123 };
+
+    const easyV = new EasyV(mockComponent, mockSchema);
+    easyV.validate(mockTarget);
+    expect(mockUpdate.mock.calls.length).toEqual(1);
+    expect(mockUpdate.mock.calls[0][0]).toEqual(mockTarget);
+    expect(mockUpdate.mock.calls[0][1]).toEqual(mockSchema);
+    expect(mockUpdate.mock.calls[0][2]).toEqual(mockComponent.state);
+    expect(mockUpdate.mock.calls[0][3].name).toEqual('bound setState');
+    mockUpdate.mockReset();
   });
 });

@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import EasyV from '../src/EasyVLib';
+import EasyV from '../src/EasyVClass';
 
 describe('Test the createInitialState method', () => {
   let schema;

@@ -1,7 +1,7 @@
 // @ts-check
 import * as lib from './helpers';
 
-class EasyVLib {
+class EasyVClass {
   /**
    * Creates an instance of FormValidator.
    * @param {object} component
@@ -12,7 +12,6 @@ class EasyVLib {
     lib.typeCheck(component, schema);
     /** @type { { state:object, setState:Function } } */
     this.component = component;
-    /** @type { { formStatus: { isFormOK: boolean, fields: object } } } */
     this.schema = schema;
   }
 
@@ -36,10 +35,10 @@ class EasyVLib {
     lib.startValidating(
       target,
       this.schema,
-      this.component.state.formStatus,
+      this.component.state,
       this.component.setState.bind(this.component)
     );
   }
 }
 
-export default EasyVLib;
+export default EasyVClass;
