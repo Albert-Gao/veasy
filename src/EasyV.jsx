@@ -5,27 +5,26 @@ import * as lib from './helpers';
 
 export default class EasyV extends React.Component {
   getChildren = () => {
-    const { schema, formStatus, children } = this.props;
+    const { schema, allState, children } = this.props;
     const names = Object.keys(schema);
-    const { fields } = formStatus;
     return React.Children.map(children, child => {
       const childName = child.props.name;
       if (names.includes(childName)) {
         return React.cloneElement(child, {
-          status: fields[childName].status,
-          hint: fields[childName].errorText,
-          value: fields[childName].value
+          status: allState[childName].status,
+          hint: allState[childName].errorText,
+          value: allState[childName].value
         });
       }
       return child;
     });
   };
 
-  handleOnChange = e => (this.validate(e.target));
+  handleOnChange = e => this.validate(e.target);
 
   validate(target) {
-    const { schema, formStatus, update } = this.props;
-    lib.startValidating(target, schema, formStatus, update)
+    const { schema, allState, update } = this.props;
+    lib.startValidating(target, schema, update, allState);
   }
 
   render() {
@@ -34,12 +33,13 @@ export default class EasyV extends React.Component {
   }
 }
 
+EasyV.defaultProps = {
+  allState: undefined
+};
+
 EasyV.propTypes = {
   schema: PropTypes.object.isRequired,
-  formStatus: PropTypes.shape({
-    isFormOK: PropTypes.bool,
-    fields: PropTypes.object
-  }).isRequired,
+  allState: PropTypes.object,
   update: PropTypes.func.isRequired,
   children: PropTypes.any.isRequired
 };

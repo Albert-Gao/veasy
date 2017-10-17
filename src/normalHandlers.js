@@ -1,66 +1,65 @@
 // @ts-check
 
 import is from 'is_js';
-import {NAME_PLACEHOLDER, throwError} from './helpers';
+import { NAME_PLACEHOLDER, throwError } from './helpers';
 
-export function enumHandler(fieldState, schema) {
-  const isValid = is.inArray(fieldState.value, schema.enum);
+export function enumHandler(value, schema) {
+  const isValid = is.inArray(value, schema.enum);
   if (isValid) return;
 
   const errorText = `Value of ${NAME_PLACEHOLDER} should be within [${schema.enum.toString()}].`;
-  throwError(fieldState.value, errorText);
+  throwError(value, errorText);
 }
 
-export function matchRegexHandler(fieldState, schema) {
-  const isValid = schema.matchRegex.test(fieldState.value);
+export function matchRegexHandler(value, schema) {
+  const isValid = schema.matchRegex.test(value);
   if (isValid) return;
 
   const errorText = `Value of ${NAME_PLACEHOLDER} is not valid.`;
-  throwError(fieldState.value, errorText);
+  throwError(value, errorText);
 }
 
-export function isEmailHandler(fieldState, schema) {
-  const isValid = is.email(fieldState.value);
+export function isEmailHandler(value, schema) {
+  const isValid = is.email(value);
   if (isValid) return;
 
   const errorText = `${NAME_PLACEHOLDER} should be email.`;
-  throwError(fieldState.value, errorText);
+  throwError(value, errorText);
 }
 
-export function isUrlHandler(fieldState, schema) {
-  const isValid = is.url(fieldState.value);
+export function isUrlHandler(value, schema) {
+  const isValid = is.url(value);
   if (isValid) return;
 
   const errorText = `${NAME_PLACEHOLDER} should be a URL.`;
-  throwError(fieldState.value, errorText);
+  throwError(value, errorText);
 }
 
-export function isCreditCardHandler(fieldState, schema) {
-  const isValid = is.creditCard(fieldState.value * 1);
+export function isCreditCardHandler(value, schema) {
+  const isValid = is.creditCard(value * 1);
   if (isValid) return;
 
   const errorText = `${NAME_PLACEHOLDER} should be a credit card number.`;
-  throwError(fieldState.value, errorText);
+  throwError(value, errorText);
 }
 
-export function isHexColorHandler(fieldState, schema) {
-  const isValid = is.hexColor(fieldState.value);
+export function isHexColorHandler(value, schema) {
+  const isValid = is.hexColor(value);
   if (isValid) return;
 
   const errorText = `${NAME_PLACEHOLDER} should be a hex color.`;
-  throwError(fieldState.value, errorText);
+  throwError(value, errorText);
 }
 
-export function notEmptyHandler(fieldState, schema) {
-  const isValid = is.not.empty(fieldState.value);
+export function notEmptyHandler(value, schema) {
+  const isValid = is.not.empty(value);
   if (isValid) return;
 
   const errorText = `${NAME_PLACEHOLDER} should not be empty.`;
-  throwError(fieldState.value, errorText);
+  throwError(value, errorText);
 }
 
-export function isIPHandler(fieldState, schema) {
-  const { value } = fieldState;
+export function isIPHandler(value, schema) {
   let isValid;
   let ipString = '';
 
