@@ -2,7 +2,8 @@ import * as normal from './normalHandlers';
 import * as number from './numberHandlers';
 import * as string from './stringHandlers';
 
-export const stringMatcher = {
+const handlerMatcher = {
+  /* String handlers */
   minLength: string.minLengthHandler,
   maxLength: string.maxLengthHandler,
   include: string.includeHandler,
@@ -10,20 +11,18 @@ export const stringMatcher = {
   startWith: string.startWithHandler,
   notStartWith: string.notStartWithHandler,
   endWith: string.endWithHandler,
-  notEndWith: string.notEndWithHandler
-};
+  notEndWith: string.notEndWithHandler,
 
-export const numberMatcher = {
+  /* Number handlers */
   min: number.minHandler,
   max: number.maxHandler,
   equal: number.equalHandler,
   notEqual: number.notEqualHandler,
   isPositive: number.isPositiveHandler,
   isNegative: number.isNegativeHandler,
-  isInt: number.isIntHandler
-};
+  isInt: number.isIntHandler,
 
-export const normalMatcher = {
+  /* Normal handlers */
   enum: normal.enumHandler,
   matchRegex: normal.matchRegexHandler,
   isEmail: normal.isEmailHandler,
@@ -33,3 +32,5 @@ export const normalMatcher = {
   notEmpty: normal.notEmptyHandler,
   isIP: normal.isIPHandler
 };
+
+export default handlerMatcher;

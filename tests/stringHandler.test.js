@@ -10,9 +10,7 @@ describe('Test the validate method - String', () => {
   beforeEach(() => {
     mockSchema = {
       title: {
-        string: {
-          default: ''
-        }
+        default: ''
       }
     };
     mockTarget = {
@@ -37,7 +35,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('minLength should work - error case', async () => {
-    mockSchema.title.string.minLength = 1;
+    mockSchema.title.minLength = 1;
     mockTarget.value = '';
     await startValidating(
       mockTarget,
@@ -73,7 +71,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('maxLength should work - error case', async () => {
-    mockSchema.title.string.maxLength = 10;
+    mockSchema.title.maxLength = 10;
     mockTarget.value = '123456789011';
     await startValidating(
       mockTarget,
@@ -92,7 +90,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('maxLength should work - ok case', async () => {
-    mockSchema.title.string.maxLength = 10;
+    mockSchema.title.maxLength = 10;
     mockTarget.value = '12345671';
     await startValidating(
       mockTarget,
@@ -110,7 +108,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('include should work - ok case', async () => {
-    mockSchema.title.string.include = 'love';
+    mockSchema.title.include = 'love';
     mockTarget.value = 'i love u!';
     await startValidating(
       mockTarget,
@@ -128,7 +126,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('include should work - error case', async () => {
-    mockSchema.title.string.include = 'big';
+    mockSchema.title.include = 'big';
     mockTarget.value = 'i love u!';
     await startValidating(
       mockTarget,
@@ -147,7 +145,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('exclude should work - error case', async () => {
-    mockSchema.title.string.exclude = 'love';
+    mockSchema.title.exclude = 'love';
     mockTarget.value = 'i love u!';
     await startValidating(
       mockTarget,
@@ -166,7 +164,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('exclude should work - ok case', async () => {
-    mockSchema.title.string.exclude = 'big';
+    mockSchema.title.exclude = 'big';
     mockTarget.value = 'i love u!';
     await startValidating(
       mockTarget,
@@ -184,7 +182,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('startWith should work - error case', async () => {
-    mockSchema.title.string.startWith = 'big';
+    mockSchema.title.startWith = 'big';
     mockTarget.value = 'i love u!';
     await startValidating(
       mockTarget,
@@ -202,7 +200,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('startWith should work - ok case', async () => {
-    mockSchema.title.string.startWith = 'big';
+    mockSchema.title.startWith = 'big';
     mockTarget.value = 'big fish';
     await startValidating(
       mockTarget,
@@ -220,7 +218,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('notStartWith should work - error case', async () => {
-    mockSchema.title.string.notStartWith = 'big';
+    mockSchema.title.notStartWith = 'big';
     mockTarget.value = 'big fish';
     await startValidating(
       mockTarget,
@@ -238,7 +236,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('notStartWith should work - ok case', async () => {
-    mockSchema.title.string.notStartWith = 'abc';
+    mockSchema.title.notStartWith = 'abc';
     mockTarget.value = 'big fish';
     await startValidating(
       mockTarget,
@@ -256,7 +254,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('endWith should work - error case', async () => {
-    mockSchema.title.string.endWith = 'big';
+    mockSchema.title.endWith = 'big';
     mockTarget.value = 'i love u!';
     await startValidating(
       mockTarget,
@@ -274,7 +272,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('endWith should work - ok case', async () => {
-    mockSchema.title.string.endWith = 'big';
+    mockSchema.title.endWith = 'big';
     mockTarget.value = 'big big';
     await startValidating(
       mockTarget,
@@ -292,7 +290,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('notEndWith should work - error case', async () => {
-    mockSchema.title.string.notEndWith = 'fish';
+    mockSchema.title.notEndWith = 'fish';
     mockTarget.value = 'big fish';
     await startValidating(
       mockTarget,
@@ -310,7 +308,7 @@ describe('Test the validate method - String', () => {
   });
 
   test('notEndWith should work - ok case', async () => {
-    mockSchema.title.string.notEndWith = 'abc';
+    mockSchema.title.notEndWith = 'abc';
     mockTarget.value = 'big fish';
     await startValidating(
       mockTarget,

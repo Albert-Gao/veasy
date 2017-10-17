@@ -3,7 +3,7 @@
 // This file contain any `private` method for the index.js
 
 import is from 'is_js';
-import {normalMatcher, numberMatcher, stringMatcher} from './matchers';
+import handlerMatcher from './matchers';
 
 export const NAME_PLACEHOLDER = '#{NAME}#';
 
@@ -60,10 +60,6 @@ export function typeCheck(component, schema) {
   });
 }
 
-export function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 /**
  * Create initial value for a field if no default is provided.
  *
@@ -117,7 +113,7 @@ export function createInitialState(schema, userState) {
 
   const schemaItems = Object.keys(schema);
   schemaItems.forEach((name) => {
-    if (is.propertyDefined(userState, name)){
+    if (is.propertyDefined(userState, name)) {
       initialState[name] = {
         ...initialState[name],
         ...userState[name]
@@ -192,33 +188,11 @@ function runMatchers(matcher, fieldState, schema) {
     if (is.propertyDefined(matcher, ruleInSchema)) {
       matcher[ruleInSchema](fieldState, schema);
     } else if (
-      ruleInSchema !== 'default' &&
-      ruleInSchema !== 'string' &&
-      ruleInSchema !== 'number'
+      ruleInSchema !== 'default'
     ) {
-      throwError(fieldState.value, `No such rule: ${ruleInSchema}`);
+      console.warn(`No such rule: ${ruleInSchema}`);
     }
   });
-}
-
-/**
- * A wrapper around the runMatchers function
- * For easily calling the stringMatchers.
- *
- * @export
- * @param {object} fieldState
- * @param {object} schema
- */
-function runStringMatchers(fieldState, schema) {
-  runMatchers(stringMatcher, fieldState, schema.string);
-}
-
-function runNumberMatchers(fieldState, schema) {
-  runMatchers(numberMatcher, fieldState, schema.number);
-}
-
-function runNormalMatchers(fieldState, schema) {
-  runMatchers(normalMatcher, fieldState, schema);
 }
 
 /**
@@ -232,14 +206,7 @@ function runNormalMatchers(fieldState, schema) {
 export function validatorRunner(value, schema) {
   const fieldState = createNewFieldState();
   fieldState.value = value;
-  if (is.propertyDefined(schema, 'string')) {
-    runStringMatchers(fieldState, schema);
-  } else if (is.propertyDefined(schema, 'number')) {
-    runNumberMatchers(fieldState, schema);
-  }
-
-  runNormalMatchers(fieldState, schema);
-
+  runMatchers(handlerMatcher, fieldState, schema);
   return fieldState;
 }
 
@@ -264,28 +231,6 @@ export function checkFieldIsOK(fieldState) {
   return fieldState;
 }
 
-/**
- * The function is for merging the new field state to  the existing whole state
- * It will return a new object.
- *
- * @export
- * @param {isFormOK: boolean, fields:{}} oldComponentState
- * @param {object} fieldState
- * @returns {object}
- */
-export function createNewState(oldComponentState, fieldState) {
-  const fieldName = Object.keys(fieldState)[0];
-  const fieldInsideState = fieldState[fieldName];
-  return {
-    formStatus: {
-      isFormOK: oldComponentState.isFormOK,
-      fields: {
-        ...oldComponentState.fields,
-        [fieldName]: fieldInsideState
-      }
-    }
-  };
-}
 
 /**
  * If all fields in the state has their status !== error
@@ -320,11 +265,10 @@ export function restoreErrorStatus(fieldState) {
   return fieldState;
 }
 
-function updateWhenNeeded(newFieldState, propName, update, schema, formStatus='' ) {
+function updateWhenNeeded(newFieldState, propName, update, schema, formStatus = '') {
   const fieldState = addNameToResult(propName, newFieldState);
   if (formStatus === '') {
     update(fieldState);
-    return
   } else {
     const oldFieldState = formStatus[propName];
     const newFieldState1 = {
@@ -333,10 +277,9 @@ function updateWhenNeeded(newFieldState, propName, update, schema, formStatus=''
     };
     const finalState = {
       ...formStatus,
-      [propName]: {...newFieldState1}
+      [propName]: { ...newFieldState1 }
     };
     update(checkIsFormOK(schema, finalState));
-    return
   }
 
   // shouldChange(oldFieldState, newFieldState)

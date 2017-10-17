@@ -16,9 +16,7 @@ describe('Test the validate method - String', () => {
   beforeEach(() => {
     mockSchema = {
       title: {
-        string: {
-          default: ''
-        }
+        default: ''
       }
     };
     mockTarget = {
@@ -45,18 +43,14 @@ describe('Test the validate method - String', () => {
   test('Should test the 2 components case - one error and one right', async () => {
     mockSchema = {
       title: {
-        string: {
-          minLength: 2,
-          maxLength: 4,
-          default: ''
-        }
+        minLength: 2,
+        maxLength: 4,
+        default: ''
       },
       description: {
-        string: {
-          minLength: 2,
-          maxLength: 4,
-          default: ''
-        }
+        minLength: 2,
+        maxLength: 4,
+        default: ''
       }
     };
 
@@ -94,11 +88,9 @@ describe('Test the validate method - String', () => {
     // if the user embed one in title: { superhandy: 11}, we will maintain it
     mockSchema = {
       title: {
-        string: {
-          minLength: 2,
-          maxLength: 4,
-          default: ''
-        }
+        minLength: 2,
+        maxLength: 4,
+        default: ''
       }
     };
 
@@ -135,11 +127,9 @@ describe('Test the validate method - String', () => {
     // if the user embed one in title: { superhandy: 11}, we will maintain it
     mockSchema = {
       title: {
-        string: {
-          minLength: 2,
-          maxLength: 4,
-          default: ''
-        }
+        minLength: 2,
+        maxLength: 4,
+        default: ''
       },
       description: {
         notEmpty: true
