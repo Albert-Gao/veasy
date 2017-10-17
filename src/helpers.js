@@ -193,6 +193,7 @@ function runMatchers(matcher, fieldState, schema) {
       console.warn(`No such rule: ${ruleInSchema}`);
     }
   });
+  return fieldState;
 }
 
 /**
@@ -206,8 +207,7 @@ function runMatchers(matcher, fieldState, schema) {
 export function validatorRunner(value, schema) {
   const fieldState = createNewFieldState();
   fieldState.value = value;
-  runMatchers(handlerMatcher, fieldState, schema);
-  return fieldState;
+  return runMatchers(handlerMatcher, fieldState, schema);
 }
 
 /**
