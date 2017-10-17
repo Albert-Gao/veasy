@@ -114,6 +114,17 @@ export function createInitialState(schema, userState) {
   Object.keys(schema).forEach(prop => {
     initialState[prop] = createNewFieldState(true, schema[prop]);
   });
+
+  const schemaItems = Object.keys(schema);
+  schemaItems.forEach((name) => {
+    if (is.propertyDefined(userState, name)){
+      initialState[name] = {
+        ...initialState[name],
+        ...userState[name]
+      };
+    }
+  });
+
   return initialState;
 }
 
