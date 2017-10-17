@@ -267,23 +267,24 @@ function updateWhenNeeded(
   const fieldState = addNameToResult(propName, newFieldState);
   if (formStatus === '') {
     update(fieldState);
-  } else {
-    const oldFieldState = formStatus[propName];
-    const newFieldState1 = {
-      ...oldFieldState,
-      ...fieldState[propName]
-    };
-    const finalState = {
-      ...formStatus,
-      [propName]: { ...newFieldState1 }
-    };
-    if (is.function(update)) {
-      update(checkIsFormOK(schema, finalState));
-    } else {
-      console.warn('update is not a function');
-    }
+    return
   }
-  // shouldChange(oldFieldState, newFieldState)
+
+  const oldFieldState = formStatus[propName];
+  const newFieldState1 = {
+    ...oldFieldState,
+    ...fieldState[propName]
+  };
+
+  if (!shouldChange(oldFieldState, newFieldState)) {
+    return;
+  }
+
+  const finalState = {
+    ...formStatus,
+    [propName]: { ...newFieldState1 }
+  };
+  update(checkIsFormOK(schema, finalState));
 }
 
 export function startValidating(target, schema, update, allState) {
