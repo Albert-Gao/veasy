@@ -1,6 +1,6 @@
 // @ts-check
 /* eslint-disable no-param-reassign */
-// This file contain any `private` method for the index.js
+// This file contain any `private` method for the EasyV
 
 import is from 'is_js';
 import handlerMatcher from './matchers';
@@ -230,6 +230,7 @@ export function checkFieldIsOK(fieldState) {
  * Just mutate the value since it's already a new state object
  *
  * @export
+ * @param {object} schema
  * @param {object} componentState
  * @returns {object}}
  */
