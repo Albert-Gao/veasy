@@ -109,43 +109,6 @@ describe('Test the validate method - Normal', () => {
     });
   });
 
-  test('isOK should be changed from true to false when an error occurs - error case', async () => {
-    mockComponent.state.title.isOK = true;
-    mockSchema.title.matchRegex = /^([a-z0-9]{5,})$/;
-    mockTarget.value = '9tom';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
-    expect(mockUpdate.mock.calls.length).toBe(1);
-    expect(mockUpdate).toBeCalledWith({
-      title: {
-        status: 'error',
-        errorText: 'Value of title is not valid.',
-        value: mockTarget.value
-      }
-    });
-  });
-
-  test('should set isOK:true when no error and value not empty - non-error case', async () => {
-    mockSchema.title.matchRegex = /^([a-z]{5,})$/;
-    mockTarget.value = 'jerry';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
-    expect(mockUpdate.mock.calls.length).toBe(1);
-    expect(mockUpdate).toBeCalledWith({
-      title: {
-        status: 'ok',
-        errorText: '',
-        value: mockTarget.value
-      }
-    });
-  });
-
   test('isEmail should work - error case', async () => {
     mockSchema.title.isEmail = true;
     mockTarget.value = 'tom';
