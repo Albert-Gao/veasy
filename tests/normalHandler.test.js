@@ -10,9 +10,7 @@ describe('Test the validate method - Normal', () => {
   beforeEach(() => {
     mockSchema = {
       title: {
-        string: {
-          default: ''
-        }
+        default: ''
       }
     };
     mockTarget = {
