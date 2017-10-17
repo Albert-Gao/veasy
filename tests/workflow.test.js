@@ -90,14 +90,104 @@ describe('Test the validate method - String', () => {
     });
   });
 
-  test('Shouldn`t lost the user`s custom nested state - 1 component', () => {
+  test('Shouldn`t lost the user`s custom nested state - 1 component', async () => {
     // if the user embed one in title: { superhandy: 11}, we will maintain it
+    mockSchema = {
+      title: {
+        string: {
+          minLength: 2,
+          maxLength: 4,
+          default: ''
+        }
+      }
+    };
+
+    mockComponent.state.title.cool = 'super';
+    mockComponent.state.title.super = {
+      name: 'flash',
+      title: 'wow'
+    };
+    mockComponent.state.title.age = 2;
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockComponent.state
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      isFormOK: true,
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: 'abc',
+        cool: 'super',
+        super: {
+          name: 'flash',
+          title: 'wow'
+        },
+        age: 2
+      }
+    });
   });
 
-  test('Shouldn`t lost the user`s custom nested state - 2 component', () => {
+  test('Shouldn`t lost the user`s custom state - 2 component', async () => {
     // if the user embed one in title: { superhandy: 11}, we will maintain it
-  });
+    mockSchema = {
+      title: {
+        string: {
+          minLength: 2,
+          maxLength: 4,
+          default: ''
+        }
+      },
+      description: {
+        notEmpty: true
+      }
+    };
 
-  test('Should set the isFormOK to true', () => {
+    mockComponent.state.description = {
+      a: 1,
+      b: {
+        A: 1,
+        B: 2
+      },
+      c: 'a'
+    };
+    mockComponent.state.title.cool = 'super';
+    mockComponent.state.title.super = {
+      name: 'flash',
+      title: 'wow'
+    };
+    mockComponent.state.title.age = 2;
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockComponent.state
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      isFormOK: true,
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: 'abc',
+        cool: 'super',
+        super: {
+          name: 'flash',
+          title: 'wow'
+        },
+        age: 2
+      },
+      description: {
+        a: 1,
+        b: {
+          A: 1,
+          B: 2
+        },
+        c: 'a'
+      }
+    });
   });
 });

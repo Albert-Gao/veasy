@@ -285,19 +285,18 @@ export function createNewState(oldComponentState, fieldState) {
  * @param {object} componentState
  * @returns {object}}
  */
-export function checkIsFormOK(componentState) {
-  const { fields } = componentState.formStatus;
-  const properties = Object.keys(fields);
+export function checkIsFormOK(schema, componentState) {
+  const properties = Object.keys(schema);
   let isError = false;
   properties.some(prop => {
-    if (fields[prop].status === 'error') {
+    if (componentState[prop].status === 'error') {
       isError = true;
       return true;
     }
     return false;
   });
   if (!isError) {
-    componentState.formStatus.isFormOK = true;
+    componentState.isFormOK = true;
   }
   return componentState;
 }
@@ -310,18 +309,22 @@ export function restoreErrorStatus(fieldState) {
   return fieldState;
 }
 
-function updateWhenNeeded(newFieldState, propName, update, formStatus='' ) {
+function updateWhenNeeded(newFieldState, propName, update, schema, formStatus='' ) {
   const fieldState = addNameToResult(propName, newFieldState);
   if (formStatus === '') {
     update(fieldState);
     return
   } else {
-    update(
-      {
-        ...formStatus,
-        ...fieldState
-      }
-    );
+    const oldFieldState = formStatus[propName];
+    const newFieldState1 = {
+      ...oldFieldState,
+      ...fieldState[propName]
+    };
+    const finalState = {
+      ...formStatus,
+      [propName]: {...newFieldState1}
+    };
+    update(checkIsFormOK(schema, finalState));
     return
   }
 
@@ -346,5 +349,5 @@ export function startValidating(target, schema, update, allState) {
     .then(result2 => restoreErrorStatus(result2))
     .catch(errorState => errorState)
     .then(newFieldState => updateWhenNeeded(
-      newFieldState, propName, update, allState))
+      newFieldState, propName, update, schema, allState))
 }
