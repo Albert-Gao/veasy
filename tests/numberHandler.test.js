@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import {startValidating} from '../src/helpers';
+import { startValidating } from '../src/helpers';
 
 describe('Test the validate method - Number', () => {
   let mockSchema;
@@ -36,11 +36,7 @@ describe('Test the validate method - Number', () => {
 
   test('min should work - [int]error case', async () => {
     mockSchema.age.min = 1;
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -54,11 +50,7 @@ describe('Test the validate method - Number', () => {
   test('min should work - [int]ok case', async () => {
     mockSchema.age.min = 1;
     mockTarget.value = '2';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -72,11 +64,7 @@ describe('Test the validate method - Number', () => {
   test('min should work - [float]error case', async () => {
     mockSchema.age.min = 1;
     mockTarget.value = '0.5';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -90,11 +78,7 @@ describe('Test the validate method - Number', () => {
   test('min should work - [float]ok case', async () => {
     mockSchema.age.min = 1;
     mockTarget.value = '1.78';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -108,11 +92,7 @@ describe('Test the validate method - Number', () => {
   test('min should work - [negative]error case', async () => {
     mockSchema.age.min = '1';
     mockTarget.value = '-15';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -127,11 +107,7 @@ describe('Test the validate method - Number', () => {
     mockSchema.age.min = '1';
     mockTarget.value = '-9';
     mockSchema.age.min = '-10';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -145,11 +121,7 @@ describe('Test the validate method - Number', () => {
   test('max should work - [int]error case', async () => {
     mockSchema.age.max = 5;
     mockTarget.value = '7';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -163,11 +135,7 @@ describe('Test the validate method - Number', () => {
   test('max should work - [int]ok case', async () => {
     mockSchema.age.max = 5;
     mockTarget.value = '4';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -181,11 +149,7 @@ describe('Test the validate method - Number', () => {
   test('max should work - [float]error case', async () => {
     mockSchema.age.max = 5;
     mockTarget.value = '9.91';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -199,11 +163,7 @@ describe('Test the validate method - Number', () => {
   test('max should work - [float]ok case', async () => {
     mockSchema.age.max = 5;
     mockTarget.value = '4.91';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -218,11 +178,7 @@ describe('Test the validate method - Number', () => {
     mockSchema.age.max = 5;
     mockTarget.value = '-7';
     mockSchema.age.max = '-10';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -237,11 +193,7 @@ describe('Test the validate method - Number', () => {
     mockSchema.age.max = 5;
     mockTarget.value = '-15';
     mockSchema.age.max = '-10';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -255,11 +207,7 @@ describe('Test the validate method - Number', () => {
   test('equal should work - error case', async () => {
     mockSchema.age.equal = 5;
     mockTarget.value = '-15';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -273,11 +221,7 @@ describe('Test the validate method - Number', () => {
   test('equal should work - ok case', async () => {
     mockSchema.age.equal = '-15';
     mockTarget.value = '-15';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -291,11 +235,7 @@ describe('Test the validate method - Number', () => {
   test('notEqual should work - error case', async () => {
     mockSchema.age.notEqual = 5.2;
     mockTarget.value = '5.2';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -309,11 +249,7 @@ describe('Test the validate method - Number', () => {
   test('notEqual should work - ok case', async () => {
     mockSchema.age.notEqual = '-12';
     mockTarget.value = '-15';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -327,11 +263,7 @@ describe('Test the validate method - Number', () => {
   test('isPositive should work - error case', async () => {
     mockSchema.age.isPositive = true;
     mockTarget.value = '-5.2';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -345,11 +277,7 @@ describe('Test the validate method - Number', () => {
   test('isPositive should work - ok case', async () => {
     mockSchema.age.isPositive = true;
     mockTarget.value = '15';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -363,11 +291,7 @@ describe('Test the validate method - Number', () => {
   test('isNegative should work - error case', async () => {
     mockSchema.age.isNegative = true;
     mockTarget.value = '5.2';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -381,11 +305,7 @@ describe('Test the validate method - Number', () => {
   test('isNegative should work - ok case', async () => {
     mockSchema.age.isNegative = true;
     mockTarget.value = '-15';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -399,11 +319,7 @@ describe('Test the validate method - Number', () => {
   test('isInt should work - error case', async () => {
     mockSchema.age.isInt = true;
     mockTarget.value = '5.2';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {
@@ -417,11 +333,7 @@ describe('Test the validate method - Number', () => {
   test('isInt should work - ok case', async () => {
     mockSchema.age.isInt = true;
     mockTarget.value = '-15';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       age: {

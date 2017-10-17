@@ -7,7 +7,6 @@ import handlerMatcher from './matchers';
 
 export const NAME_PLACEHOLDER = '#{NAME}#';
 
-
 /**
  * Return error message for checking the parameters of the constructor.
  *
@@ -72,10 +71,7 @@ export function createInitialValue(schema) {
     return schema.default;
   }
 
-  if (
-    is.propertyDefined(schema, 'min') ||
-    is.propertyDefined(schema, 'max')
-  ) {
+  if (is.propertyDefined(schema, 'min') || is.propertyDefined(schema, 'max')) {
     return '0';
   }
 
@@ -112,7 +108,7 @@ export function createInitialState(schema, userState) {
   });
 
   const schemaItems = Object.keys(schema);
-  schemaItems.forEach((name) => {
+  schemaItems.forEach(name => {
     if (is.propertyDefined(userState, name)) {
       initialState[name] = {
         ...initialState[name],
@@ -123,7 +119,6 @@ export function createInitialState(schema, userState) {
 
   return initialState;
 }
-
 
 /**
  * Check if we should change the state or not.
@@ -186,10 +181,8 @@ export function addNameToResult(name, result) {
 function runMatchers(matcher, fieldState, schema) {
   Object.keys(schema).forEach(ruleInSchema => {
     if (is.propertyDefined(matcher, ruleInSchema)) {
-      matcher[ruleInSchema](fieldState, schema);
-    } else if (
-      ruleInSchema !== 'default'
-    ) {
+      matcher[ruleInSchema](fieldState.value, schema);
+    } else if (ruleInSchema !== 'default') {
       console.warn(`No such rule: ${ruleInSchema}`);
     }
   });
@@ -231,7 +224,6 @@ export function checkFieldIsOK(fieldState) {
   return fieldState;
 }
 
-
 /**
  * If all fields in the state has their status !== error
  * Then we will set the isFormOK to true then return the state.
@@ -265,7 +257,13 @@ export function restoreErrorStatus(fieldState) {
   return fieldState;
 }
 
-function updateWhenNeeded(newFieldState, propName, update, schema, formStatus = '') {
+function updateWhenNeeded(
+  newFieldState,
+  propName,
+  update,
+  schema,
+  formStatus = ''
+) {
   const fieldState = addNameToResult(propName, newFieldState);
   if (formStatus === '') {
     update(fieldState);
@@ -279,9 +277,12 @@ function updateWhenNeeded(newFieldState, propName, update, schema, formStatus = 
       ...formStatus,
       [propName]: { ...newFieldState1 }
     };
-    update(checkIsFormOK(schema, finalState));
+    if (is.function(update)) {
+      update(checkIsFormOK(schema, finalState));
+    } else {
+      console.warn('update is not a function');
+    }
   }
-
   // shouldChange(oldFieldState, newFieldState)
 }
 
@@ -293,10 +294,11 @@ export function startValidating(target, schema, update, allState) {
   };
 
   return Promise.resolve(fieldInfo)
-    .then((info) => validatorRunner(info.value, info.schema))
+    .then(info => validatorRunner(info.value, info.schema))
     .then(result1 => checkFieldIsOK(result1))
     .then(result2 => restoreErrorStatus(result2))
     .catch(errorState => errorState)
-    .then(newFieldState => updateWhenNeeded(
-      newFieldState, propName, update, schema, allState))
+    .then(newFieldState =>
+      updateWhenNeeded(newFieldState, propName, update, schema, allState)
+    );
 }

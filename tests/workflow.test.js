@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import {startValidating} from '../src/helpers';
+import { startValidating } from '../src/helpers';
 
 /**
  * There is a work flow to assemble the final result
@@ -72,8 +72,7 @@ describe('Test the validate method - String', () => {
       isFormOK: false,
       title: {
         status: 'error',
-        errorText:
-          "title's length should be greater than 2. Current: 0",
+        errorText: "title's length should be greater than 2. Current: 0",
         value: ''
       },
       description: {

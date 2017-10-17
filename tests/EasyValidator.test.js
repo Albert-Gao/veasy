@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies,react/jsx-filename-extension */
-import Enzyme, {mount, shallow} from 'enzyme';
+import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 import React from 'react';
@@ -11,7 +11,6 @@ describe('Test the <EasyVLib />', () => {
   let mockSchema;
   let mockTarget;
   let mockComponent;
-  const mockSetState = jest.fn();
 
   beforeEach(() => {
     mockSchema = {
@@ -33,12 +32,8 @@ describe('Test the <EasyVLib />', () => {
           value: ''
         }
       },
-      setState: mockSetState
+      setState: x => {}
     };
-  });
-
-  afterEach(() => {
-    mockSetState.mockReset();
   });
 
   test('should allows to set 3 props', () => {
@@ -64,15 +59,13 @@ describe('Test the <EasyVLib />', () => {
         allState={mockComponent.state}
         update={mockComponent.setState}
       >
-        <input name="title"/>
-        <input/>
-        <input/>
+        <input name="title" />
+        <input />
+        <input />
       </EasyValidator>
     );
     expect(wrapper.find('section')).toHaveLength(1);
-    expect(typeof wrapper.find('section').prop('onChange')).toEqual(
-      'function'
-    );
+    expect(typeof wrapper.find('section').prop('onChange')).toEqual('function');
     wrapper.find('section').prop('onChange')({ target: mockTarget });
   });
 
@@ -112,7 +105,7 @@ describe('Test the <EasyVLib />', () => {
     expect(targetInput.prop('value')).toEqual('');
   });
 
-  it('snapshot tests.', () => {
+  test('snapshot tests.', () => {
     const wrapper = mount(
       <EasyValidator
         schema={mockSchema}
@@ -128,7 +121,7 @@ describe('Test the <EasyVLib />', () => {
     expect(wrapper.debug()).toMatchSnapshot();
   });
 
-  it('snapshot tests using 3rd.', () => {
+  test('snapshot tests using 3rd.', () => {
     const wrapper = mount(
       <EasyValidator
         schema={mockSchema}

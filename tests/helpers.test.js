@@ -120,5 +120,4 @@ describe('Test the createInitialState method', () => {
       C: 1
     });
   });
-
 });

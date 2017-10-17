@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import {startValidating} from '../src/helpers';
+import { startValidating } from '../src/helpers';
 
 describe('Test the validate method - Normal', () => {
   let mockSchema;
@@ -37,17 +37,12 @@ describe('Test the validate method - Normal', () => {
   test('enum should work - error case', async () => {
     mockSchema.title.enum = ['tom', 'jerry'];
     mockTarget.value = 'not';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
         status: 'error',
-        errorText:
-          'Value of title should be within [tom,jerry].',
+        errorText: 'Value of title should be within [tom,jerry].',
         value: mockTarget.value
       }
     });
@@ -56,11 +51,7 @@ describe('Test the validate method - Normal', () => {
   test('enum should work - ok case', async () => {
     mockSchema.title.enum = ['tom', 'jerry'];
     mockTarget.value = 'tom';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -74,11 +65,7 @@ describe('Test the validate method - Normal', () => {
   test('matchRegex should work - error case', async () => {
     mockSchema.title.matchRegex = /^([a-z0-9]{5,})$/;
     mockTarget.value = 'tom';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -92,11 +79,7 @@ describe('Test the validate method - Normal', () => {
   test('matchRegex should work - ok case', async () => {
     mockSchema.title.matchRegex = /^([a-z0-9]{5,})$/;
     mockTarget.value = 'wow18';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -110,11 +93,7 @@ describe('Test the validate method - Normal', () => {
   test('isEmail should work - error case', async () => {
     mockSchema.title.isEmail = true;
     mockTarget.value = 'tom';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -128,11 +107,7 @@ describe('Test the validate method - Normal', () => {
   test('isEmail should work - ok case', async () => {
     mockSchema.title.isEmail = true;
     mockTarget.value = 'wow18@gmail.com';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -146,11 +121,7 @@ describe('Test the validate method - Normal', () => {
   test('isUrl should work - error case', async () => {
     mockSchema.title.isUrl = true;
     mockTarget.value = 'tom';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -164,11 +135,7 @@ describe('Test the validate method - Normal', () => {
   test('isUrl should work - ok case', async () => {
     mockSchema.title.isUrl = true;
     mockTarget.value = 'http://wow.com';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -182,11 +149,7 @@ describe('Test the validate method - Normal', () => {
   test('isCreditCard should work - error case', async () => {
     mockSchema.title.isCreditCard = true;
     mockTarget.value = 'tom';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -200,11 +163,7 @@ describe('Test the validate method - Normal', () => {
   test('isCreditCard should work - ok case', async () => {
     mockSchema.title.isCreditCard = true;
     mockTarget.value = '378282246310005';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -218,11 +177,7 @@ describe('Test the validate method - Normal', () => {
   test('isHexColor should work - error case', async () => {
     mockSchema.title.isHexColor = true;
     mockTarget.value = '#3333';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -236,11 +191,7 @@ describe('Test the validate method - Normal', () => {
   test('isHexColor should work - ok case', async () => {
     mockSchema.title.isHexColor = true;
     mockTarget.value = '#333';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -254,11 +205,7 @@ describe('Test the validate method - Normal', () => {
   test('notEmpty should work - error case', async () => {
     mockSchema.title.notEmpty = true;
     mockTarget.value = '';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -272,11 +219,7 @@ describe('Test the validate method - Normal', () => {
   test('notEmpty should work - ok case', async () => {
     mockSchema.title.notEmpty = true;
     mockTarget.value = 'big fish';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -290,11 +233,7 @@ describe('Test the validate method - Normal', () => {
   test('isIP should work - [v4] error case', async () => {
     mockSchema.title.isIP = 'v4';
     mockTarget.value = '1.2..5';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -308,11 +247,7 @@ describe('Test the validate method - Normal', () => {
   test('isIP should work - [v4] ok case', async () => {
     mockSchema.title.isIP = 'v4';
     mockTarget.value = '198.156.23.5';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -326,11 +261,7 @@ describe('Test the validate method - Normal', () => {
   test('isIP should work - [v6] error case', async () => {
     mockSchema.title.isIP = 'v6';
     mockTarget.value = '1.2..5';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -344,11 +275,7 @@ describe('Test the validate method - Normal', () => {
   test('isIP should work - [v6] ok case', async () => {
     mockSchema.title.isIP = 'v6';
     mockTarget.value = '2001:DB8:0:0:1::1';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -362,11 +289,7 @@ describe('Test the validate method - Normal', () => {
   test('isIP should work - [all] error case', async () => {
     mockSchema.title.isIP = 'all';
     mockTarget.value = '1.2..5';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -380,11 +303,7 @@ describe('Test the validate method - Normal', () => {
   test('isIP should work - [all] ok case', async () => {
     mockSchema.title.isIP = 'all';
     mockTarget.value = '2001:DB8:0:0:1::1';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
@@ -398,11 +317,7 @@ describe('Test the validate method - Normal', () => {
   test('isIP should work - [empty] ok case', async () => {
     mockSchema.title.isIP = '';
     mockTarget.value = '2001:DB8:0:0:1::1';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockUpdate
-    );
+    await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
       title: {
