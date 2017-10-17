@@ -3,7 +3,7 @@ import {startValidating} from '../src/helpers';
 
 describe('Test the validate method - String', () => {
   let mockSchema;
-  const mockSetState = jest.fn();
+  const mockUpdate = jest.fn();
   let mockComponent;
   let mockTarget;
 
@@ -21,23 +21,19 @@ describe('Test the validate method - String', () => {
     };
     mockComponent = {
       state: {
-        formStatus: {
-          isFormOK: false,
-          fields: {
-            title: {
-              status: 'normal',
-              errorText: '',
-              value: ''
-            }
-          }
+        isFormOK: false,
+        title: {
+          status: 'normal',
+          errorText: '',
+          value: ''
         }
       },
-      setState: mockSetState
+      setState: mockUpdate
     };
   });
 
   afterEach(() => {
-    mockSetState.mockReset();
+    mockUpdate.mockReset();
   });
 
   test('minLength should work - error case', async () => {
@@ -46,21 +42,15 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          title: {
-            status: 'error',
-            errorText:
-              "title's length should be greater than 1. Current: 0",
-            value: ''
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText:
+          "title's length should be greater than 1. Current: 0",
+        value: ''
       }
     });
   });
@@ -70,20 +60,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          title: {
-            status: 'ok',
-            errorText: '',
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
       }
     });
   });
@@ -94,21 +78,15 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          title: {
-            status: 'error',
-            errorText: `title's length should be less than 10. Current: ${mockTarget
-              .value.length}`,
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText: `title's length should be less than 10. Current: ${mockTarget
+          .value.length}`,
+        value: mockTarget.value
       }
     });
   });
@@ -119,72 +97,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          title: {
-            status: 'ok',
-            errorText: '',
-            value: mockTarget.value
-          }
-        }
-      }
-    });
-  });
-
-  test('Should test the 2 components case - one error and one right', async () => {
-    mockSchema = {
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
       title: {
-        string: {
-          minLength: 2,
-          maxLength: 4,
-          default: ''
-        }
-      },
-      description: {
-        string: {
-          minLength: 2,
-          maxLength: 4,
-          default: ''
-        }
-      }
-    };
-
-    mockComponent.state.formStatus.fields.description = {
-      status: 'error',
-      errorText: 'desc error text',
-      value: 'desc'
-    };
-
-    mockTarget.value = '';
-    await startValidating(
-      mockTarget,
-      mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
-    );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          title: {
-            status: 'error',
-            errorText:
-              "title's length should be greater than 2. Current: 0",
-            value: ''
-          },
-          description: {
-            status: 'error',
-            errorText: 'desc error text',
-            value: 'desc'
-          }
-        }
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
       }
     });
   });
@@ -195,20 +115,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          title: {
-            status: 'ok',
-            errorText: '',
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
       }
     });
   });
@@ -219,21 +133,15 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          title: {
-            status: 'error',
-            errorText:
-              'title should include big. Current: i love u!',
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText:
+          'title should include big. Current: i love u!',
+        value: mockTarget.value
       }
     });
   });
@@ -244,21 +152,15 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          title: {
-            status: 'error',
-            errorText:
-              'title should not include love. Current: i love u!',
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText:
+          'title should not include love. Current: i love u!',
+        value: mockTarget.value
       }
     });
   });
@@ -269,20 +171,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          title: {
-            status: 'ok',
-            errorText: '',
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
       }
     });
   });
@@ -293,20 +189,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          title: {
-            status: 'error',
-            errorText: "title should start with 'big'.",
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText: "title should start with 'big'.",
+        value: mockTarget.value
       }
     });
   });
@@ -317,20 +207,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          title: {
-            status: 'ok',
-            errorText: '',
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
       }
     });
   });
@@ -341,20 +225,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          title: {
-            status: 'error',
-            errorText: "title should not start with 'big'.",
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText: "title should not start with 'big'.",
+        value: mockTarget.value
       }
     });
   });
@@ -365,20 +243,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          title: {
-            status: 'ok',
-            errorText: '',
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
       }
     });
   });
@@ -389,20 +261,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          title: {
-            status: 'error',
-            errorText: "title should end with 'big'.",
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText: "title should end with 'big'.",
+        value: mockTarget.value
       }
     });
   });
@@ -413,20 +279,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          title: {
-            status: 'ok',
-            errorText: '',
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
       }
     });
   });
@@ -437,20 +297,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          title: {
-            status: 'error',
-            errorText: "title should not end with 'fish'.",
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText: "title should not end with 'fish'.",
+        value: mockTarget.value
       }
     });
   });
@@ -461,20 +315,14 @@ describe('Test the validate method - String', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          title: {
-            status: 'ok',
-            errorText: '',
-            value: mockTarget.value
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
       }
     });
   });

@@ -3,7 +3,7 @@ import {startValidating} from '../src/helpers';
 
 describe('Test the validate method - Number', () => {
   let mockSchema;
-  const mockSetState = jest.fn();
+  const mockUpdate = jest.fn();
   let mockComponent;
   let mockTarget;
 
@@ -21,23 +21,19 @@ describe('Test the validate method - Number', () => {
     };
     mockComponent = {
       state: {
-        formStatus: {
-          isFormOK: false,
-          fields: {
-            age: {
-              status: 'normal',
-              errorText: '',
-              value: ''
-            }
-          }
+        isFormOK: false,
+        age: {
+          status: 'normal',
+          errorText: '',
+          value: ''
         }
       },
-      setState: mockSetState
+      setState: mockUpdate
     };
   });
 
   afterEach(() => {
-    mockSetState.mockReset();
+    mockUpdate.mockReset();
   });
 
   test('min should work - [int]error case', async () => {
@@ -45,20 +41,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should be greater than 1. Current: 0',
-            value: '0'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be greater than 1. Current: 0',
+        value: '0'
       }
     });
   });
@@ -69,20 +59,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '2'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '2'
       }
     });
   });
@@ -93,20 +77,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should be greater than 1. Current: 0.5',
-            value: '0.5'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be greater than 1. Current: 0.5',
+        value: '0.5'
       }
     });
   });
@@ -117,20 +95,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '1.78'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '1.78'
       }
     });
   });
@@ -141,20 +113,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should be greater than 1. Current: -15',
-            value: '-15'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be greater than 1. Current: -15',
+        value: '-15'
       }
     });
   });
@@ -166,20 +132,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '-9'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '-9'
       }
     });
   });
@@ -190,20 +150,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should be less than 5. Current: 7',
-            value: '7'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be less than 5. Current: 7',
+        value: '7'
       }
     });
   });
@@ -214,20 +168,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '4'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '4'
       }
     });
   });
@@ -238,20 +186,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should be less than 5. Current: 9.91',
-            value: '9.91'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be less than 5. Current: 9.91',
+        value: '9.91'
       }
     });
   });
@@ -262,20 +204,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '4.91'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '4.91'
       }
     });
   });
@@ -287,20 +223,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should be less than -10. Current: -7',
-            value: '-7'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be less than -10. Current: -7',
+        value: '-7'
       }
     });
   });
@@ -312,20 +242,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '-15'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '-15'
       }
     });
   });
@@ -336,20 +260,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should equal to 5.',
-            value: '-15'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should equal to 5.',
+        value: '-15'
       }
     });
   });
@@ -360,20 +278,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '-15'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '-15'
       }
     });
   });
@@ -384,20 +296,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should not equal to 5.2.',
-            value: '5.2'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should not equal to 5.2.',
+        value: '5.2'
       }
     });
   });
@@ -408,20 +314,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '-15'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '-15'
       }
     });
   });
@@ -432,20 +332,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should be positive.',
-            value: '-5.2'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be positive.',
+        value: '-5.2'
       }
     });
   });
@@ -456,20 +350,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '15'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '15'
       }
     });
   });
@@ -480,20 +368,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should be negative.',
-            value: '5.2'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be negative.',
+        value: '5.2'
       }
     });
   });
@@ -504,20 +386,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '-15'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '-15'
       }
     });
   });
@@ -528,20 +404,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: false,
-        fields: {
-          age: {
-            status: 'error',
-            errorText: 'age should be integer.',
-            value: '5.2'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be integer.',
+        value: '5.2'
       }
     });
   });
@@ -552,20 +422,14 @@ describe('Test the validate method - Number', () => {
     await startValidating(
       mockTarget,
       mockSchema,
-      mockComponent.state.formStatus,
-      mockComponent.setState
+      mockUpdate
     );
-    expect(mockSetState.mock.calls.length).toBe(1);
-    expect(mockSetState).toBeCalledWith({
-      formStatus: {
-        isFormOK: true,
-        fields: {
-          age: {
-            status: 'ok',
-            errorText: '',
-            value: '-15'
-          }
-        }
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '-15'
       }
     });
   });

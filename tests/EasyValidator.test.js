@@ -1,10 +1,9 @@
 /* eslint-disable import/no-extraneous-dependencies,react/jsx-filename-extension */
 import Enzyme, {mount, shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import renderer from 'react-test-renderer';
+import toJson from 'enzyme-to-json';
 import React from 'react';
 import EasyValidator from '../src/EasyV';
-import toJson from 'enzyme-to-json';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -29,15 +28,11 @@ describe('Test the <EasyVLib />', () => {
     };
     mockComponent = {
       state: {
-        formStatus: {
-          isFormOK: false,
-          fields: {
-            title: {
-              status: 'normal',
-              errorText: '',
-              value: ''
-            }
-          }
+        isFormOK: false,
+        title: {
+          status: 'normal',
+          errorText: '',
+          value: ''
         }
       },
       setState: mockSetState
@@ -52,7 +47,7 @@ describe('Test the <EasyVLib />', () => {
     const wrapper = mount(
       <EasyValidator
         schema={mockSchema}
-        formStatus={mockComponent.state.formStatus}
+        allState={mockComponent.state}
         update={mockComponent.setState}
       >
         <input name="title" />
@@ -60,7 +55,7 @@ describe('Test the <EasyVLib />', () => {
     );
     expect(wrapper.find(EasyValidator)).toHaveLength(1);
     expect(wrapper.props().schema).toEqual(mockSchema);
-    expect(wrapper.props().formStatus).toEqual(mockComponent.state.formStatus);
+    expect(wrapper.props().allState).toEqual(mockComponent.state);
     expect(wrapper.props().update).toEqual(mockComponent.setState);
   });
 
@@ -68,16 +63,18 @@ describe('Test the <EasyVLib />', () => {
     const wrapper = mount(
       <EasyValidator
         schema={mockSchema}
-        formStatus={mockComponent.state.formStatus}
+        allState={mockComponent.state}
         update={mockComponent.setState}
       >
-        <input name="title" />
-        <input />
-        <input />
+        <input name="title"/>
+        <input/>
+        <input/>
       </EasyValidator>
     );
     expect(wrapper.find('section')).toHaveLength(1);
-    expect(typeof wrapper.find('section').prop('onChange')).toEqual('function');
+    expect(typeof wrapper.find('section').prop('onChange')).toEqual(
+      'function'
+    );
     wrapper.find('section').prop('onChange')({ target: mockTarget });
   });
 
@@ -85,7 +82,7 @@ describe('Test the <EasyVLib />', () => {
     const wrapper = shallow(
       <EasyValidator
         schema={mockSchema}
-        formStatus={mockComponent.state.formStatus}
+        allState={mockComponent.state}
         update={mockComponent.setState}
       >
         <input />
@@ -102,7 +99,7 @@ describe('Test the <EasyVLib />', () => {
     const wrapper = shallow(
       <EasyValidator
         schema={mockSchema}
-        formStatus={mockComponent.state.formStatus}
+        allState={mockComponent.state}
         update={mockComponent.setState}
       >
         <input name="title" />
@@ -121,7 +118,7 @@ describe('Test the <EasyVLib />', () => {
     const wrapper = mount(
       <EasyValidator
         schema={mockSchema}
-        formStatus={mockComponent.state.formStatus}
+        allState={mockComponent.state}
         update={mockComponent.setState}
       >
         <input name="title" />
@@ -137,7 +134,7 @@ describe('Test the <EasyVLib />', () => {
     const wrapper = mount(
       <EasyValidator
         schema={mockSchema}
-        formStatus={mockComponent.state.formStatus}
+        allState={mockComponent.state}
         update={mockComponent.setState}
       >
         <input name="title" />
@@ -147,5 +144,4 @@ describe('Test the <EasyVLib />', () => {
     );
     expect(toJson(wrapper)).toMatchSnapshot();
   });
-
 });

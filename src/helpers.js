@@ -75,16 +75,15 @@ export function createInitialValue(schema) {
   if (is.propertyDefined(schema, 'default')) {
     return schema.default;
   }
-  switch (schema.type) {
-    case 'boolean':
-      return true;
-    case 'string':
-      return '';
-    case 'number':
-      return '0';
-    default:
-      return '';
+
+  if (
+    is.propertyDefined(schema, 'min') ||
+    is.propertyDefined(schema, 'max')
+  ) {
+    return '0';
   }
+
+  return '';
 }
 
 /**
@@ -106,16 +105,14 @@ export function createNewFieldState(needValue = false, fieldSchema) {
   return result;
 }
 
-export function createInitialState(schema) {
+export function createInitialState(schema, userState) {
   const initialState = {
-    formStatus: {
-      isFormOK: false,
-      fields: {}
-    }
+    isFormOK: false,
+    ...userState
   };
-  const { fields } = initialState.formStatus;
+
   Object.keys(schema).forEach(prop => {
-    fields[prop] = createNewFieldState(true, schema[prop]);
+    initialState[prop] = createNewFieldState(true, schema[prop]);
   });
   return initialState;
 }
@@ -313,22 +310,34 @@ export function restoreErrorStatus(fieldState) {
   return fieldState;
 }
 
-function updateWhenNeeded(newFieldState, propName, formStatus, update) {
-  const oldFieldState = formStatus.fields[propName];
+function updateWhenNeeded(newFieldState, propName, update, formStatus='' ) {
+  const fieldState = addNameToResult(propName, newFieldState);
+  if (formStatus === '') {
+    update(fieldState);
+    return
+  } else {
+    update(
+      {
+        ...formStatus,
+        ...fieldState
+      }
+    );
+    return
+  }
+
+  const oldFieldState = formStatus[propName];
   if (shouldChange(oldFieldState, newFieldState)) {
-    const fieldState = addNameToResult(propName, newFieldState);
     let newComponentState = createNewState(formStatus, fieldState);
     newComponentState = checkIsFormOK(newComponentState);
     update(newComponentState);
   }
 }
 
-export function startValidating(target, schema, formStatus, update) {
+export function startValidating(target, schema, update, allState) {
   const propName = target.name;
-  const targetSchema = schema[propName];
   const fieldInfo = {
     value: target.value,
-    schema: targetSchema
+    schema: schema[propName]
   };
 
   return Promise.resolve(fieldInfo)
@@ -337,6 +346,5 @@ export function startValidating(target, schema, formStatus, update) {
     .then(result2 => restoreErrorStatus(result2))
     .catch(errorState => errorState)
     .then(newFieldState => updateWhenNeeded(
-      newFieldState, propName, formStatus, update))
+      newFieldState, propName, update, allState))
 }
-
