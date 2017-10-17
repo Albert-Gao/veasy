@@ -339,12 +339,7 @@ function updateWhenNeeded(newFieldState, propName, update, schema, formStatus=''
     return
   }
 
-  const oldFieldState = formStatus[propName];
-  if (shouldChange(oldFieldState, newFieldState)) {
-    let newComponentState = createNewState(formStatus, fieldState);
-    newComponentState = checkIsFormOK(newComponentState);
-    update(newComponentState);
-  }
+  // shouldChange(oldFieldState, newFieldState)
 }
 
 export function startValidating(target, schema, update, allState) {
