@@ -2,25 +2,21 @@
 
 exports[`Test the <EasyVLib /> snapshot tests using 3rd. 1`] = `
 <EasyV
-  formStatus={
+  allState={
     Object {
-      "fields": Object {
-        "title": Object {
-          "errorText": "",
-          "status": "normal",
-          "value": "",
-        },
-      },
       "isFormOK": false,
+      "title": Object {
+        "errorText": "",
+        "status": "normal",
+        "value": "",
+      },
     }
   }
   schema={
     Object {
       "title": Object {
-        "string": Object {
-          "default": "",
-          "minLength": 1,
-        },
+        "default": "",
+        "minLength": 1,
       },
     }
   }
@@ -47,7 +43,7 @@ exports[`Test the <EasyVLib /> snapshot tests using 3rd. 1`] = `
 `;
 
 exports[`Test the <EasyVLib /> snapshot tests. 1`] = `
-"<EasyV schema={{...}} formStatus={{...}} update={[Function]}>
+"<EasyV schema={{...}} allState={{...}} update={[Function]}>
   <section onChange={[Function]}>
     <input name=\\"title\\" status=\\"normal\\" hint=\\"\\" value=\\"\\" />
     <input />

@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import {getConstructorErrorMessage} from '../src/helpers';
+import { getConstructorErrorMessage } from '../src/helpers';
 import EasyV from '../src/EasyVLib';
 
 describe('test the constructor - Property component', () => {
@@ -8,9 +8,7 @@ describe('test the constructor - Property component', () => {
   test('should throw when give none parameters', () => {
     expect(() => {
       new EasyV();
-    }).toThrow(
-      getConstructorErrorMessage('Parameter component', undefined)
-    );
+    }).toThrow(getConstructorErrorMessage('Parameter component', undefined));
   });
 
   test('Should throw when give a number', () => {

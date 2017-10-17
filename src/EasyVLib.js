@@ -22,8 +22,8 @@ class EasyVLib {
    * @returns {object}
    * @memberof FormValidator
    */
-  createInitialState() {
-    return lib.createInitialState(this.schema);
+  createInitialState(userState) {
+    return lib.createInitialState(this.schema, userState);
   }
 
   /**

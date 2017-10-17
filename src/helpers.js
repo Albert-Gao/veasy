@@ -3,10 +3,9 @@
 // This file contain any `private` method for the index.js
 
 import is from 'is_js';
-import {normalMatcher, numberMatcher, stringMatcher} from './matchers';
+import handlerMatcher from './matchers';
 
 export const NAME_PLACEHOLDER = '#{NAME}#';
-
 
 /**
  * Return error message for checking the parameters of the constructor.
@@ -60,10 +59,6 @@ export function typeCheck(component, schema) {
   });
 }
 
-export function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 /**
  * Create initial value for a field if no default is provided.
  *
@@ -75,16 +70,12 @@ export function createInitialValue(schema) {
   if (is.propertyDefined(schema, 'default')) {
     return schema.default;
   }
-  switch (schema.type) {
-    case 'boolean':
-      return true;
-    case 'string':
-      return '';
-    case 'number':
-      return '0';
-    default:
-      return '';
+
+  if (is.propertyDefined(schema, 'min') || is.propertyDefined(schema, 'max')) {
+    return '0';
   }
+
+  return '';
 }
 
 /**
@@ -106,20 +97,28 @@ export function createNewFieldState(needValue = false, fieldSchema) {
   return result;
 }
 
-export function createInitialState(schema) {
+export function createInitialState(schema, userState) {
   const initialState = {
-    formStatus: {
-      isFormOK: false,
-      fields: {}
-    }
+    isFormOK: false,
+    ...userState
   };
-  const { fields } = initialState.formStatus;
+
   Object.keys(schema).forEach(prop => {
-    fields[prop] = createNewFieldState(true, schema[prop]);
+    initialState[prop] = createNewFieldState(true, schema[prop]);
   });
+
+  const schemaItems = Object.keys(schema);
+  schemaItems.forEach(name => {
+    if (is.propertyDefined(userState, name)) {
+      initialState[name] = {
+        ...initialState[name],
+        ...userState[name]
+      };
+    }
+  });
+
   return initialState;
 }
-
 
 /**
  * Check if we should change the state or not.
@@ -182,35 +181,12 @@ export function addNameToResult(name, result) {
 function runMatchers(matcher, fieldState, schema) {
   Object.keys(schema).forEach(ruleInSchema => {
     if (is.propertyDefined(matcher, ruleInSchema)) {
-      matcher[ruleInSchema](fieldState, schema);
-    } else if (
-      ruleInSchema !== 'default' &&
-      ruleInSchema !== 'string' &&
-      ruleInSchema !== 'number'
-    ) {
-      throwError(fieldState.value, `No such rule: ${ruleInSchema}`);
+      matcher[ruleInSchema](fieldState.value, schema);
+    } else if (ruleInSchema !== 'default') {
+      console.warn(`No such rule: ${ruleInSchema}`);
     }
   });
-}
-
-/**
- * A wrapper around the runMatchers function
- * For easily calling the stringMatchers.
- *
- * @export
- * @param {object} fieldState
- * @param {object} schema
- */
-function runStringMatchers(fieldState, schema) {
-  runMatchers(stringMatcher, fieldState, schema.string);
-}
-
-function runNumberMatchers(fieldState, schema) {
-  runMatchers(numberMatcher, fieldState, schema.number);
-}
-
-function runNormalMatchers(fieldState, schema) {
-  runMatchers(normalMatcher, fieldState, schema);
+  return fieldState;
 }
 
 /**
@@ -224,15 +200,7 @@ function runNormalMatchers(fieldState, schema) {
 export function validatorRunner(value, schema) {
   const fieldState = createNewFieldState();
   fieldState.value = value;
-  if (is.propertyDefined(schema, 'string')) {
-    runStringMatchers(fieldState, schema);
-  } else if (is.propertyDefined(schema, 'number')) {
-    runNumberMatchers(fieldState, schema);
-  }
-
-  runNormalMatchers(fieldState, schema);
-
-  return fieldState;
+  return runMatchers(handlerMatcher, fieldState, schema);
 }
 
 /**
@@ -257,29 +225,6 @@ export function checkFieldIsOK(fieldState) {
 }
 
 /**
- * The function is for merging the new field state to  the existing whole state
- * It will return a new object.
- *
- * @export
- * @param {isFormOK: boolean, fields:{}} oldComponentState
- * @param {object} fieldState
- * @returns {object}
- */
-export function createNewState(oldComponentState, fieldState) {
-  const fieldName = Object.keys(fieldState)[0];
-  const fieldInsideState = fieldState[fieldName];
-  return {
-    formStatus: {
-      isFormOK: oldComponentState.isFormOK,
-      fields: {
-        ...oldComponentState.fields,
-        [fieldName]: fieldInsideState
-      }
-    }
-  };
-}
-
-/**
  * If all fields in the state has their status !== error
  * Then we will set the isFormOK to true then return the state.
  * Just mutate the value since it's already a new state object
@@ -288,19 +233,18 @@ export function createNewState(oldComponentState, fieldState) {
  * @param {object} componentState
  * @returns {object}}
  */
-export function checkIsFormOK(componentState) {
-  const { fields } = componentState.formStatus;
-  const properties = Object.keys(fields);
+export function checkIsFormOK(schema, componentState) {
+  const properties = Object.keys(schema);
   let isError = false;
   properties.some(prop => {
-    if (fields[prop].status === 'error') {
+    if (componentState[prop].status === 'error') {
       isError = true;
       return true;
     }
     return false;
   });
   if (!isError) {
-    componentState.formStatus.isFormOK = true;
+    componentState.isFormOK = true;
   }
   return componentState;
 }
@@ -313,30 +257,48 @@ export function restoreErrorStatus(fieldState) {
   return fieldState;
 }
 
-function updateWhenNeeded(newFieldState, propName, formStatus, update) {
-  const oldFieldState = formStatus.fields[propName];
-  if (shouldChange(oldFieldState, newFieldState)) {
-    const fieldState = addNameToResult(propName, newFieldState);
-    let newComponentState = createNewState(formStatus, fieldState);
-    newComponentState = checkIsFormOK(newComponentState);
-    update(newComponentState);
+function updateWhenNeeded(
+  newFieldState,
+  propName,
+  update,
+  schema,
+  formStatus = ''
+) {
+  const fieldState = addNameToResult(propName, newFieldState);
+  if (formStatus === '') {
+    update(fieldState);
+  } else {
+    const oldFieldState = formStatus[propName];
+    const newFieldState1 = {
+      ...oldFieldState,
+      ...fieldState[propName]
+    };
+    const finalState = {
+      ...formStatus,
+      [propName]: { ...newFieldState1 }
+    };
+    if (is.function(update)) {
+      update(checkIsFormOK(schema, finalState));
+    } else {
+      console.warn('update is not a function');
+    }
   }
+  // shouldChange(oldFieldState, newFieldState)
 }
 
-export function startValidating(target, schema, formStatus, update) {
+export function startValidating(target, schema, update, allState) {
   const propName = target.name;
-  const targetSchema = schema[propName];
   const fieldInfo = {
     value: target.value,
-    schema: targetSchema
+    schema: schema[propName]
   };
 
   return Promise.resolve(fieldInfo)
-    .then((info) => validatorRunner(info.value, info.schema))
+    .then(info => validatorRunner(info.value, info.schema))
     .then(result1 => checkFieldIsOK(result1))
     .then(result2 => restoreErrorStatus(result2))
     .catch(errorState => errorState)
-    .then(newFieldState => updateWhenNeeded(
-      newFieldState, propName, formStatus, update))
+    .then(newFieldState =>
+      updateWhenNeeded(newFieldState, propName, update, schema, allState)
+    );
 }
-
