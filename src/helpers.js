@@ -165,6 +165,12 @@ export function addNameToResult(name, result) {
   return { [name]: result };
 }
 
+function ruleRunner(ruleHandler, fieldName, value, schema) {
+  const result = ruleHandler(fieldName, value, schema);
+  const { isValid } = result;
+  if (isValid) return;
+  throwError(value, result.errorText);
+}
 
 /**
  * It will run through the user's settings for a field,
@@ -184,7 +190,7 @@ function runMatchers(matcher, fieldState, fieldSchema) {
   const schema = fieldSchema[fieldName];
   Object.keys(schema).forEach(ruleInSchema => {
     if (is.propertyDefined(matcher, ruleInSchema)) {
-      matcher[ruleInSchema](fieldState.value, schema);
+      ruleRunner(matcher[ruleInSchema], fieldName, fieldState.value, schema);
     } else if (ruleInSchema !== 'default') {
       console.warn(`No such rule: ${ruleInSchema}`);
     }
@@ -202,29 +208,15 @@ function runMatchers(matcher, fieldState, fieldSchema) {
  */
 export function validatorRunner(value, schema) {
   const fieldState = createNewFieldState();
-  fieldState.value = value;
-  return runMatchers(handlerMatcher, fieldState, schema);
-}
 
-/**
- * If field's status === `error` and its value isn't empty
- * we will set its status to `ok`
- * then return it.
- * It's fine to mutate here, since it's already a new state here.
- *
- * @export
- * @param {object} fieldState
- * @returns {object}
- */
-export function checkFieldIsOK(fieldState) {
   if (
-    fieldState.status !== 'error' &&
-    is.existy(fieldState.value) &&
-    is.not.empty(fieldState.value)
+    is.existy(value) &&
+    is.not.empty(value)
   ) {
     fieldState.status = 'ok';
   }
-  return fieldState;
+  fieldState.value = value  
+  return runMatchers(handlerMatcher, fieldState, schema);
 }
 
 /**
@@ -271,7 +263,7 @@ function updateWhenNeeded(
   const fieldState = addNameToResult(propName, newFieldState);
   if (formStatus === '') {
     update(fieldState);
-    return
+    return;
   }
 
   const oldFieldState = formStatus[propName];
@@ -300,7 +292,6 @@ export function startValidating(target, schema, update, allState) {
 
   return Promise.resolve(fieldInfo)
     .then(info => validatorRunner(info.value, info.schema))
-    .then(result1 => checkFieldIsOK(result1))
     .then(result2 => restoreErrorStatus(result2))
     .catch(errorState => errorState)
     .then(newFieldState =>
