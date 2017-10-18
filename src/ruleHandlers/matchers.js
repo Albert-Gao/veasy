@@ -1,6 +1,11 @@
-import * as normal from './ruleHandlers/generalRules';
-import * as number from './ruleHandlers/numberRules';
-import * as string from './ruleHandlers/stringRules';
+import * as normal from './generalRules';
+import * as number from './numberRules';
+import * as string from './stringRules';
+
+// If the rule expects an array as value, please put
+// it here, so we can extract user defined error message
+// without problem.
+export const RuleWhichNeedsArray = ['enumRule'];
 
 const handlerMatcher = {
   /* String handlers */

@@ -3,7 +3,7 @@
 // This file contain any `private` method for the EasyV
 
 import is from 'is_js';
-import handlerMatcher from './matchers';
+import handlerMatcher, { RuleWhichNeedsArray } from './ruleHandlers/matchers';
 
 /**
  * Return error message for checking the parameters of the constructor.
@@ -142,10 +142,38 @@ export function throwError(value, errorText) {
   throw error;
 }
 
-function ruleRunner(ruleHandler, fieldName, value, schema) {
+function extractUserDefinedMsg(handlerName, schema) {
+  const result = { schema, userErrorText: '' };
+  const ruleName = handlerName === 'enumRule' ? 'enum' : handlerName;
+
+  // No user message, just return
+  if (is.not.array(schema[ruleName])) return result;
+
+  const currentSchema = schema[ruleName];
+
+  // Handle the case where the value of rule is array
+  if (RuleWhichNeedsArray.includes(handlerName)) {
+    // No user message, just return
+    if (is.not.array(currentSchema[0])) return result;
+  }
+
+  // The most common case: item0 is rule and item1 is errText
+  result.schema = { [ruleName]: currentSchema[0] };
+  // eslint-disable-next-line prefer-destructuring
+  result.userErrorText = currentSchema[1];
+  return result;
+}
+
+function ruleRunner(ruleHandler, fieldName, value, pschema) {
+  const { schema, userErrorText } = extractUserDefinedMsg(
+    ruleHandler.name,
+    pschema
+  );
+
   const result = ruleHandler(fieldName, value, schema);
   if (result.isValid) return;
-  throwError(value, result.errorText);
+
+  throwError(value, userErrorText || result.errorText);
 }
 
 /**
