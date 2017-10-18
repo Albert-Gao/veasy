@@ -4,14 +4,21 @@ An easy to use yet comprehensive react form validation library which make your c
 
 ## Why use
 
+- Declarative way to define your validation rule
+- Comprehensive validation rule set
+- Default error message along with customizable error message
+- Promise based architecture
+- Clean JSX hierarchy, nearly no wrapper components
 - Except the schema, just add a few lines, then you are good to go :)
-- Declarative way to define your validation rule.
-- Clean JSX hierarchy since validation is decoupled from the components
-- Comprehensive validation rule
 
-I found that the other existing react form validation solution either requires to add so many different kinds of  components to wrap or using prop extensively so the JSX becomes pretty heavy, they all add too much noise to the JSX hierarchy.
 
-I think validation is something which should decoupled from the components tree. That's all for what `easyV.js` does, you give it the schema, and then `onChange` invokes, it will tell you status of a field item and its according error message. Even better, it will automatically bind the `props` to field item and invoke `setState()` for you.
+I found that the other existing react form validation solution either requires to add so many different kinds of wrapper components or using `props` extensively so the JSX becomes pretty heavy, they all add too much noise to the JSX hierarchy.
+
+I think validation is something which should decoupled from the components tree. That's all for what `easyV.js` does:
+
+>You give `EasyV` the schema, and `EasyV` will update your component automatically, it will update the field item with the validation result and its according error message.
+
+Even better, it could automatically bind the `props` to field item and invoke `setState()` for you.
 
 ## How to use
 
@@ -20,8 +27,12 @@ I think validation is something which should decoupled from the components tree.
 A high level abstraction of what you need to do would be:
 
 1. Write your schema
-2. Define the look of your field item according to its status: `ok`, `error`, `normal`
-3. Let `easyV` knows your rule and add a wrapper component, then everything happens automatically :)
+2. Define the look of your field item for 3 status (You just need to change its CSS class, according to the following string value):
+ - `ok`: validation pass and value is not empty,
+ - `error`: validation error,
+ - `normal`: empty, haven't touched by the user.
+3. Bind the state by yourself or use `<EasyV>` wrapper to auto binding
+4. Then everything happens automatically :)
 
 ### Step by step
 
@@ -30,14 +41,14 @@ A high level abstraction of what you need to do would be:
 ```javascript
 const formSchema = {
     title: {
-        string: {
-            minLength: 2,
-            maxLength: 5
-        }
+        minLength: 2,
+        maxLength: [5, 'Too much words']
     }
 };
 ```
- 
+
+Easy, huh? If you define the value of a rule as an array, `EasyV` will take the 2nd parameter as the custom error message, wow! :)
+
 2. In the constructor of the form component, add this 2 lines, one for binding the schema to `easyV` and one for generating the initial state.
 
 ```javascript
@@ -93,11 +104,15 @@ The `FieldsBinding` component will pass 2 `props` to your field item:
     - Error text
     - Form status according to all the status of the fields item.
 
+## FAQ
+
+- Flat state hierarchy, and you can merge your state to our state, no conflicts.
+
 ## TODO:
 - [ ] Add the `getFieldsValue` method.
 - [ ] Add the table of all rules.
 - [ ] Need to add a minimal working example.
-- [ ] Let user define the name of `status` and `errorText`
-- [ ] Let user customize the error message.
+- [ ] Let user define the name of `status`
+- [x] Let user customize the error message.
 - [ ] The `FieldItem` should be able to do more.
-- [ ] Add user's own state when calling `createInitialState()`
+- [x] Add user's own state when calling `createInitialState()`
