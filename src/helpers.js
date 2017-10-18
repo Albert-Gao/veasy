@@ -5,8 +5,6 @@
 import is from 'is_js';
 import handlerMatcher from './matchers';
 
-export const NAME_PLACEHOLDER = '#{NAME}#';
-
 /**
  * Return error message for checking the parameters of the constructor.
  *
@@ -16,7 +14,7 @@ export const NAME_PLACEHOLDER = '#{NAME}#';
  * @returns {string}
  */
 export function getConstructorErrorMessage(paramName, value) {
-  return `[Form Validation - ${paramName}] Expect: non empty object. Actual: ${value}`;
+  return `[EasyV - ${paramName}] Expect: non empty object. Actual: ${value}`;
 }
 
 /**
@@ -69,12 +67,9 @@ export function typeCheck(component, schema) {
 export function createInitialValue(schema) {
   if (is.propertyDefined(schema, 'default')) {
     return schema.default;
+  } else if (is.propertyDefined(schema, 'min')) {
+    return schema.min;
   }
-
-  if (is.propertyDefined(schema, 'min') || is.propertyDefined(schema, 'max')) {
-    return '0';
-  }
-
   return '';
 }
 
@@ -143,32 +138,13 @@ export function shouldChange(oldState, newState) {
  * @returns {never}
  */
 export function throwError(value, errorText) {
-  const result = createNewFieldState();
-  result.value = value;
-  result.status = 'error';
-  result.errorText = errorText;
-  throw result;
-}
-
-/**
- * Modify the state from { state } to { fieldName: state }
- *
- * @export
- * @param {string} name
- * @param {object} result
- * @returns {object}
- */
-export function addNameToResult(name, result) {
-  if (result.status === 'error') {
-    result.errorText = result.errorText.replace(NAME_PLACEHOLDER, name);
-  }
-  return { [name]: result };
+  const error = { value, errorText, status: 'error' };
+  throw error;
 }
 
 function ruleRunner(ruleHandler, fieldName, value, schema) {
   const result = ruleHandler(fieldName, value, schema);
-  const { isValid } = result;
-  if (isValid) return;
+  if (result.isValid) return;
   throwError(value, result.errorText);
 }
 
@@ -192,7 +168,7 @@ function runMatchers(matcher, fieldState, fieldSchema) {
     if (is.propertyDefined(matcher, ruleInSchema)) {
       ruleRunner(matcher[ruleInSchema], fieldName, fieldState.value, schema);
     } else if (ruleInSchema !== 'default') {
-      console.warn(`No such rule: ${ruleInSchema}`);
+      // console.warn(`No such rule: ${ruleInSchema}`);
     }
   });
   return fieldState;
@@ -208,14 +184,12 @@ function runMatchers(matcher, fieldState, fieldSchema) {
  */
 export function validatorRunner(value, schema) {
   const fieldState = createNewFieldState();
+  fieldState.value = value;
 
-  if (
-    is.existy(value) &&
-    is.not.empty(value)
-  ) {
+  if (is.existy(value) && is.not.empty(value)) {
     fieldState.status = 'ok';
   }
-  fieldState.value = value  
+
   return runMatchers(handlerMatcher, fieldState, schema);
 }
 
@@ -245,14 +219,6 @@ export function checkIsFormOK(schema, componentState) {
   return componentState;
 }
 
-export function restoreErrorStatus(fieldState) {
-  if (fieldState.status === 'error' && is.empty(fieldState.value)) {
-    fieldState.status = 'normal';
-    fieldState.errorText = '';
-  }
-  return fieldState;
-}
-
 function updateWhenNeeded(
   newFieldState,
   propName,
@@ -260,7 +226,7 @@ function updateWhenNeeded(
   schema,
   formStatus = ''
 ) {
-  const fieldState = addNameToResult(propName, newFieldState);
+  const fieldState = { [propName]: newFieldState };
   if (formStatus === '') {
     update(fieldState);
     return;
@@ -272,9 +238,7 @@ function updateWhenNeeded(
     ...fieldState[propName]
   };
 
-  if (!shouldChange(oldFieldState, newFieldState)) {
-    return;
-  }
+  if (!shouldChange(oldFieldState, newFieldState)) return;
 
   const finalState = {
     ...formStatus,
@@ -292,7 +256,6 @@ export function startValidating(target, schema, update, allState) {
 
   return Promise.resolve(fieldInfo)
     .then(info => validatorRunner(info.value, info.schema))
-    .then(result2 => restoreErrorStatus(result2))
     .catch(errorState => errorState)
     .then(newFieldState =>
       updateWhenNeeded(newFieldState, propName, update, schema, allState)
