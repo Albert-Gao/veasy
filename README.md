@@ -27,12 +27,14 @@ Even better, it could automatically bind the `props` to field item and invoke `s
 A high level abstraction of what you need to do would be:
 
 1. Write your schema
-2. Define the look of your field item for 3 status (You just need to change its CSS class, according to the following string value):
- - `ok`: validation pass and value is not empty,
- - `error`: validation error,
- - `normal`: empty, haven't touched by the user.
-3. Bind the state by yourself or use `<EasyV>` wrapper to auto binding
-4. Then everything happens automatically :)
+1. Let your form field component handle the following `props`:
+ - `status`: To define the look. (You just need to change its CSS class, according to the following string value):
+     - `ok`: validation pass and value is not empty,
+     - `error`: validation error,
+     - `normal`: empty, haven't touched by the user.
+ - `errorText`: To show the error message.
+1. Bind the state by yourself or use `<EasyV>` wrapper to auto binding
+1. Then everything happens automatically :)
 
 ### Step by step
 
@@ -107,6 +109,7 @@ The `FieldsBinding` component will pass 2 `props` to your field item:
 ## FAQ
 
 - Flat state hierarchy, and you can merge your state to our state, no conflicts.
+
 
 ## TODO:
 - [ ] Add the `getFieldsValue` method.
