@@ -167,9 +167,10 @@ function runMatchers(matcher, fieldState, fieldSchema) {
   Object.keys(schema).forEach(ruleInSchema => {
     if (is.propertyDefined(matcher, ruleInSchema)) {
       ruleRunner(matcher[ruleInSchema], fieldName, fieldState.value, schema);
-    } else if (ruleInSchema !== 'default') {
-      // console.warn(`No such rule: ${ruleInSchema}`);
     }
+    // TODO: Do something when the rule is not match
+    // else if (ruleInSchema !== 'default') {
+    // }
   });
   return fieldState;
 }
