@@ -1,3 +1,3 @@
-export EasyV from "src/EasyV";
-export EasyVLib from "src/EasyVClass";
-export { createInitialState } from "src/helpers";
+export { default } from 'src/EasyV';
+export { default as EasyVClass } from 'src/EasyVClass';
+export { createInitialState } from 'src/helpers';
