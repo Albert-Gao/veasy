@@ -1,36 +1,36 @@
-import * as normal from './normalHandlers';
-import * as number from './numberHandlers';
-import * as string from './stringHandlers';
+import * as normal from './ruleHandlers/generalRules';
+import * as number from './ruleHandlers/numberRules';
+import * as string from './ruleHandlers/stringRules';
 
 const handlerMatcher = {
   /* String handlers */
-  minLength: string.minLengthHandler,
-  maxLength: string.maxLengthHandler,
-  include: string.includeHandler,
-  exclude: string.excludeHandler,
-  startWith: string.startWithHandler,
-  notStartWith: string.notStartWithHandler,
-  endWith: string.endWithHandler,
-  notEndWith: string.notEndWithHandler,
+  minLength: string.minLength,
+  maxLength: string.maxLength,
+  include: string.include,
+  exclude: string.exclude,
+  startWith: string.startWith,
+  notStartWith: string.notStartWith,
+  endWith: string.endWith,
+  notEndWith: string.notEndWith,
 
   /* Number handlers */
-  min: number.minHandler,
-  max: number.maxHandler,
-  equal: number.equalHandler,
-  notEqual: number.notEqualHandler,
-  isPositive: number.isPositiveHandler,
-  isNegative: number.isNegativeHandler,
-  isInt: number.isIntHandler,
+  min: number.min,
+  max: number.max,
+  equal: number.equal,
+  notEqual: number.notEqual,
+  isPositive: number.isPositive,
+  isNegative: number.isNegative,
+  isInt: number.isInt,
 
   /* Normal handlers */
-  enum: normal.enumHandler,
-  matchRegex: normal.matchRegexHandler,
-  isEmail: normal.isEmailHandler,
-  isUrl: normal.isUrlHandler,
-  isCreditCard: normal.isCreditCardHandler,
-  isHexColor: normal.isHexColorHandler,
-  notEmpty: normal.notEmptyHandler,
-  isIP: normal.isIPHandler
+  enum: normal.enumRule,
+  matchRegex: normal.matchRegex,
+  isEmail: normal.isEmail,
+  isUrl: normal.isUrl,
+  isCreditCard: normal.isCreditCard,
+  isHexColor: normal.isHexColor,
+  notEmpty: normal.notEmpty,
+  isIP: normal.isIP
 };
 
 export default handlerMatcher;
