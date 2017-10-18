@@ -12,27 +12,27 @@ export const matchRegex = (name, value, schema) => ({
   errorText: `Value of ${name} is not valid.`
 });
 
-export const isEmail = (name, value, schema) => ({
+export const isEmail = (name, value) => ({
   isValid: is.email(value),
   errorText: `${name} should be email.`
 });
 
-export const isUrl = (name, value, schema) => ({
+export const isUrl = (name, value) => ({
   isValid: is.url(value),
   errorText: `${name} should be a URL.`
 });
 
-export const isCreditCard = (name, value, schema) => ({
+export const isCreditCard = (name, value) => ({
   isValid: is.creditCard(value * 1),
   errorText: `${name} should be a credit card number.`
 });
 
-export const isHexColor = (name, value, schema) => ({
+export const isHexColor = (name, value) => ({
   isValid: is.hexColor(value),
   errorText: `${name} should be a hex color.`
 });
 
-export const notEmpty = (name, value, schema) => ({
+export const notEmpty = (name, value) => ({
   isValid: is.not.empty(value),
   errorText: `${name} should not be empty.`
 });
