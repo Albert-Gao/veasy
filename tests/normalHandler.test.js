@@ -1,7 +1,7 @@
 /* eslint-disable no-new */
 import { startValidating } from '../src/helpers';
 
-describe('Test the validate method - Normal', () => {
+describe('Test the Normal rules', () => {
   let mockSchema;
   const mockUpdate = jest.fn();
   let mockComponent;
@@ -48,6 +48,23 @@ describe('Test the validate method - Normal', () => {
     });
   });
 
+  test('Should throw user errMsg, enum - error case', async () => {
+    mockSchema.title.enum = [
+      ['tom', 'jerry'],
+      'Will be wrong if not tom or jerry'
+    ];
+    mockTarget.value = 'not';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText: 'Will be wrong if not tom or jerry',
+        value: mockTarget.value
+      }
+    });
+  });
+
   test('enum should work - ok case', async () => {
     mockSchema.title.enum = ['tom', 'jerry'];
     mockTarget.value = 'tom';
@@ -76,6 +93,23 @@ describe('Test the validate method - Normal', () => {
     });
   });
 
+  test('Should throw user errMsg, matchRegex error case', async () => {
+    mockSchema.title.matchRegex = [
+      /^([a-z0-9]{5,})$/,
+      'You are passing a wrong value'
+    ];
+    mockTarget.value = 'tom';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText: 'You are passing a wrong value',
+        value: mockTarget.value
+      }
+    });
+  });
+
   test('matchRegex should work - ok case', async () => {
     mockSchema.title.matchRegex = /^([a-z0-9]{5,})$/;
     mockTarget.value = 'wow18';
@@ -99,6 +133,20 @@ describe('Test the validate method - Normal', () => {
       title: {
         status: 'error',
         errorText: 'title should be email.',
+        value: mockTarget.value
+      }
+    });
+  });
+
+  test('should throw user errMsg, isEmail error case', async () => {
+    mockSchema.title.isEmail = [true, 'Expect an email'];
+    mockTarget.value = 'tom';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText: 'Expect an email',
         value: mockTarget.value
       }
     });
@@ -239,6 +287,20 @@ describe('Test the validate method - Normal', () => {
       title: {
         status: 'error',
         errorText: 'title should be IPv4 address.',
+        value: mockTarget.value
+      }
+    });
+  });
+
+  test('should throw user errMsg, isIP - [v4] error case', async () => {
+    mockSchema.title.isIP = ['v4', 'I want an IP address'];
+    mockTarget.value = '1.2..5';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'error',
+        errorText: 'I want an IP address',
         value: mockTarget.value
       }
     });

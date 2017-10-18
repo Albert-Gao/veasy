@@ -1,4 +1,4 @@
-/* eslint-disable no-new */
+/* eslint-disable no-new,max-len */
 import { startValidating } from '../src/helpers';
 
 /**
@@ -40,7 +40,32 @@ describe('Test the validate method - String', () => {
     mockUpdate.mockReset();
   });
 
-  test('Should test the 2 components case - one error and one right', async () => {
+  test('Should return without update when no change', async () => {
+    mockSchema = {
+      title: {
+        minLength: 2,
+        maxLength: 4,
+        default: ''
+      }
+    };
+
+    mockComponent.state.title = {
+      status: 'error',
+      errorText: 'title\'s length should be greater than 2.',
+      value: '23'
+    };
+
+    mockTarget.value = '23';
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockComponent.state
+    );
+    expect(mockUpdate.mock.calls.length).toBe(0);
+  });
+
+  test('Should handle 2 components case - 1 error and 1 right', async () => {
     mockSchema = {
       title: {
         minLength: 2,

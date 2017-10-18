@@ -79,7 +79,7 @@ describe('test the constructor - Property schema', () => {
     expect(() => {
       new EasyV(component, { name: { first: 'albert' }, age: null });
     }).toThrow(
-      '[Form Validation - schema.age] Expect: non empty object. Actual: null'
+      '[EasyV - schema.age] Expect: non empty object. Actual: null'
     );
   });
 
@@ -87,7 +87,7 @@ describe('test the constructor - Property schema', () => {
     expect(() => {
       new EasyV(component, { name: {}, age: 26 });
     }).toThrow(
-      '[Form Validation - schema.name] ' +
+      '[EasyV - schema.name] ' +
       'Expect: non empty object. Actual: [object Object]'
     );
   });

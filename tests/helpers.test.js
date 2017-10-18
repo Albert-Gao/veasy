@@ -1,12 +1,13 @@
 /* eslint-disable no-new */
 import EasyV from '../src/EasyVClass';
+import * as lib from '../src/helpers';
 
 describe('Test the createInitialState method', () => {
   let schema;
   const component = { dummy: true };
 
   beforeEach(() => {
-    schema = { title: { type: String }, name: { type: String } };
+    schema = { title: { minLength: 1 }, name: { notEmpty: true } };
   });
 
   test('Should return an object with certain properties', () => {
@@ -119,5 +120,41 @@ describe('Test the createInitialState method', () => {
       },
       C: 1
     });
+  });
+});
+
+describe('Test the createInitialValue method', () => {
+  test('Should return min when there is min', () => {
+    const schema = { min: '6' };
+    expect(lib.createInitialValue(schema)).toBe('6');
+  });
+
+  test('Should return default when there is default', () => {
+    const schema = { default: '5' };
+    expect(lib.createInitialValue(schema)).toBe('5');
+  });
+
+  test('Should return empty when there is no default and min', () => {
+    const schema = { notEmpty: true };
+    expect(lib.createInitialValue(schema)).toBe('');
+  });
+});
+
+describe('Test the shouldChange method', () => {
+  test('Should return false when no change', () => {
+    const oldState = {status: 'ok', value:'1'};
+    expect(lib.shouldChange(oldState, oldState)).toBe(false);
+  });
+
+  test('Should return true when change - status case', () => {
+    const oldState = {status: 'ok', value:'1'};
+    const newState = {status: 'error', value:'2'};
+    expect(lib.shouldChange(oldState, newState)).toBe(true);
+  });
+
+  test('Should return true when change - value case', () => {
+    const oldState = {status: 'ok', value:'5'};
+    const newState = {status: 'ok', value:'2'};
+    expect(lib.shouldChange(oldState, newState)).toBe(true);
   });
 });
