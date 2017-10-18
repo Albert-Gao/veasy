@@ -165,6 +165,7 @@ export function addNameToResult(name, result) {
   return { [name]: result };
 }
 
+
 /**
  * It will run through the user's settings for a field,
  * and try matching to the matchers.js,
@@ -178,7 +179,9 @@ export function addNameToResult(name, result) {
  * @param {object} fieldState
  * @param {object} schema
  */
-function runMatchers(matcher, fieldState, schema) {
+function runMatchers(matcher, fieldState, fieldSchema) {
+  const fieldName = Object.keys(fieldSchema)[0];
+  const schema = fieldSchema[fieldName];
   Object.keys(schema).forEach(ruleInSchema => {
     if (is.propertyDefined(matcher, ruleInSchema)) {
       matcher[ruleInSchema](fieldState.value, schema);
@@ -292,7 +295,7 @@ export function startValidating(target, schema, update, allState) {
   const propName = target.name;
   const fieldInfo = {
     value: target.value,
-    schema: schema[propName]
+    schema: { [propName]: schema[propName] }
   };
 
   return Promise.resolve(fieldInfo)
