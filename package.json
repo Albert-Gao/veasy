@@ -1,6 +1,6 @@
 {
     "name": "easyv",
-    "version": "0.1.0",
+    "version": "0.3.0",
     "author": "Albert Gao",
     "main": "dist/index.js",
     "description": "A NPM package ES6 boilerplate ready to use .",
