@@ -1,4 +1,4 @@
-/* eslint-disable no-new */
+/* eslint-disable no-new,max-len */
 import { startValidating } from '../src/helpers';
 
 /**
@@ -65,7 +65,7 @@ describe('Test the validate method - String', () => {
     expect(mockUpdate.mock.calls.length).toBe(0);
   });
 
-  test('Should test the 2 components case - one error and one right', async () => {
+  test('Should handle 2 components case - 1 error and 1 right', async () => {
     mockSchema = {
       title: {
         minLength: 2,
