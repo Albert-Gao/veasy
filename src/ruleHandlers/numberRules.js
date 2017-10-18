@@ -22,17 +22,17 @@ export const notEqual = (name, value, schema) => ({
   errorText: `${name} should not equal to ${schema.notEqual * 1}.`
 });
 
-export const isPositive = (name, value, schema) => ({
+export const isPositive = (name, value) => ({
   isValid: is.positive(value * 1),
   errorText: `${name} should be positive.`
 });
 
-export const isNegative = (name, value, schema) => ({
+export const isNegative = (name, value) => ({
   isValid: is.negative(value * 1),
   errorText: `${name} should be negative.`
 });
 
-export const isInt = (name, value, schema) => ({
+export const isInt = (name, value) => ({
   isValid: is.integer(value * 1),
   errorText: `${name} should be integer.`
 });
