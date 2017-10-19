@@ -20,12 +20,11 @@ export default class EasyV extends React.Component {
     });
   };
 
-  handleOnChange = e => this.validate(e.target);
-
-  validate(target) {
+  handleOnChange = e => {
+    e.preventDefault();
     const { schema, allState, update } = this.props;
-    lib.startValidating(target, schema, update, allState);
-  }
+    lib.startValidating(e.target, schema, update, allState);
+  };
 
   render() {
     const newChildren = this.getChildren();
