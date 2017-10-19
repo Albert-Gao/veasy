@@ -66,7 +66,10 @@ describe('Test the <EasyVLib />', () => {
     );
     expect(wrapper.find('section')).toHaveLength(1);
     expect(typeof wrapper.find('section').prop('onChange')).toEqual('function');
-    wrapper.find('section').prop('onChange')({ target: mockTarget });
+    wrapper.find('section').prop('onChange')({ 
+      preventDefault: () => {}, 
+      target: mockTarget
+    });
   });
 
   test('Should render 3 inputs as children of section', () => {

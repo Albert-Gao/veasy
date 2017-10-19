@@ -1,6 +1,7 @@
 /* eslint-disable no-new */
 import * as lib from "../src/helpers";
 import EasyVClass from '../src/EasyVClass';
+
 const EasyV = EasyVClass;
 const { getConstructorErrorMessage } = lib;
 
