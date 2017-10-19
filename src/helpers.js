@@ -7,11 +7,6 @@ import handlerMatcher, { RuleWhichNeedsArray } from './ruleHandlers/matchers';
 
 /**
  * Return error message for checking the parameters of the constructor.
- *
- * @export
- * @param {string} paramName
- * @param {any} value
- * @returns {string}
  */
 export function getConstructorErrorMessage(paramName, value) {
   return `[EasyV - ${paramName}] Expect: non empty object. Actual: ${value}`;
@@ -19,9 +14,6 @@ export function getConstructorErrorMessage(paramName, value) {
 
 /**
  * Check if an object is a non-empty object
- *
- * @param {any} obj
- * @returns {boolean}
  */
 function isNonEmptyObject(obj) {
   return is.object(obj) && is.not.empty(obj);
@@ -30,9 +22,6 @@ function isNonEmptyObject(obj) {
 /**
  * Type check for 2 parameters of the constructor
  *
- * @export
- * @param {object} component
- * @param {object} schema
  */
 export function typeCheck(component, schema) {
   const isComponentValid = isNonEmptyObject(component);
@@ -60,9 +49,6 @@ export function typeCheck(component, schema) {
 /**
  * Create initial value for a field if no default is provided.
  *
- * @export
- * @param {object} schema
- * @returns {boolean | string}
  */
 export function createInitialValue(schema) {
   if (is.propertyDefined(schema, 'default')) {
@@ -76,10 +62,6 @@ export function createInitialValue(schema) {
 /**
  * Create a new state for a field in componentState.formStatus.fields.field
  *
- * @export
- * @param {boolean} [needValue=false]
- * @param {object} [fieldSchema]
- * @returns {object}
  */
 export function createNewFieldState(needValue = false, fieldSchema) {
   const result = {
@@ -118,10 +100,6 @@ export function createInitialState(schema, userState) {
 /**
  * Check if we should change the state or not.
  *
- * @export
- * @param {object} oldState
- * @param {object} newState
- * @returns {boolean}
  */
 export function shouldChange(oldState, newState) {
   const isErrorDifferent = oldState.status !== newState.status;
@@ -132,10 +110,6 @@ export function shouldChange(oldState, newState) {
 /**
  * throw an error with defined text, usually calls by handler.
  *
- * @export
- * @param {any} value
- * @param {string} errorText
- * @returns {never}
  */
 export function throwError(value, errorText) {
   const error = { value, errorText, status: 'error' };
@@ -185,9 +159,6 @@ function ruleRunner(ruleHandler, fieldName, value, pschema) {
  * if user sets a `minLength` for a field,
  * This function will invoke the minLengthHandler()
  *
- * @param {object} matcher
- * @param {object} fieldState
- * @param {object} schema
  */
 function runMatchers(matcher, fieldState, fieldSchema) {
   const fieldName = Object.keys(fieldSchema)[0];
@@ -227,10 +198,6 @@ export function validatorRunner(value, schema) {
  * Then we will set the isFormOK to true then return the state.
  * Just mutate the value since it's already a new state object
  *
- * @export
- * @param {object} schema
- * @param {object} componentState
- * @returns {object}}
  */
 export function checkIsFormOK(schema, componentState) {
   const properties = Object.keys(schema);
