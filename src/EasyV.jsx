@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 /* eslint-disable react/forbid-prop-types,import/no-extraneous-dependencies */
 import React from 'react';
 import * as lib from './helpers';
+import is from 'is_js';
 
 export default class EasyV extends React.Component {
   getChildren = () => {
@@ -26,9 +27,49 @@ export default class EasyV extends React.Component {
     lib.startValidating(e.target, schema, update, allState);
   };
 
+  isRegisteredComponent = child => {
+    if (is.lowerCase(child.type[0])) return false;
+
+    const names = Object.keys(this.props.schema);
+    const childName = child.props.name;
+    if (React.isValidElement(child) && names.includes(childName)) {
+      return true;
+    }
+    return false;
+  };
+
+  cloneElement = (child, childName) => {
+    const { allState } = this.props;
+    return React.cloneElement(child, {
+      status: allState[childName].status,
+      errorText: allState[childName].errorText,
+      value: allState[childName].value
+    });
+  };
+
+  recursiveCloneChildren = children => {
+    return React.Children.map(children, child => {
+      if (this.isRegisteredComponent(child)) {
+        const childName = child.props.name;
+        return this.cloneElement(child, childName);
+      }
+      
+      const childProps = {};
+      if (child.props) {
+        // String has no Prop
+        childProps.children = this.recursiveCloneChildren(child.props.children);
+        return React.cloneElement(child, childProps);          
+      }
+      return child;
+    });
+  };
+
   render() {
-    const newChildren = this.getChildren();
-    return <section onChange={this.handleOnChange}>{newChildren}</section>;
+    return (
+      <section onChange={this.handleOnChange}>
+        {this.recursiveCloneChildren(this.props.children)}
+      </section>
+    );
   }
 }
 

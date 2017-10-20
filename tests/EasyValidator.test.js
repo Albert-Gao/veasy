@@ -7,6 +7,9 @@ import EasyValidator from '../src/EasyV';
 
 Enzyme.configure({ adapter: new Adapter() });
 
+const Input = (props) => <input type="text" {...props} />
+const Email = (props) => <input type="email" {...props} />
+
 describe('Test the <EasyVLib />', () => {
   let mockSchema;
   let mockTarget;
@@ -43,7 +46,7 @@ describe('Test the <EasyVLib />', () => {
         allState={mockComponent.state}
         update={mockComponent.setState}
       >
-        <input name="title" />
+        <Input name="title" />
       </EasyValidator>
     );
     expect(wrapper.find(EasyValidator)).toHaveLength(1);
@@ -59,7 +62,7 @@ describe('Test the <EasyVLib />', () => {
         allState={mockComponent.state}
         update={mockComponent.setState}
       >
-        <input name="title" />
+        <Input name="title" />
         <input />
         <input />
       </EasyValidator>
@@ -96,46 +99,88 @@ describe('Test the <EasyVLib />', () => {
         allState={mockComponent.state}
         update={mockComponent.setState}
       >
-        <input name="title" />
+        <Input name="title" />
         <input />
         <input />
       </EasyValidator>
     );
-    const targetInput = wrapper.find('input').at(0);
+    const targetInput = wrapper.find('Input').at(0);
     expect(targetInput.prop('name')).toEqual('title');
     expect(targetInput.prop('status')).toEqual('normal');
-    expect(targetInput.prop('hint')).toEqual('');
+    expect(targetInput.prop('errorText')).toEqual('');
     expect(targetInput.prop('value')).toEqual('');
   });
 
-  test('snapshot tests.', () => {
-    const wrapper = mount(
+  test('The 2nd and 3rd children shouldn`t have extra props', () => {
+    const wrapper = shallow(
       <EasyValidator
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
       >
-        <input name="title" />
+        <Input name="title" />
         <input />
         <input />
       </EasyValidator>
     );
-    // const tree = renderer.create(wrapper).toJSON();
-    expect(wrapper.debug()).toMatchSnapshot();
+    const targetInput = wrapper.find('input').at(1);
+    expect(targetInput.prop('name')).toBe(undefined);
+    expect(targetInput.prop('status')).toBe(undefined);
+    expect(targetInput.prop('errorText')).toBe(undefined);
+    expect(targetInput.prop('value')).toBe(undefined);
+
+    const targetInput1 = wrapper.find('input').at(2);
+    expect(targetInput1.prop('name')).toBe(undefined);
+    expect(targetInput1.prop('status')).toBe(undefined);
+    expect(targetInput1.prop('errorText')).toBe(undefined);
+    expect(targetInput1.prop('value')).toBe(undefined);
   });
 
-  test('snapshot tests using 3rd.', () => {
-    const wrapper = mount(
+  test('Should bind recursive element', () => {
+    const wrapper = shallow(
       <EasyValidator
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
       >
-        <input name="title" />
+        <div>
+          <p>
+            <Input name="title" />
+          </p>
+        </div>
         <input />
-        <input />
+        <div>
+          <input />
+        </div>
       </EasyValidator>
     );
-    expect(toJson(wrapper)).toMatchSnapshot();
+    const targetInput = wrapper.find('Input').at(0);
+    expect(targetInput.prop('name')).toBe('title');
+    expect(targetInput.prop('status')).toBe('normal');
+    expect(targetInput.prop('errorText')).toBe('');
+    expect(targetInput.prop('value')).toBe('');
+  });
+
+  test('Should maintain the user`s prop', () => {
+    const wrapper = shallow(
+      <EasyValidator
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+      >
+        <div>
+          <p>
+            <Input name="title" />
+          </p>
+        </div>
+        <input />
+        <div>
+          <Email super="ok" cool="true" />
+        </div>
+      </EasyValidator>
+    );
+    const targetInput = wrapper.find('Email').at(0);
+    expect(targetInput.prop('super')).toBe('ok');
+    expect(targetInput.prop('cool')).toBe('true');
   });
 });
