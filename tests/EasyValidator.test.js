@@ -7,8 +7,8 @@ import EasyValidator from '../src/EasyV';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const Input = (props) => <input type="text" {...props} />
-const Email = (props) => <input type="email" {...props} />
+const Input = () => <input type="text" />
+const Email = () => <input type="email" />
 
 describe('Test the <EasyVLib />', () => {
   let mockSchema;
