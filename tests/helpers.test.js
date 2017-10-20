@@ -46,7 +46,7 @@ describe('Test the createInitialState method', () => {
     });
   });
 
-  test('Should return an object with user`s state', () => {
+  test('Should return an object with user`s state - no reuse', () => {
     schema.title.default = 'I am default';
     schema.name.default = 'albert';
     const userState = {
@@ -79,7 +79,7 @@ describe('Test the createInitialState method', () => {
     });
   });
 
-  test('Should return an object with user`s state', () => {
+  test('Should return an object with user`s state - with reuse', () => {
     schema.title.default = 'I am default';
     schema.name.default = 'albert';
     const userState = {
