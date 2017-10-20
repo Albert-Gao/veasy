@@ -21,3 +21,5 @@ A simple yet comprehensive validation solution for React.
 ?> You give `EasyV` the schema, and `EasyV` will update your component automatically, it will update the field item with the validation result and its according error message.
 
 Even better, it could automatically bind the `props` to field item and invoke `setState()` for you.
+
+So, [let's begin.](/)
