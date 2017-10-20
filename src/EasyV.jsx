@@ -12,7 +12,10 @@ export default class EasyV extends React.Component {
   };
 
   isRegisteredComponent = (child, childName) => {
-    if (is.lowerCase(child.type[0])) return false;
+    if (is.string(child.type)) {
+      // Skip HTML element
+      if (is.lowerCase(child.type[0])) return false;
+    }
 
     const names = Object.keys(this.props.schema);
     if (React.isValidElement(child) && names.includes(childName)) {
