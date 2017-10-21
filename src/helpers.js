@@ -3,7 +3,7 @@
 // This file contain any `private` method for the EasyV
 
 import is from 'is_js';
-import handlerMatcher, { RuleWhichNeedsArray } from './ruleHandlers/matchers';
+import handlerMatcher, { RuleWhichNeedsArray, RuleWhichNeedsBoolean } from './ruleHandlers/matchers';
 
 /**
  * Return error message for checking the parameters of the constructor.
@@ -143,6 +143,12 @@ function ruleRunner(ruleHandler, fieldName, value, pschema) {
     ruleHandler.name,
     pschema
   );
+
+  const ruleName = ruleHandler.name;
+
+  if (RuleWhichNeedsBoolean.includes(ruleName)) {
+    if ( schema[ruleName] === false ) return;
+  }
 
   const result = ruleHandler(fieldName, value, schema);
   if (result.isValid) return;

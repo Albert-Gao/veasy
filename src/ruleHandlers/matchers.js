@@ -6,6 +6,7 @@ import * as string from './stringRules';
 // it here, so we can extract user defined error message
 // without problem.
 export const RuleWhichNeedsArray = ['enumRule'];
+export const RuleWhichNeedsBoolean = ['isEmail', 'isUrl', 'isCreditCard', 'isHexColor'];
 
 const handlerMatcher = {
   /* String handlers */
