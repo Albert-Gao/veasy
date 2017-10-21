@@ -5,8 +5,13 @@ import * as string from './stringRules';
 // If the rule expects an array as value, please put
 // it here, so we can extract user defined error message
 // without problem.
-export const RuleWhichNeedsArray = ['enumRule'];
-export const RuleWhichNeedsBoolean = ['isEmail', 'isUrl', 'isCreditCard', 'isHexColor'];
+export const RuleWhichNeedsArray = ['inArray'];
+export const RuleWhichNeedsBoolean = [
+  'isEmail',
+  'isUrl',
+  'isCreditCard',
+  'isHexColor'
+];
 
 const handlerMatcher = {
   /* String handlers */
@@ -29,7 +34,7 @@ const handlerMatcher = {
   isInt: number.isInt,
 
   /* Normal handlers */
-  enum: normal.enumRule,
+  inArray: normal.inArray,
   matchRegex: normal.matchRegex,
   isEmail: normal.isEmail,
   isUrl: normal.isUrl,

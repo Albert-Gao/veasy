@@ -34,8 +34,8 @@ describe('Test the Normal rules', () => {
     mockUpdate.mockReset();
   });
 
-  test('enum should work - error case', async () => {
-    mockSchema.title.enum = ['tom', 'jerry'];
+  test('inArray should work - error case', async () => {
+    mockSchema.title.inArray = ['tom', 'jerry'];
     mockTarget.value = 'not';
     await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
@@ -48,8 +48,8 @@ describe('Test the Normal rules', () => {
     });
   });
 
-  test('Should throw user errMsg, enum - error case', async () => {
-    mockSchema.title.enum = [
+  test('Should throw user errMsg, inArray - error case', async () => {
+    mockSchema.title.inArray = [
       ['tom', 'jerry'],
       'Will be wrong if not tom or jerry'
     ];
@@ -65,8 +65,8 @@ describe('Test the Normal rules', () => {
     });
   });
 
-  test('enum should work - ok case', async () => {
-    mockSchema.title.enum = ['tom', 'jerry'];
+  test('inArray should work - ok case', async () => {
+    mockSchema.title.inArray = ['tom', 'jerry'];
     mockTarget.value = 'tom';
     await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);

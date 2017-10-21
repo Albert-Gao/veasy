@@ -118,12 +118,11 @@ export function throwError(value, errorText) {
 
 function extractUserDefinedMsg(handlerName, schema) {
   const result = { schema, userErrorText: '' };
-  const ruleName = handlerName === 'enumRule' ? 'enum' : handlerName;
 
   // No user message, just return
-  if (is.not.array(schema[ruleName])) return result;
+  if (is.not.array(schema[handlerName])) return result;
 
-  const currentSchema = schema[ruleName];
+  const currentSchema = schema[handlerName];
 
   // Handle the case where the value of rule is array
   if (RuleWhichNeedsArray.includes(handlerName)) {
@@ -132,7 +131,7 @@ function extractUserDefinedMsg(handlerName, schema) {
   }
 
   // The most common case: item0 is rule and item1 is errText
-  result.schema = { [ruleName]: currentSchema[0] };
+  result.schema = { [handlerName]: currentSchema[0] };
   // eslint-disable-next-line prefer-destructuring
   result.userErrorText = currentSchema[1];
   return result;

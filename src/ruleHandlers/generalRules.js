@@ -2,9 +2,9 @@
 
 import is from 'is_js';
 
-export const enumRule = (name, value, schema) => ({
-  isValid: is.inArray(value, schema.enum),
-  errorText: `Value of ${name} should be within [${schema.enum.toString()}].`
+export const inArray = (name, value, schema) => ({
+  isValid: is.inArray(value, schema.inArray),
+  errorText: `Value of ${name} should be within [${schema.inArray.toString()}].`
 });
 
 export const matchRegex = (name, value, schema) => ({
