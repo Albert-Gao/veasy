@@ -130,7 +130,7 @@ function extractUserDefinedMsg(handlerName, schema) {
     if (is.not.array(currentSchema[0])) return result;
   }
 
-  // The most common case: item0 is rule and item1 is errText
+  // The most common case: [0] is rule and [1] is errText
   result.schema = { [handlerName]: currentSchema[0] };
   // eslint-disable-next-line prefer-destructuring
   result.userErrorText = currentSchema[1];

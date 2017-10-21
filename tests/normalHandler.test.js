@@ -208,6 +208,20 @@ describe('Test the Normal rules', () => {
     });
   });
 
+  test('isUrl should honour false', async () => {
+    mockSchema.title.isUrl = false;
+    mockTarget.value = '123';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
+      }
+    });
+  });
+
   test('isCreditCard should work - error case', async () => {
     mockSchema.title.isCreditCard = true;
     mockTarget.value = 'tom';
@@ -236,6 +250,20 @@ describe('Test the Normal rules', () => {
     });
   });
 
+  test('isCreditCard should honour false', async () => {
+    mockSchema.title.isCreditCard = false;
+    mockTarget.value = 'abc';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
+      }
+    });
+  });
+
   test('isHexColor should work - error case', async () => {
     mockSchema.title.isHexColor = true;
     mockTarget.value = '#3333';
@@ -253,6 +281,20 @@ describe('Test the Normal rules', () => {
   test('isHexColor should work - ok case', async () => {
     mockSchema.title.isHexColor = true;
     mockTarget.value = '#333';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
+      }
+    });
+  });
+
+  test('isHexColor should honour false', async () => {
+    mockSchema.title.isHexColor = false;
+    mockTarget.value = '321';
     await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({

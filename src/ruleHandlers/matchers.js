@@ -33,7 +33,7 @@ const handlerMatcher = {
   isNegative: number.isNegative,
   isInt: number.isInt,
 
-  /* Normal handlers */
+  /* General handlers */
   inArray: normal.inArray,
   matchRegex: normal.matchRegex,
   isEmail: normal.isEmail,
