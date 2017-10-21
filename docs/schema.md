@@ -55,3 +55,10 @@ It looks like this when all rule pass:
 - Unless the value passes the first rule, `Veasy` won't trigger the check for the next rule.
 
 > Tip: This is for a fast processing. And you can use this `chaining` to declare your progressive validation defense: `isInt` to instruct the user the value must be a number, then `min` to set its min and `max` to set its min. So the user could get there more smoothly.
+
+This is pretty much all you need to start with a `schema`, now you can move on to the [initial state](/initial-state).
+
+Check the following section if you want to:
+
+- [customize the error message](/customize-error-text)
+- [more examples of schema](/more-examples)

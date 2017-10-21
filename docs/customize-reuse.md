@@ -84,3 +84,7 @@ Remember that rule:
 !> As long as you don't have conflicts with the 3 default state for a single field, `status`, `errorText` and `value`, you can do whatever you want. :)
 
 And feel free to use the `state`, it's all yours now :)
+
+Now you can:
+
+- Move on to final [binding](/binding) section

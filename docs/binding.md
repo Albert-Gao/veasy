@@ -113,3 +113,12 @@ render() {
   );
 }
 ```
+
+Congrats!
+
+That's pretty much all you need to know.
+
+But do you know that you can [manually setup everything in order to gain more control](/diy)?
+
+Or, you can:
+- Check the all the [rules](/rules) section

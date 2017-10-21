@@ -42,3 +42,5 @@ favDomain: {
     matchRegex: /^([a-z0-9]{5,})$/,
 }
 ```
+
+Move on to learn [initial state](/initial-state).

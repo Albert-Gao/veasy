@@ -35,3 +35,8 @@ const formSchema = {
     }
 };
 ```
+
+Customize an error message has never been this easy, now you can:
+
+- Move on to learn [initial state](/initial-state).
+- To see [more examples of schema](/more-examples)

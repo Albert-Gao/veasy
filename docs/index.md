@@ -22,4 +22,6 @@ A simple yet comprehensive validation solution for React.
 
 Even better, it could automatically bind the `props` to field item and invoke `setState()` for you.
 
-So, [let's begin.](/)
+So, [let's begin.](/howto)
+
+> Tip: All the docs are written in different sections, and they are all very short, should take you 1 - 2 min per doc. :)

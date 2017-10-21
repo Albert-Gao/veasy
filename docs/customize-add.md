@@ -55,3 +55,8 @@ Now this is the result `initialState`:
   }
 }
 ```
+
+Now you can:
+
+- Move on to final [binding](/binding) section
+- To learn how to [add your own state as a child of field item state](/customize-reuse).

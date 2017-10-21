@@ -45,3 +45,10 @@ Yes, that's right, since you can define its default value when you define the sc
 ```
 
 Just that easy, you declare how you want it to be, then it will just looks like that. :)
+
+Now you can:
+
+- Move on to final [binding](/binding) section
+
+- To learn how to [add your own state to the root level of generated state](/customize-add).
+- To learn how to [add your own state as a child of field item state](/customize-reuse).
