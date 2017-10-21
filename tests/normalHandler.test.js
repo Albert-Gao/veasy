@@ -166,6 +166,20 @@ describe('Test the Normal rules', () => {
     });
   });
 
+  test('isEmail should honour false', async () => {
+    mockSchema.title.isEmail = false;
+    mockTarget.value = 'wow18';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
+      }
+    });
+  });
+
   test('isUrl should work - error case', async () => {
     mockSchema.title.isUrl = true;
     mockTarget.value = 'tom';
