@@ -2,7 +2,7 @@ sudo: false
 language: node_js
 node_js:
   - '8'
-  - '6'
+  - 'lts/*'
 matrix:
   fast_finish: true
 script: npm run prepare
