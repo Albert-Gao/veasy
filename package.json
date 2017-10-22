@@ -1,12 +1,12 @@
 {
     "name": "easyv",
     "version": "0.5.0",
-    "author": "Albert Gao",
+    "author": "AlbertGao",
     "main": "dist/index.js",
     "description": "A simple yet powerful react form solution which focus on form validation and more.",
     "contributors": [
         {
-            "name": "Albert Gao",
+            "name": "AlbertGao",
             "email": "albertgaohy@gmail.com"
         }
     ],
