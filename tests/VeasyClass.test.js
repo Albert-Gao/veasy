@@ -1,6 +1,6 @@
 /* eslint-disable no-new */
 import * as lib from "../src/helpers";
-import EasyVClass from '../src/EasyVClass';
+import EasyVClass from '../src/VeasyClass';
 
 const EasyV = EasyVClass;
 const { getConstructorErrorMessage } = lib;
@@ -80,7 +80,7 @@ describe('test the constructor - Property schema', () => {
     expect(() => {
       new EasyV(component, { name: { first: 'albert' }, age: null });
     }).toThrow(
-      '[EasyV - schema.age] Expect: non empty object. Actual: null'
+      '[Veasy - schema.age] Expect: non empty object. Actual: null'
     );
   });
 
@@ -88,7 +88,7 @@ describe('test the constructor - Property schema', () => {
     expect(() => {
       new EasyV(component, { name: {}, age: 26 });
     }).toThrow(
-      '[EasyV - schema.name] ' +
+      '[Veasy - schema.name] ' +
       'Expect: non empty object. Actual: [object Object]'
     );
   });

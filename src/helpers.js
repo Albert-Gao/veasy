@@ -1,6 +1,6 @@
 // @ts-check
 /* eslint-disable no-param-reassign */
-// This file contain any `private` method for the EasyV
+// This file contain any `private` method for the Veasy
 
 import is from 'is_js';
 import handlerMatcher, { RuleWhichNeedsArray, RuleWhichNeedsBoolean } from './ruleHandlers/matchers';
@@ -9,7 +9,7 @@ import handlerMatcher, { RuleWhichNeedsArray, RuleWhichNeedsBoolean } from './ru
  * Return error message for checking the parameters of the constructor.
  */
 export function getConstructorErrorMessage(paramName, value) {
-  return `[EasyV - ${paramName}] Expect: non empty object. Actual: ${value}`;
+  return `[Veasy - ${paramName}] Expect: non empty object. Actual: ${value}`;
 }
 
 /**

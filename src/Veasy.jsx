@@ -4,7 +4,7 @@ import React from 'react';
 import * as lib from './helpers';
 import is from 'is_js';
 
-export default class EasyV extends React.Component {
+export default class Veasy extends React.Component {
   handleOnChange = e => {
     e.preventDefault();
     const { schema, allState, update } = this.props;
@@ -59,11 +59,11 @@ export default class EasyV extends React.Component {
   }
 }
 
-EasyV.defaultProps = {
+Veasy.defaultProps = {
   allState: undefined
 };
 
-EasyV.propTypes = {
+Veasy.propTypes = {
   schema: PropTypes.object.isRequired,
   allState: PropTypes.object,
   update: PropTypes.func.isRequired,

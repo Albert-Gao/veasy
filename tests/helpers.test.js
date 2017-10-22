@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import EasyV from '../src/EasyVClass';
+import EasyV from '../src/VeasyClass';
 import * as lib from '../src/helpers';
 
 describe('Test the createInitialState method', () => {
