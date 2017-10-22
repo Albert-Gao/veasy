@@ -13,7 +13,11 @@ export const RuleWhichNeedsBoolean = [
   'isEmail',
   'isUrl',
   'isCreditCard',
-  'isHexColor'
+  'isHexColor',
+  'isDecimal',
+  'isInt',
+  'isNegative',
+  'isPositive'
 ];
 
 const handlerMatcher = {
@@ -35,6 +39,7 @@ const handlerMatcher = {
   isPositive: number.isPositive,
   isNegative: number.isNegative,
   isInt: number.isInt,
+  isDecimal: number.isDecimal,
 
   /* General handlers */
   inArray: normal.inArray,

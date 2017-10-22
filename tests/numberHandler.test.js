@@ -274,6 +274,20 @@ describe('Test the validate method - Number', () => {
     });
   });
 
+  test('isPositive should work - false case', async () => {
+    mockSchema.age.isPositive = false;
+    mockTarget.value = '-5.2';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '-5.2'
+      }
+    });
+  });
+
   test('isPositive should work - ok case', async () => {
     mockSchema.age.isPositive = true;
     mockTarget.value = '15';
@@ -297,6 +311,20 @@ describe('Test the validate method - Number', () => {
       age: {
         status: 'error',
         errorText: 'age should be negative.',
+        value: '5.2'
+      }
+    });
+  });
+
+  test('isNegative should work - false case', async () => {
+    mockSchema.age.isNegative = false;
+    mockTarget.value = '5.2';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
         value: '5.2'
       }
     });
@@ -330,6 +358,20 @@ describe('Test the validate method - Number', () => {
     });
   });
 
+  test('isInt should work - false case', async () => {
+    mockSchema.age.isInt = false;
+    mockTarget.value = '5.2';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '5.2'
+      }
+    });
+  });
+
   test('isInt should work - ok case', async () => {
     mockSchema.age.isInt = true;
     mockTarget.value = '-15';
@@ -340,6 +382,62 @@ describe('Test the validate method - Number', () => {
         status: 'ok',
         errorText: '',
         value: '-15'
+      }
+    });
+  });
+
+  test('isDecimal should work - error case', async () => {
+    mockSchema.age.isDecimal = true;
+    mockTarget.value = '5';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be decimal.',
+        value: '5'
+      }
+    });
+  });
+
+  test('isDecimal should work - false case', async () => {
+    mockSchema.age.isDecimal = false;
+    mockTarget.value = '5';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '5'
+      }
+    });
+  });
+
+  test('isDecimal should work - ok case', async () => {
+    mockSchema.age.isDecimal = true;
+    mockTarget.value = '5.1';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '5.1'
+      }
+    });
+  });
+
+  test('isDecimal should work - error case - negative', async () => {
+    mockSchema.age.isDecimal = true;
+    mockTarget.value = '-5';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be decimal.',
+        value: '-5'
       }
     });
   });
