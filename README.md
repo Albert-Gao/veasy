@@ -41,7 +41,7 @@ const formSchema = {
 ### Step 2: Define an update function
 
 ```javascript
-update(state) { this.setState(state); }
+validateFields(state) { this.setState(state); }
 ```
 
 ### Step 3: Auto bind the props
@@ -52,7 +52,7 @@ Then wrap using our `<Veasy>` component:
 <Veasy
   schema={formSchema}
   allState={this.state}
-  update={this.setState}
+  update={this.validateFields}
 >
   <FieldItem name="title" />
 </Veasy>
@@ -68,9 +68,10 @@ Congrats! Now your `FieldItem` will get the following `props` in runtime:
 
 > Tip: There is an extra `isFormOK` prop at the root level of `state` to indicate the status of the form according to all the fields defined in the schema.
 
-Now you get the big picture, let's take several minute to learn [how to write a schema](/schema).
+Now you get it! Let's take several minutes to go through our [docs](https://albert-gao.github.io/veasy/).
 
 ## TODO:
+
 - [ ] Add the `getFieldsValue` method.
 - [x] Add the table of all rules.
 - [x] Let user customize the error message.
