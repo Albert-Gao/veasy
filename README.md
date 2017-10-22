@@ -16,7 +16,7 @@ I found that the other existing react form validation solution either requires t
 
 I think validation is something which should decoupled from the components tree. That's all for what `easyV.js` does:
 
->You give `EasyV` the schema, and `EasyV` will update your component automatically, it will update the field item with the validation result and its according error message.
+>You give `Veasy` the schema, and `Veasy` will update your component automatically, it will update the field item with the validation result and its according error message.
 
 Even better, it could automatically bind the `props` to field item and invoke `setState()` for you.
 
@@ -33,7 +33,7 @@ A high level abstraction of what you need to do would be:
      - `error`: validation error,
      - `normal`: empty, haven't touched by the user.
  - `errorText`: To show the error message.
-1. Bind the state by yourself or use `<EasyV>` wrapper to auto binding
+1. Bind the state by yourself or use `<Veasy>` wrapper to auto binding
 1. Then everything happens automatically :)
 
 ### Step by step
@@ -49,7 +49,7 @@ const formSchema = {
 };
 ```
 
-Easy, huh? If you define the value of a rule as an array, `EasyV` will take the 2nd parameter as the custom error message, wow! :)
+Easy, huh? If you define the value of a rule as an array, `Veasy` will take the 2nd parameter as the custom error message, wow! :)
 
 2. In the constructor of the form component, add this 2 lines, one for binding the schema to `easyV` and one for generating the initial state.
 
