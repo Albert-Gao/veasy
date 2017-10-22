@@ -64,7 +64,7 @@ Congrats! Now your `FieldItem` will get the following `props` in runtime:
 - `errorText`: For showing the error message.
 - `value`: Like how you bind the value for every `controlled component` :)
 
-**And anytime the user changes something, your field component will get the validation result , Enjoy :)**
+**And anytime the user changes something, the above 3 `props` will auto updated by `Veasy`, Enjoy :)**
 
 > Tip: There is an extra `isFormOK` prop at the root level of `state` to indicate the status of the form according to all the fields defined in the schema.
 
@@ -72,8 +72,6 @@ Now you get it! Let's take several minutes to go through our [docs](https://albe
 
 ## TODO:
 
-- [ ] Add the `getFieldsValue` method.
 - [x] Add the table of all rules.
 - [x] Let user customize the error message.
-- [ ] The `FieldItem` should be able to do more.
 - [x] Add user's own state when calling `createInitialState()`
