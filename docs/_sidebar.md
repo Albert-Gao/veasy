@@ -8,5 +8,4 @@
   - [3. Binding](binding)
   - [DIY](diy)
 - [Rules](rules)
-- [API](api)
 - [FAQ](faq)
