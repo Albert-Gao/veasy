@@ -1,4 +1,4 @@
-[](_media/logo.png)
+[](https://github.com/Albert-Gao/veasy/raw/master/docs/_media/logo.png)
 
 # Veasy.js
 
