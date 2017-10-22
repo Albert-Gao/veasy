@@ -187,7 +187,7 @@ function runMatchers(matcher, fieldState, fieldSchema) {
  * @param {object} schema
  * @returns {object}
  */
-export function validatorRunner(value, schema) {
+export function rulesRunner(value, schema) {
   const fieldState = createNewFieldState();
   fieldState.value = value;
 
@@ -256,7 +256,10 @@ export function startValidating(target, schema, update, allState) {
   };
 
   return Promise.resolve(fieldInfo)
-    .then(info => validatorRunner(info.value, info.schema))
+    // eslint-disable-next-line arrow-body-style
+    .then(info => {
+      return rulesRunner(info.value, info.schema)
+    })
     .catch(errorState => errorState)
     .then(newFieldState =>
       updateWhenNeeded(newFieldState, propName, update, schema, allState)
