@@ -26,7 +26,7 @@ For how to use the rules, check the `schema` section.
 
 ## Normal rules
 
-- enum: [string]
+- inArray: [string]
 - matchRegex: regex
 - isEmail: boolean
 - isUrl: boolean
