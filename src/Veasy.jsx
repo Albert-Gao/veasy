@@ -1,8 +1,8 @@
+import is from 'is_js';
 import PropTypes from 'prop-types';
 /* eslint-disable react/forbid-prop-types,import/no-extraneous-dependencies */
 import React from 'react';
 import * as lib from './helpers';
-import is from 'is_js';
 
 export default class Veasy extends React.Component {
   handleOnChange = e => {
@@ -33,22 +33,22 @@ export default class Veasy extends React.Component {
     });
   };
 
-  recursiveCloneChildren = children => {
-    return React.Children.map(children, child => {
-      const childName = child.props.name;      
+  recursiveCloneChildren = children => (
+    React.Children.map(children, child => {
+      const childName = child.props.name;
       if (this.isRegisteredComponent(child, childName)) {
         return this.cloneElement(child, childName);
       }
-      
+
       const childProps = {};
       if (child.props) {
         // String has no Prop
         childProps.children = this.recursiveCloneChildren(child.props.children);
-        return React.cloneElement(child, childProps);          
+        return React.cloneElement(child, childProps);
       }
       return child;
-    });
-  };
+    })
+  );
 
   render() {
     return (
