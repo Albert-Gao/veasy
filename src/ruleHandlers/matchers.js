@@ -6,6 +6,9 @@ import * as string from './stringRules';
 // it here, so we can extract user defined error message
 // without problem.
 export const RuleWhichNeedsArray = ['inArray'];
+
+// This is for rule which expect a boolean value,
+// Will ignore the check if the value if false.
 export const RuleWhichNeedsBoolean = [
   'isEmail',
   'isUrl',

@@ -6,7 +6,7 @@ class VeasyClass {
    * Creates an instance of FormValidator.
    * @param {object} component
    * @param {object} schema
-   * @memberof FormValidator
+   * @memberof VeasyClass
    */
   constructor(component, schema) {
     lib.typeCheck(component, schema);
@@ -19,7 +19,7 @@ class VeasyClass {
    * Create the initial state for a component
    *
    * @returns {object}
-   * @memberof FormValidator
+   * @memberof VeasyClass
    */
   createInitialState(userState) {
     return lib.createInitialState(this.schema, userState);
@@ -29,7 +29,7 @@ class VeasyClass {
    * The validate function, call this in your onChange() handler of the form component
    *
    * @param {object} target
-   * @memberof FormValidator
+   * @memberof VeasyClass
    */
   validate(target) {
     lib.startValidating(

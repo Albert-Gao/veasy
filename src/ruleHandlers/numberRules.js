@@ -1,5 +1,3 @@
-// @ts-check
-
 import is from 'is_js';
 
 export const min = (name, value, schema) => ({

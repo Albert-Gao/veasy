@@ -3,7 +3,10 @@
 // This file contain any `private` method for the Veasy
 
 import is from 'is_js';
-import handlerMatcher, { RuleWhichNeedsArray, RuleWhichNeedsBoolean } from './ruleHandlers/matchers';
+import handlerMatcher, {
+  RuleWhichNeedsArray,
+  RuleWhichNeedsBoolean
+} from './ruleHandlers/matchers';
 
 /**
  * Return error message for checking the parameters of the constructor.
@@ -108,7 +111,7 @@ export function shouldChange(oldState, newState) {
 }
 
 /**
- * throw an error with defined text, usually calls by handler.
+ * throw an error with defined text, usually calls by ruleRunner().
  *
  */
 export function throwError(value, errorText) {
@@ -146,7 +149,7 @@ function ruleRunner(ruleHandler, fieldName, value, pschema) {
   const ruleName = ruleHandler.name;
 
   if (RuleWhichNeedsBoolean.includes(ruleName)) {
-    if ( schema[ruleName] === false ) return;
+    if (schema[ruleName] === false) return;
   }
 
   const result = ruleHandler(fieldName, value, schema);
@@ -158,11 +161,11 @@ function ruleRunner(ruleHandler, fieldName, value, pschema) {
 /**
  * It will run through the user's settings for a field,
  * and try matching to the matchers.js,
- * if according handler could be found,
- * it will then execute the according handler function.
+ * if according rule could be found,
+ * it will then execute the according rule function.
  * For instance:
  * if user sets a `minLength` for a field,
- * This function will invoke the minLengthHandler()
+ * This function will invoke the minLength()
  *
  */
 function runMatchers(matcher, fieldState, fieldSchema) {
@@ -181,11 +184,8 @@ function runMatchers(matcher, fieldState, fieldSchema) {
 
 /**
  * This is the main entry for all validator.
+ * It will generate the initial state to start with
  *
- * @export
- * @param {any} value
- * @param {object} schema
- * @returns {object}
  */
 export function rulesRunner(value, schema) {
   const fieldState = createNewFieldState();
@@ -225,8 +225,8 @@ function updateWhenNeeded(
   propName,
   update,
   schema,
-  formStatus = ''
-) {
+  formStatus = '')
+{
   const fieldState = { [propName]: newFieldState };
   if (formStatus === '') {
     update(fieldState);

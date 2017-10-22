@@ -1,5 +1,4 @@
 /* eslint-disable max-len */
-// @ts-check
 
 import is from 'is_js';
 
