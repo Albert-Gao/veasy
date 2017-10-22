@@ -3,13 +3,13 @@
 import is from 'is_js';
 
 export const minLength = (name, value, schema) => ({
-  isValid: is.above(value.length, schema.minLength),
-  errorText: `${name}'s length should be greater than ${schema.minLength}. Current: ${value.length}`
+  isValid: is.equal(value.length, schema.minLength) || is.above(value.length, schema.minLength),
+  errorText: `${name}'s length should be equal or greater than ${schema.minLength}. Current: ${value.length}`
 });
 
 export const maxLength = (name, value, schema) => ({
-  isValid: is.under(value.length, schema.maxLength),
-  errorText: `${name}'s length should be less than ${schema.maxLength}. Current: ${value.length}`
+  isValid: is.equal(value.length, schema.maxLength) || is.under(value.length, schema.maxLength),
+  errorText: `${name}'s length should be equal or less than ${schema.maxLength}. Current: ${value.length}`
 });
 
 export const include = (name, value, schema) => ({

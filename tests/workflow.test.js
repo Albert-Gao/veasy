@@ -44,18 +44,18 @@ describe('Test the validate method - String', () => {
     mockSchema = {
       title: {
         minLength: 2,
-        maxLength: 4,
+        maxLength: 3,
         default: ''
       }
     };
 
     mockComponent.state.title = {
       status: 'error',
-      errorText: 'title\'s length should be greater than 2.',
-      value: '23'
+      errorText: 'title\'s length should be less than 3.',
+      value: '1234'
     };
 
-    mockTarget.value = '23';
+    mockTarget.value = '1234';
     await startValidating(
       mockTarget,
       mockSchema,
@@ -97,7 +97,7 @@ describe('Test the validate method - String', () => {
       isFormOK: false,
       title: {
         status: 'error',
-        errorText: "title's length should be greater than 2. Current: 0",
+        errorText: "title's length should be equal or greater than 2. Current: 0",
         value: ''
       },
       description: {

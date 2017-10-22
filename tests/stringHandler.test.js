@@ -30,13 +30,29 @@ describe('Test the validate method - String', () => {
     expect(mockUpdate).toBeCalledWith({
       title: {
         status: 'error',
-        errorText: "title's length should be greater than 1. Current: 0",
+        errorText: "title's length should be equal or greater than 1. Current: 0",
         value: ''
       }
     });
   });
 
+  test('minLength should work - ok case', async () => {
+    mockSchema.title.minLength = 1;
+    mockTarget.value = 'a';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: 'a'
+      }
+    });
+  });
+
   test('minLength and maxLength should work - ok case', async () => {
+    mockSchema.title.minLength = 1;
+    mockSchema.title.maxLength = 6;
     mockTarget.value = 'js';
     await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
@@ -57,7 +73,7 @@ describe('Test the validate method - String', () => {
     expect(mockUpdate).toBeCalledWith({
       title: {
         status: 'error',
-        errorText: `title's length should be less than 10. Current: ${mockTarget
+        errorText: `title's length should be equal or less than 10. Current: ${mockTarget
           .value.length}`,
         value: mockTarget.value
       }
@@ -67,6 +83,20 @@ describe('Test the validate method - String', () => {
   test('maxLength should work - ok case', async () => {
     mockSchema.title.maxLength = 10;
     mockTarget.value = '12345671';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: mockTarget.value
+      }
+    });
+  });
+
+  test('maxLength should work - ok case - equal', async () => {
+    mockSchema.title.maxLength = 8;
+    mockTarget.value = '12345678';
     await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
