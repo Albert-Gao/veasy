@@ -1,9 +1,9 @@
 {
     "name": "easyv",
-    "version": "0.3.0",
+    "version": "0.5.0",
     "author": "Albert Gao",
     "main": "dist/index.js",
-    "description": "A NPM package ES6 boilerplate ready to use .",
+    "description": "A simple yet powerful react form solution which focus on form validation and more.",
     "contributors": [
         {
             "name": "Albert Gao",
@@ -21,14 +21,16 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Mr-Binary/es6-npm-boilerplate.git"
+        "url": "git+https://github.com/Albert-Gao/veasy"
     },
     "keywords": [
-        "module",
+        "react",
+        "form",
+        "validation",
+        "javascript",
         "es6",
-        "es5",
-        "npm",
-        "babel"
+        "library",
+        "npm-package"
     ],
     "devDependencies": {
         "babel-cli": "6.26.0",
@@ -56,9 +58,9 @@
         "prop-types": "15.6.0"
     },
     "engine": "node >= 6.5.x",
-    "homepage": "https://github.com/Mr-Binary/es6-npm-boilerplate#readme",
+    "homepage": "https://github.com/Albert-Gao/veasy#readme",
     "bugs": {
-        "url": "https://github.com/Mr-Binary/es6-npm-boilerplate/issues"
+        "url": "https://github.com/Albert-Gao/veasy/issues"
     },
     "license": "MIT",
     "prettier": {
