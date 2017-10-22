@@ -1,3 +1,9 @@
+sudo: false
 language: node_js
 node_js:
-  - "0.10"
+  - '8'
+  - '7'
+  - '6'
+matrix:
+  fast_finish: true
+script: npm run prepare
