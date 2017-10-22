@@ -15,4 +15,7 @@ A high level abstraction of what you need to do would be:
 
 Even better, `step 2` and `step 3` could be simplified by using our powerful `createInitialState()` and `<Veasy>` wrapper.
 
+> Tip: There is an extra `isFormOK` prop at the root level of `state` to indicate the status of the form according to all the fields defined in the schema.
+
+
 Now you get the big picture, let's take 1 minute to learn [how to write a schema](/schema).

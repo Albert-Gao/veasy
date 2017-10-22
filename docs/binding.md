@@ -118,7 +118,7 @@ Congrats!
 
 That's pretty much all you need to know.
 
-But do you know that you can [manually setup everything in order to gain more control](/diy)?
+## What's next
 
-Or, you can:
-- Check the all the [rules](/rules) section
+- Do you know that you can DIY all the procedures here [by manually setup everything in order to gain more control](/diy)?
+- Or, you can check the all rules in the [rules](/rules) section

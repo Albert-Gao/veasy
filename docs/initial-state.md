@@ -48,9 +48,10 @@ Yes, that's right, since you can define its default value when you define the sc
 
 Just that easy, you declare how you want it to be, then it will just looks like that. :)
 
-Now you can:
+## What's next
 
-- Move on to final [binding](/binding) section
+- Move on to final [Step 3. binding](/binding) section
 
+Or learn more about `state`:
 - To learn how to [add your own state to the root level of generated state](/customize-add).
 - To learn how to [add your own state as a child of field item state](/customize-reuse).

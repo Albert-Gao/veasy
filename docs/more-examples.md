@@ -43,4 +43,6 @@ favDomain: {
 }
 ```
 
-Move on to learn [initial state](/initial-state).
+## What's next
+
+- Move on to [initial state](/initial-state).

@@ -36,7 +36,10 @@ const formSchema = {
 };
 ```
 
-Customize an error message has never been this easy, now you can:
+Customize an error message has never been this easy.
 
-- Move on to learn [initial state](/initial-state).
+
+## What's next:
+
+- Move on to [Step 2. initial state](/initial-state).
 - To see [more examples of schema](/more-examples)
