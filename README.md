@@ -1,3 +1,5 @@
+[](_media/logo.png)
+
 # Veasy.js
 
 [![Build Status](https://travis-ci.org/Albert-Gao/veasy.svg?branch=master)](https://travis-ci.org/Albert-Gao/veasy)
@@ -16,7 +18,7 @@ An easy to use yet comprehensive react form validation library which make your c
 - Except the schema, just add a few lines, then you are good to go :)
 - So easy to learn.
 
-## A quick how to
+## A quick 3 steps how to
 
 Suppose you have a form field component:
 
@@ -24,7 +26,7 @@ Suppose you have a form field component:
 <FieldItem name="title" />
 ```
 
-You can write a schema using json:
+### Step 1: You can write a schema using json
 
 ```javascript
 const formSchema = {
@@ -36,11 +38,13 @@ const formSchema = {
 };
 ```
 
-Define an update function:
+### Step 2: Define an update function
 
 ```javascript
 update(state) { this.setState(state); }
 ```
+
+### Step 3: Auto bind the props
 
 Then wrap using our `<Veasy>` component:
 
@@ -68,9 +72,7 @@ Now you get the big picture, let's take several minute to learn [how to write a 
 
 ## TODO:
 - [ ] Add the `getFieldsValue` method.
-- [ ] Add the table of all rules.
-- [ ] Need to add a minimal working example.
-- [ ] Let user define the name of `status`
+- [x] Add the table of all rules.
 - [x] Let user customize the error message.
 - [ ] The `FieldItem` should be able to do more.
 - [x] Add user's own state when calling `createInitialState()`
