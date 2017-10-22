@@ -1,7 +1,7 @@
 # Customize State - reuse
 
 Wait, I want my own state inside that `title` and `age`.
-Wow, I know, I know, after all, it's your component. And lucky you, `EasyV` handles that too. :)
+Wow, I know, I know, after all, it's your component. And lucky you, `Veasy` handles that too. :)
 
 So, instead of:
 

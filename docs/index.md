@@ -16,9 +16,9 @@ A simple yet comprehensive validation solution for React.
 
 ## Design concept
 
-`easyV` try to add as less noise as possible to the JSX hierarchy. I believe validation is something which should decoupled from the components tree. That's all for what `easyV.js` does:
+`Veasy` try to add as less noise as possible to the JSX hierarchy. I believe validation is something which should decoupled from the components tree. That's all for what `Veasy` does:
 
-?> You give `EasyV` the schema, and `EasyV` will update your component automatically, it will update the field item with the validation result and its according error message.
+?> You give `Veasy` the schema, and `Veasy` will update your component automatically, it will update the field item with the validation result and its according error message.
 
 Even better, it could automatically bind the `props` to field item and invoke `setState()` for you.
 

@@ -7,12 +7,14 @@ It's just like how you bind your `state` to the `React component`. But first you
 `EasyV` will generate the initial state for you according to the `schema` you just defined. We'll eliminate boilerplate code as much as possible.
 
 ```javascript
-import { createInitialState } from 'easyv';
+import { createInitialState } from 'veasy';
 const initialState = createInitialState(formSchema);
 ```
 
 Easy, you just invoke the `createInitialState()` method with the `schema` you defined.
 And it will result in the following `initialState`:
+
+!> The `isFormOK` field will set to true once the `status` of every field (which defined in the schema) are equal to `ok`.
 
 ```javascript
 {
