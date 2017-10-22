@@ -20,6 +20,12 @@ An easy to use yet comprehensive react form validation library which make your c
 
 ## A quick 3 steps how to
 
+First,
+
+```bash
+npm install --save veasy
+```
+
 Suppose you have a form field component:
 
 ```xml
