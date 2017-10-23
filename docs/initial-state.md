@@ -53,5 +53,6 @@ Just that easy, you declare how you want it to be, then it will just looks like 
 - Move on to final [Step 3. binding](/binding) section
 
 Or learn more about `state`:
+
 - To learn how to [add your own state to the root level of generated state](/customize-add).
 - To learn how to [add your own state as a child of field item state](/customize-reuse).

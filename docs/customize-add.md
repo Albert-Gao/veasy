@@ -61,4 +61,5 @@ Now this is the result `initialState`:
 - Move on to final [Step 3. binding](/binding) section
 
 Or learn more about `state`:
+
 - How to [add your own state as a child of field item state](/customize-reuse).
