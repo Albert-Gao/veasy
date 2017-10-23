@@ -79,10 +79,4 @@ Congrats! Now your `FieldItem` will get the following `props` in runtime:
 
 > Tip: There is an extra `isFormOK` prop at the root level of `state` to indicate the status of the form according to all the fields defined in the schema.
 
-Now you get it! Let's take several minutes to go through our [docs](https://albert-gao.github.io/veasy/).
-
-## TODO:
-
-- [x] Add the table of all rules.
-- [x] Let user customize the error message.
-- [x] Add user's own state when calling `createInitialState()`
+Now you get it! Let's take several minutes to go through our **[documentation](https://albert-gao.github.io/veasy/)**.
