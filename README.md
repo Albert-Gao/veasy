@@ -6,6 +6,8 @@
 
 An easy to use yet comprehensive react form validation library which make your components tree clean.
 
+
+
 ## Why use
 
 - Declarative way to define your validation rule
@@ -19,15 +21,15 @@ An easy to use yet comprehensive react form validation library which make your c
 
 ## A quick 3 steps how to
 
-First,
+First, do some setup.
 
 ```bash
 npm install --save veasy
 ```
 
-and
 ```javascript
 import Veasy, {createInitialState} from 'veasy';
+
 ```
 
 Suppose you have a form field component:
@@ -46,6 +48,9 @@ const formSchema = {
     exclude: 'bad words'
   }
 };
+
+// Then setup the initial state in the component constructor
+this.state = createInitialState(formSchema);
 ```
 
 ### Step 2: Define an update function
