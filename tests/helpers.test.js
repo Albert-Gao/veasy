@@ -202,4 +202,19 @@ describe('Test the getFieldsValue method', () => {
       description: '12345678901'
     });
   });
+
+  test('should console.warn when field not in state.', () => {
+    delete state.description;
+    const mockConsole = jest.fn();
+    // eslint-disable-next-line no-console
+    console.warn = mockConsole;
+    const result = lib.getFieldsValue(schema, state, false);
+    expect(result).toEqual({
+      title: 'abc'
+    });
+    expect(mockConsole.mock.calls.length).toBe(1);
+    expect(mockConsole).toBeCalledWith(
+      '[veasy]: No description found in state.'
+    );
+  });
 });

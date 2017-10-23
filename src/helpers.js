@@ -115,7 +115,8 @@ export function getFieldsValue(schema, state, mustOK = true) {
   const result = {};
   fieldNames.forEach((name) => {
     if (is.not.propertyDefined(state, name)) {
-      console.error(`No ${name} found in state.`);
+      // eslint-disable-next-line no-console
+      console.warn(`[veasy]: No ${name} found in state.`);
       return;
     }
     const fieldState = state[name];
