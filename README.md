@@ -26,6 +26,11 @@ First,
 npm install --save veasy
 ```
 
+and
+```javascript
+import Veasy, {createInitialState} from 'veasy';
+```
+
 Suppose you have a form field component:
 
 ```xml
