@@ -6,3 +6,9 @@ node_js:
 matrix:
   fast_finish: true
 script: npm run prepare
+notifications:
+  email:
+    recipients:
+      - albertgaohy@gmail.com
+    on_success: never # default: change
+    on_failure: always # default: always
