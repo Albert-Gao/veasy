@@ -13,10 +13,9 @@ An easy to use yet comprehensive react form validation library which make your c
 - Efficient checking system, will stop validating if any rule fails to pass.
 - More than validation: Auto generate initial state, set fields with default value, etc.
 - Highly customizable: error message, default state, whatever you want.
-- Clean JSX hierarchy, nearly no wrapper components
+- Clean JSX hierarchy, use your own field item component.
 - Promise based architecture
-- Except the schema, just add a few lines, then you are good to go :)
-- So easy to learn.
+- Easy to learn.
 
 ## A quick 3 steps how to
 
