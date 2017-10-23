@@ -49,12 +49,30 @@ It looks like this when all rule pass:
 }
 ```
 
-## Chaining rules
+## Chaining rules and Progressive validation mechanism
 
 - Rules in schema are been processed one by one.
 - Unless the value passes the first rule, `Veasy` won't trigger the check for the next rule.
 
-> Tip: This is for a fast processing. And you can use this `chaining` to declare your progressive validation defense: `isInt` to instruct the user the value must be a number, then `min` to set its min and `max` to set its min. So the user could get there more smoothly.
+The problem of real world validation is that sometimes we have so many rules in our code, but you can't just display all of them on the screen, it's scary :D
+
+Instead, we will guide the user to the right path **by validating the rule one by one**. A very simple example would be a field which expects an int, min and max.
+
+Your schema is like this:
+
+```javascript
+{
+  age: {
+    isInt: true,
+    min: [16, 'should be older than 16'],
+    max: 99
+  }
+}
+```
+
+If the user gives an `one`, `veasy` will stop at first rule and let the user know that it should be a number, and when their age is less than `16`, it will pass the first rule and stop at the second rule, which will change the error message to `should be older than 16`.
+
+This example is simple, you can chain all the rules to build your own. And thanks to `React`, it all happens immediately. All you need to do is to declare a schema.
 
 This is pretty much all you need to start with a `schema`.
 
@@ -63,5 +81,6 @@ This is pretty much all you need to start with a `schema`.
 - Move on to [Step 2. initial state](/initial-state)
 
 Or, learn more about schema:
+
 - [customize the error message](/customize-error-text)
 - [more examples of schema](/more-examples)
