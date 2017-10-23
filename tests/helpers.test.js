@@ -142,23 +142,64 @@ describe('Test the createInitialValue method', () => {
 
 describe('Test the shouldChange method', () => {
   test('Should return false when no change', () => {
-    const oldState = {status: 'ok', value:'1'};
+    const oldState = { status: 'ok', value: '1' };
     expect(lib.shouldChange(oldState, oldState)).toBe(false);
   });
 
   test('Should return true when change - status case', () => {
-    const oldState = {status: 'ok', value:'1'};
-    const newState = {status: 'error', value:'2'};
+    const oldState = { status: 'ok', value: '1' };
+    const newState = { status: 'error', value: '2' };
     expect(lib.shouldChange(oldState, newState)).toBe(true);
   });
 
   test('Should return true when change - value case', () => {
-    const oldState = {status: 'ok', value:'5'};
-    const newState = {status: 'ok', value:'2'};
+    const oldState = { status: 'ok', value: '5' };
+    const newState = { status: 'ok', value: '2' };
     expect(lib.shouldChange(oldState, newState)).toBe(true);
   });
 });
 
-describe('Test the getFieldsValue method', () => { 
-  test('should  ', () => {  });
+describe('Test the getFieldsValue method', () => {
+  let state;
+  let schema;
+
+  beforeEach(() => {
+    state = {
+      title: {
+        status: 'error',
+        errorText: 'too short',
+        value: 'abc'
+      },
+      description: {
+        status: 'ok',
+        errorText: '',
+        value: '12345678901'
+      }
+    };
+    schema = {
+      title: {
+        minLength: 5,
+        maxLength: 10
+      },
+      description: {
+        minLength: 10,
+        maxLength: 20
+      }
+    };
+  });
+
+  test('should return all the values of fields which are ok', () => {
+    const result = lib.getFieldsValue(schema, state);
+    expect(result).toEqual({
+      description: '12345678901'
+    });
+  });
+
+  test('should return only the values of all fields', () => {
+    const result = lib.getFieldsValue(schema, state, false);
+    expect(result).toEqual({
+      title: 'abc',
+      description: '12345678901'
+    });
+  });
 });

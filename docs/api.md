@@ -17,3 +17,27 @@ a state object which you can set as the initial state of the current component.
 
 - To learn how to [add your own state to the root level of generated state](/customize-add).
 - To learn how to [add your own state as a child of field item state](/customize-reuse).
+
+## 2. getFieldsValue(schema, state, mustOK)
+
+### Arguments
+
+1. schema: Object
+    - It's a set of validation rule which write in JSON. See [schema](/schema) chapter for more information.
+1. state: Object
+    - It's the whole state of the current component, you can get it via `this.state`.
+1. mustOK: boolean, default to true
+    - If set to true, it will only return the fields which values equals `ok`.
+    - If set to false, it will return all the fields which includes in the schema.
+
+### Return
+
+an object with all the values of the fields.
+
+```javascript
+{
+  title: 'abc',
+  description: 'this is good.'
+  author: 'albert'
+}
+```

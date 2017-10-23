@@ -48,6 +48,15 @@ Yes, that's right, since you can define its default value when you define the sc
 
 Just that easy, you declare how you want it to be, then it will just looks like that. :)
 
+## How to get all the values
+
+Check the [API](/api) section for more info of the `getFieldsValue()` method.
+
+```javascript
+import {getFieldsValue} from 'veasy';
+const values = getFieldsValue(schema, state)
+```
+
 ## What's next
 
 - Move on to final [Step 3. binding](/binding) section

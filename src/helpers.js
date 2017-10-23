@@ -110,9 +110,23 @@ export function shouldChange(oldState, newState) {
   return isErrorDifferent || isValueDifferent;
 }
 
+export function getFieldsValue(schema, state, mustOK = true) {
+  const fieldNames = Object.keys(schema);
+  const result = {};
+  fieldNames.forEach((name) => {
+    if (is.not.propertyDefined(state, name)) {
+      console.error(`No ${name} found in state.`);
+      return;
+    }
+    const fieldState = state[name];
+    if (mustOK && fieldState.status !== 'ok') return;
+    result[name] = fieldState.value;
+  });
+  return result;
+}
+
 /**
  * throw an error with defined text, usually calls by ruleRunner().
- *
  */
 export function throwError(value, errorText) {
   const error = { value, errorText, status: 'error' };
