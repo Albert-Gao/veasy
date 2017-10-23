@@ -158,3 +158,7 @@ describe('Test the shouldChange method', () => {
     expect(lib.shouldChange(oldState, newState)).toBe(true);
   });
 });
+
+describe('Test the getFieldsValue method', () => { 
+  test('should  ', () => {  });
+});

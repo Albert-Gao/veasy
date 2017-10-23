@@ -1,6 +1,6 @@
+/* eslint-disable react/forbid-prop-types,import/no-extraneous-dependencies */
 import is from 'is_js';
 import PropTypes from 'prop-types';
-/* eslint-disable react/forbid-prop-types,import/no-extraneous-dependencies */
 import React from 'react';
 import * as lib from './helpers';
 
