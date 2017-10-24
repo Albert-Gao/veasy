@@ -3,7 +3,7 @@
     "version": "0.7.0",
     "author": "AlbertGao",
     "main": "dist/index.js",
-    "description": "A simple yet powerful react form solution which focus on form validation and more.",
+    "description": "An elegant react form solution which focus on form validation and more.",
     "contributors": [
         {
             "name": "AlbertGao",

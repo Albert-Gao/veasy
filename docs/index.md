@@ -1,13 +1,13 @@
 # Veasy
 
-A simple yet comprehensive validation solution for React.
+An elegant react form solution which focus on form validation and more.
 
 ## Features
 
 - Declarative way to define your validation rule
 - Comprehensive validation rule set
 - Progressive validation mechanism.
-- More than validation: Auto generate initial state, set fields with default value, etc.
+- More than validation: Auto generate initial state, set fields with default value, get fields values, etc.
 - Highly customizable: error message, default state, whatever you want.
 - Clean JSX hierarchy, use your own field item component.
 - Promise based architecture
