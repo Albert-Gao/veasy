@@ -83,4 +83,5 @@ This is pretty much all you need to start with a `schema`.
 Or, learn more about schema:
 
 - [customize the error message](/customize-error-text)
+- [collect values from non-veasy state](/collect-values)
 - [more examples of schema](/more-examples)

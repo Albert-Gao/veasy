@@ -42,4 +42,8 @@ Customize an error message has never been this easy.
 ## What's next:
 
 - Move on to [Step 2. initial state](/initial-state).
+
+Or learn more about `schema`:
+
+- [collect values from non-veasy state](/collect-values)
 - To see [more examples of schema](/more-examples)

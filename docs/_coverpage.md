@@ -1,9 +1,9 @@
 <!-- background image -->
 ![](_media/logo.png)
 
-# veasy <small>0.6.0</small>
+# veasy <small>0.7.0</small>
 
-> A simple yet powerful react form solution which focus on form validation and more.
+> A easy to use yet powerful react form solution which focus on form validation and more.
 
 [GitHub](https://github.com/Albert-Gao/easyV)
 [Intro](index)

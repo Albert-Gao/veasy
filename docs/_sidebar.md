@@ -1,6 +1,7 @@
 - [How to](howto)
   - [1. Schema](schema)
     - [Customize error text](customize-error-text)
+    - [Collect values from non-veasy state](/collect-values)
     - [More examples](more-examples)
   - [2. Initial State](initial-state)
     - [Customize - Add](customize-add)

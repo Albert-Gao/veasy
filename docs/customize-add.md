@@ -62,4 +62,4 @@ Now this is the result `initialState`:
 
 Or learn more about `state`:
 
-- How to [add your own state as a child of field item state](/customize-reuse).
+- To learn how to [add your own state as a child of field item state](/customize-reuse).
