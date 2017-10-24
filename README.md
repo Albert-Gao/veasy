@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/Albert-Gao/veasy.svg?branch=master)](https://travis-ci.org/Albert-Gao/veasy)
 
-An elegant react form solution which focus on form validation and more.
+An elegant react form solution which focuses on form validation and more.
 
 
 ## Why use

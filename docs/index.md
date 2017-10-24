@@ -1,6 +1,6 @@
 # Veasy
 
-An elegant react form solution which focus on form validation and more.
+An elegant react form solution which focuses on form validation and more.
 
 ## Features
 
