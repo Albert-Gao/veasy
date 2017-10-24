@@ -110,9 +110,34 @@ export function shouldChange(oldState, newState) {
   return isErrorDifferent || isValueDifferent;
 }
 
+function getCollectValues(collectSchema, state) {
+  const fieldsToCollect = Object.keys(collectSchema);
+  const result = {};
+
+  const getNestedObject = (path, obj) => (
+    path.split('.').reduce((prev, curr) =>
+        (prev ? prev[curr] : undefined),
+      // eslint-disable-next-line no-restricted-globals
+      obj || self
+    )
+  );
+
+  fieldsToCollect.forEach((fieldName) => {
+    result[fieldName] = getNestedObject(collectSchema[fieldName], state)
+  });
+  return result;
+}
+
 export function getFieldsValue(schema, state, mustOK = true) {
   const fieldNames = Object.keys(schema);
-  const result = {};
+  let result = {};
+
+  if (is.propertyDefined(schema, 'collectValues')) {
+    result = {
+      ...getCollectValues(schema.collectValues, state)
+    }
+  }
+
   fieldNames.forEach((name) => {
     if (is.not.propertyDefined(state, name)) {
       // eslint-disable-next-line no-console
@@ -123,6 +148,7 @@ export function getFieldsValue(schema, state, mustOK = true) {
     if (mustOK && fieldState.status !== 'ok') return;
     result[name] = fieldState.value;
   });
+
   return result;
 }
 
@@ -235,13 +261,11 @@ export function checkIsFormOK(schema, componentState) {
   return componentState;
 }
 
-function updateWhenNeeded(
-  newFieldState,
-  propName,
-  update,
-  schema,
-  formStatus = '')
-{
+function updateWhenNeeded(newFieldState,
+                          propName,
+                          update,
+                          schema,
+                          formStatus = '') {
   const fieldState = { [propName]: newFieldState };
   if (formStatus === '') {
     update(fieldState);

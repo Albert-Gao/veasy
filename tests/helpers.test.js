@@ -1,6 +1,6 @@
+import * as lib from '../src/helpers';
 /* eslint-disable no-new */
 import EasyV from '../src/VeasyClass';
-import * as lib from '../src/helpers';
 
 describe('Test the createInitialState method', () => {
   let schema;
@@ -216,5 +216,36 @@ describe('Test the getFieldsValue method', () => {
     expect(mockConsole).toBeCalledWith(
       '[veasy]: No description found in state.'
     );
+  });
+
+  test('Should honour collectValue section -case 1 - mustOK=false', () => {
+    schema.collectValues = { gender: 'genderInfo' };
+    state.genderInfo = 'male';
+    const result = lib.getFieldsValue(schema, state, false);
+    expect(result).toEqual({
+      title: 'abc',
+      description: '12345678901',
+      gender: 'male'
+    });
+  });
+
+  test('Should honour collectValue section -case 2 - mustOK=true', () => {
+    schema.collectValues = { gender: 'genderInfo' };
+    state.genderInfo = 'male';
+    const result = lib.getFieldsValue(schema, state, true);
+    expect(result).toEqual({
+      description: '12345678901',
+      gender: 'male'
+    });
+  });
+
+  test('Should honour collectValue section -case 3 - nested', () => {
+    schema.collectValues = { gender: 'genderInfo.user.gender.info' };
+    state.genderInfo = { user: { gender: { info: 'male' } } };
+    const result = lib.getFieldsValue(schema, state, true);
+    expect(result).toEqual({
+      description: '12345678901',
+      gender: 'male'
+    });
   });
 });
