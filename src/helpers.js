@@ -113,17 +113,16 @@ export function shouldChange(oldState, newState) {
 function getCollectValues(collectSchema, state) {
   const fieldsToCollect = Object.keys(collectSchema);
   const result = {};
-  
-  const getNestedObject = (path, obj) => (
-    path.split('.').reduce((prev, curr) =>
-        (prev ? prev[curr] : undefined),
+
+  const getNestedObject = (path, obj) =>
+    path.split('.').reduce(
+      (prev, curr) => (prev ? prev[curr] : undefined),
       // eslint-disable-next-line no-restricted-globals
       obj || self
-    )
-  );
+    );
 
-  fieldsToCollect.forEach((fieldName) => {
-    result[fieldName] = getNestedObject(collectSchema[fieldName], state)
+  fieldsToCollect.forEach(fieldName => {
+    result[fieldName] = getNestedObject(collectSchema[fieldName], state);
   });
   return result;
 }
@@ -135,10 +134,10 @@ export function getFieldsValue(schema, state, mustOK = true) {
   if (is.propertyDefined(schema, 'collectValues')) {
     result = {
       ...getCollectValues(schema.collectValues, state)
-    }
+    };
   }
 
-  fieldNames.forEach((name) => {
+  fieldNames.forEach(name => {
     if (is.not.propertyDefined(state, name)) {
       // eslint-disable-next-line no-console
       console.warn(`[veasy]: No ${name} found in state.`);
@@ -249,7 +248,10 @@ export function checkIsFormOK(schema, componentState) {
   const properties = Object.keys(schema);
   let isError = false;
   properties.some(prop => {
-    if (componentState[prop].status === 'error') {
+    if (
+      componentState[prop].status === 'error' ||
+      componentState[prop].status === 'normal'
+    ) {
       isError = true;
       return true;
     }
@@ -257,15 +259,20 @@ export function checkIsFormOK(schema, componentState) {
   });
   if (!isError) {
     componentState.isFormOK = true;
+  } else {
+    componentState.isFormOK = false;
   }
+
   return componentState;
 }
 
-function updateWhenNeeded(newFieldState,
-                          propName,
-                          update,
-                          schema,
-                          formStatus = '') {
+function updateWhenNeeded(
+  newFieldState,
+  propName,
+  update,
+  schema,
+  formStatus = ''
+) {
   const fieldState = { [propName]: newFieldState };
   if (formStatus === '') {
     update(fieldState);
@@ -294,13 +301,15 @@ export function startValidating(target, schema, update, allState) {
     schema: { [propName]: schema[propName] }
   };
 
-  return Promise.resolve(fieldInfo)
-    // eslint-disable-next-line arrow-body-style
-    .then(info => {
-      return rulesRunner(info.value, info.schema)
-    })
-    .catch(errorState => errorState)
-    .then(newFieldState =>
-      updateWhenNeeded(newFieldState, propName, update, schema, allState)
-    );
+  return (
+    Promise.resolve(fieldInfo)
+      // eslint-disable-next-line arrow-body-style
+      .then(info => {
+        return rulesRunner(info.value, info.schema);
+      })
+      .catch(errorState => errorState)
+      .then(newFieldState =>
+        updateWhenNeeded(newFieldState, propName, update, schema, allState)
+      )
+  );
 }

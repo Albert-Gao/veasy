@@ -57,7 +57,9 @@ describe('Test the createInitialState method', () => {
       },
       C: 1
     };
-    const state = new VeasyClass(component, schema).createInitialState(userState);
+    const state = new VeasyClass(component, schema).createInitialState(
+      userState
+    );
     expect(state).toEqual({
       isFormOK: false,
       name: {
@@ -97,7 +99,9 @@ describe('Test the createInitialState method', () => {
       },
       C: 1
     };
-    const state = new VeasyClass(component, schema).createInitialState(userState);
+    const state = new VeasyClass(component, schema).createInitialState(
+      userState
+    );
     expect(state).toEqual({
       isFormOK: false,
       name: {
@@ -248,4 +252,46 @@ describe('Test the getFieldsValue method', () => {
       gender: 'male'
     });
   });
+});
+
+describe('Test the checkIsFormOK method', () => {
+  let state;
+  let schema;
+
+  beforeEach(() => {
+    state = {
+      isFormOK: false,
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: 'abc'
+      },
+      description: {
+        status: 'normal',
+        errorText: '',
+        value: ''
+      }
+    };
+    schema = {
+      title: {
+        minLength: 5,
+        maxLength: 10
+      },
+      description: {
+        minLength: 10,
+        maxLength: 20
+      }
+    };
+  });
+  test('shouldn`t change to ok if one status is normal', () => {
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(false);
+  });
+
+  test('could restore the isFormOK to false', () => { 
+    state.isFormOK = true;
+    state.title.status = 'error';
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(false);
+   });
 });
