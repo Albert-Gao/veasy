@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import * as lib from "../src/helpers";
+import * as lib from '../src/helpers';
 import EasyVClass from '../src/VeasyClass';
 
 const EasyV = EasyVClass;
@@ -79,9 +79,7 @@ describe('test the constructor - Property schema', () => {
   test('Should throw when give an object with none value property', () => {
     expect(() => {
       new EasyV(component, { name: { first: 'albert' }, age: null });
-    }).toThrow(
-      '[Veasy - schema.age] Expect: non empty object. Actual: null'
-    );
+    }).toThrow('[Veasy - schema.age] Expect: non empty object. Actual: null');
   });
 
   test('Should throw when give an empty object as an property', () => {
@@ -89,7 +87,7 @@ describe('test the constructor - Property schema', () => {
       new EasyV(component, { name: {}, age: 26 });
     }).toThrow(
       '[Veasy - schema.name] ' +
-      'Expect: non empty object. Actual: [object Object]'
+        'Expect: non empty object. Actual: [object Object]'
     );
   });
 
@@ -100,7 +98,7 @@ describe('test the constructor - Property schema', () => {
       state: { name: 'albert' },
       setState: () => {}
     };
-    const mockSchema = { name: { isIP:false } };
+    const mockSchema = { name: { isIP: false } };
     const mockTarget = { abc: 123 };
 
     const easyV = new EasyV(mockComponent, mockSchema);
@@ -110,6 +108,27 @@ describe('test the constructor - Property schema', () => {
     expect(mockUpdate.mock.calls[0][1]).toEqual(mockSchema);
     expect(mockUpdate.mock.calls[0][2]).toEqual(mockComponent.state);
     expect(mockUpdate.mock.calls[0][3].name).toEqual('bound setState');
+    mockUpdate.mockReset();
+  });
+});
+
+describe('Test the class methods', () => {
+  test('should invoke getFieldsValue', () => {
+    const mockUpdate = jest.fn();
+    lib.getFieldsValue = mockUpdate;
+    const mockComponent = {
+      state: { name: 'albert' },
+      setState: () => {}
+    };
+    const mockSchema = { name: { isIP: false } };
+    const mockTarget = { abc: 123 };
+
+    const easyV = new EasyV(mockComponent, mockSchema);
+    easyV.getFieldsValue();
+    expect(mockUpdate.mock.calls.length).toEqual(1);
+    expect(mockUpdate.mock.calls[0][0]).toEqual(mockSchema);
+    expect(mockUpdate.mock.calls[0][1]).toEqual(mockComponent.state);
+    expect(mockUpdate.mock.calls[0][2]).toEqual(true);    
     mockUpdate.mockReset();
   });
 });

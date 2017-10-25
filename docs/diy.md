@@ -19,3 +19,4 @@ Although we do recommend you using the auto-binding way, but you could still do 
         this.veasy.validate(e.target);
       }
     ```
+1. You can get all the values by calling `this.veasy.getFieldsValue()`

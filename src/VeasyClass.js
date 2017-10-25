@@ -39,6 +39,14 @@ class VeasyClass {
       this.component.setState.bind(this.component)
     );
   }
+
+  getFieldsValue(mustOK=true) {
+    lib.getFieldsValue(
+      this.schema,
+      this.component.state,
+      mustOK
+    );
+  }
 }
 
 export default VeasyClass;

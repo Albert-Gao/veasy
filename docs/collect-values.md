@@ -1,6 +1,6 @@
 # Collect values
 
-Not every fields need to be validated. Things like radio button and combo-box, you can assign an initial value to them to make sure they always get a value. Or furthermore, you can add some checking like ensure the user has selected some values even it's the same as the initial value. But no matter which approach you gonna use, `veasy` could collect the final value from state for you.
+Not every fields need to be validated. Things like radio button and combo-box, you can assign an initial value to them to make sure they always get a value. Or furthermore, you can add some checking like ensure the user has selected some values even it's the same as the initial value. But no matter which approach you gonna use, `veasy` could collect the final value from the state.
 
 > You just need to add an extra field in the **`schema`** named `collectValues`, like this:
 

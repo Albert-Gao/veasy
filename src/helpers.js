@@ -113,7 +113,7 @@ export function shouldChange(oldState, newState) {
 function getCollectValues(collectSchema, state) {
   const fieldsToCollect = Object.keys(collectSchema);
   const result = {};
-
+  
   const getNestedObject = (path, obj) => (
     path.split('.').reduce((prev, curr) =>
         (prev ? prev[curr] : undefined),
