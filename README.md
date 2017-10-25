@@ -19,18 +19,13 @@ An elegant react form solution which focuses on form validation and more.
 - Promise based architecture
 - Easy to learn.
 
-## A quick 3 steps how to
-
-First, do some setup.
+## Install
 
 ```bash
 npm install --save veasy
 ```
 
-```javascript
-import Veasy, {createInitialState} from 'veasy';
-
-```
+## A quick 2 steps how to
 
 Suppose you have a form field component:
 
@@ -41,6 +36,9 @@ Suppose you have a form field component:
 ### Step 1: You can write a schema using json
 
 ```javascript
+import Veasy, {createInitialState} from 'veasy';
+
+// `title` here should match the name of the field
 const formSchema = {
   title: {
     minLength: 10,
@@ -49,17 +47,12 @@ const formSchema = {
   }
 };
 
-// Then setup the initial state in the component constructor
+// Then setup the initial state in the component's constructor
+// Find out add your own state in the doc
 this.state = createInitialState(formSchema);
 ```
 
-### Step 2: Define an update function
-
-```javascript
-validateFields(state) { this.setState(state); }
-```
-
-### Step 3: Auto bind the props
+### Step 2: Auto bind the props
 
 Then wrap using our `<Veasy>` component:
 
@@ -67,19 +60,21 @@ Then wrap using our `<Veasy>` component:
 <Veasy
   schema={formSchema}
   allState={this.state}
-  update={this.validateFields}
+  update={(fieldState) => {this.setState(fieldState);}}
 >
   <FieldItem name="title" />
 </Veasy>
 ```
 
-Congrats! Now your `FieldItem` will get the following `props` in runtime:
+Congrats! Now your `FieldItem` will get the following `props` at runtime:
 
 - `status`: For changing the look, ('normal', 'ok' and 'error')
 - `errorText`: For showing the error message.
 - `value`: Like how you bind the value for every `controlled component` :)
 
 **And anytime the user changes something, the above 3 `props` will auto updated by `Veasy`, Enjoy :)**
+
+There is even a `getFieldsValue()` method for you to get all the fields value, even you don't include all the fields in the schema, [we cover that case for you](https://albert-gao.github.io/veasy/#/collect-values) :)
 
 > Tip: There is an extra `isFormOK` prop at the root level of `state` to indicate the status of the form according to all the fields defined in the schema.
 
@@ -92,7 +87,7 @@ Now you get it! Let's take several minutes to go through our **[documentation](h
 
 The problem of real world validation is that sometimes we have so many rules in our code, but you can't just display all of them on the screen, it's scary :D
 
-Instead, we will guide the user to the right path **by validating the rule one by one**. A very simple example would be a field which expects an int, min and max.
+Instead, we will guide the user to the right path **by solving one problem a time**. A very simple example would be a field which expects an int, min and max.
 
 Your schema is like this:
 
