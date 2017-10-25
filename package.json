@@ -20,7 +20,7 @@
         "example": "node example.js",
         "prepare": "npm run clean && npm run lint && npm run test && npm run build",
         "pub": "./node_modules/.bin/np",
-        "coveralls": "npm run clean && npm run lint && npm run test && npm run build && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
+        "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
     },
     "repository": {
         "type": "git",

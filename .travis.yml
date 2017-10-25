@@ -5,7 +5,8 @@ node_js:
   - 'lts/*'
 matrix:
   fast_finish: true
-script: npm run coveralls
+script: npm run prepare
+after_success: 'npm run coveralls'
 notifications:
   email:
     recipients:
