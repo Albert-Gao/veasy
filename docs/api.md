@@ -27,8 +27,8 @@ a state object which you can set as the initial state of the current component.
 1. state: Object
     - It's the whole state of the current component, you can get it via `this.state`.
 1. mustOK: boolean, default to true
-    - If set to true, it will only return the fields which values equals `ok`.
-    - If set to false, it will return all the fields which includes in the schema.
+    - If set to true, it will only return the fields which status equals `ok`.
+    - If set to false, it will return values from all the fields which includes in the schema even its status equals to `error`.
 
 ### Return
 
@@ -41,3 +41,7 @@ an object with all the values of the fields.
   author: 'albert'
 }
 ```
+
+### Tips:
+
+Even some of the fields are not included in the `schema` for validation, you can still grab its value, check [collect-values](/collect-values) for more information.

@@ -1,4 +1,5 @@
 # Step 3/3: Binding
+
 Sweet! `Veasy` is now managing all the `state` for you. But it still leaves you to bind the `state` to the component. That is to say, you need to manually bind `status`, `errorText` and `value` to each field. Or do you? :)
 
 ## Auto binding
@@ -40,6 +41,7 @@ update(state) {
 Or if you use the babel plugin: `transform-class-properties`, it could be simply written as:
 
 ```javascript
+// No need to bind `this` now :)
 updateState = newState => this.setState(newState);
 ```
 

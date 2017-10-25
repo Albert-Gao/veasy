@@ -20,10 +20,10 @@ Very easy. Check this [section](/customize-add)
 
 Very easy. Check this [section](/customize-reuse)
 
-## How to collect all the values
+## How to collect all the fields values
 
 Just call the `getFieldsValue()` function, check this [section](/collect-values)
 
-## What about I want to collect some value from fields which not in the schema
+## What about I want to collect some value from fields which not included in the schema
 
 We handle that case as well, check this [section](/collect-values)

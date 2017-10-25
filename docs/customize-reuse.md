@@ -85,6 +85,6 @@ Remember that rule:
 
 And feel free to use the `state`, it's all yours now :)
 
-## What's next:
+## What's next
 
 - Move on to final [Step 3. binding](/binding) section

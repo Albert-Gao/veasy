@@ -14,8 +14,6 @@ const initialState = createInitialState(formSchema);
 Easy, you just invoke the `createInitialState()` method with the `schema` you defined.
 And it will result in the following `initialState`:
 
-!> The `isFormOK` field will set to true once the `status` of every field (which defined in the schema) are equal to `ok`.
-
 ```javascript
 {
   isFormOK: false,
@@ -31,6 +29,8 @@ And it will result in the following `initialState`:
   }
 }
 ```
+
+!> The `isFormOK` field will set to true once the `status` of every field (which defined in the schema) are equal to `ok`.
 
 Wait, why the `age` field starts with a value of `16` rather than the empty string like `title`?
 

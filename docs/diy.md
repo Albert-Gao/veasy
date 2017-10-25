@@ -20,3 +20,5 @@ Although we do recommend auto-binding, you could do everything manually (though 
       }
     ```
 1. You can get all the values by calling `this.veasy.getFieldsValue()`
+
+> Tip: It's not only for DIY everything at client side. This solution would enable us to use `veasy` at the back end in the future.
