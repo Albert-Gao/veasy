@@ -6,7 +6,8 @@ It's all for testing string, really, but for the `Number rules`, `veasy` will co
 
 For how to write the schema with rules, check the [schema](/schema) section.
 
-## Notation Explanation:
+## Notation Explanation
+
 The type after colon indicates the type that that rule expects.
 
 For instance:
@@ -23,41 +24,40 @@ For instance:
 }
 ```
 
-
-## All rules:
+## All rules
 
 ### String rules
 
-- minLength: int
-- maxLength: int
-- include: string
-- exclude: string
-- startWith: string
-- notStartWith: string
-- endWith: string
-- notEndWith: string
+- minLength: `int`
+- maxLength: `int`
+- include: `string`
+- exclude: `string`
+- startWith: `string`
+- notStartWith: `string`
+- endWith: `string`
+- notEndWith: `string`
 
 ### Number rules
 
-- min: number
-- max: number
-- equal: number
-- notEqual: number
-- isPositive: boolean
-- isNegative: boolean
-- isInt: boolean
-- isDecimal: boolean
+- min: `number`
+- max: `number`
+- equal: `number`
+- notEqual: `number`
+- isPositive: `boolean`
+- isNegative: `boolean`
+- isInt: `boolean`
+- isDecimal: `boolean`
 
 ### Normal rules
 
-- inArray: Array<string>
-- matchRegex: regex
-- isEmail: boolean
-- isUrl: boolean
-- isCreditCard: boolean
-- isHexColor: boolean
-- notEmpty: boolean
-- isIP: `v4`, `v6` or `all`
+- inArray: `Array<string>`
+- matchRegex: `regex`
+- isEmail: `boolean`
+- isUrl: `boolean`
+- isCreditCard: `boolean`
+- isHexColor: `boolean`
+- notEmpty: `boolean`
+- isIP: `string` within `v4`, `v6` or `all`
 
 
 > Underneath, `veasy` use [is.js](http://is.js.org/), a fantastic micro check library, kudos to the creators!
