@@ -1,6 +1,6 @@
 # Step 1/3: Schema
 
-?> A schema is a set of rules written in JSON which describes how you want to validate your field.
+?> The schema is a set of rules defined in JSON, describing how to validate each field
 
 ## Plain schema in JSON
 
@@ -27,7 +27,7 @@ const formSchema = {
 };
 ```
 
-!> Tip: Don't worry about that `isInt` rule, `Veasy` knows it's always a string from a form field, we handle that converting as well :)
+!> Tip: Don't worry about that `isInt` rule, `Veasy` knows field values are always a string and handles the conversion for you :)
 
 Now, when the value of `title` is not matching the rule, the following `props` will pass to your `title` component:
 
@@ -39,24 +39,24 @@ Now, when the value of `title` is not matching the rule, the following `props` w
 }
 ```
 
-It looks like this when all rule pass:
+It looks like this when all field-level rules pass:
 
 ```javascript
 {
   status: 'ok',
   errorText: '',
-  value: 'a'
+  value: 'ab'
 }
 ```
 
 ## Chaining rules and Progressive validation mechanism
 
-- Rules in schema are been processed one by one.
-- Unless the value passes the first rule, `Veasy` won't trigger the check for the next rule.
+- Rules in schema are processed one-by-one.
+- Unless the value passes the first rule, `Veasy` won't bother checking the next.
 
-The problem of real world validation is that sometimes we have so many rules in our code, but you can't just display all of them on the screen, it's scary :D
+Many forms in the wild display all errors at once, which can be many! That's scary!
 
-Instead, we will guide the user to the right path **by validating the rule one by one**. A very simple example would be a field which expects an int, min and max.
+Instead, we guide the user through the form **by validating each rule one-by-one**. As a very simple example, consider this field which expects an int, min and max.
 
 Your schema is like this:
 
@@ -70,7 +70,7 @@ Your schema is like this:
 }
 ```
 
-If the user gives an `one`, `veasy` will stop at first rule and let the user know that it should be a number, and when their age is less than `16`, it will pass the first rule and stop at the second rule, which will change the error message to `should be older than 16`.
+If the user enters `one`, `veasy` will stop at first rule and let the user know that it should be a number. If they then enter `1`, `veasy` will inform them that they `should be older than 16`, and so on until all rules are valid.
 
 This example is simple, you can chain all the rules to build your own. And thanks to `React`, it all happens immediately. All you need to do is to declare a schema.
 

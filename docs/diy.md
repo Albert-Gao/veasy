@@ -1,6 +1,6 @@
 # DIY
 
-Although we do recommend you using the auto-binding way, but you could still do everything by yourself if you want:
+Although we do recommend auto-binding, you could do everything manually (though we're not sure why you would):
 
 1. Declare your validation `schema`.
 1. Generate a `veasy` instance in your component's constructor.
