@@ -15,11 +15,11 @@ An elegant react form solution which focuses on form validation and more.
 
 ## Design concept
 
-`Veasy` try to add as less noise as possible to the JSX hierarchy. I believe validation is something which should decoupled from the components tree. That's all for what `Veasy` does:
+`Veasy` strives to add as little noise as possible to the JSX hierarchy. I believe validation is something that should be decoupled from the component's tree. That is exactly what `Veasy` does:
 
-?> You give `Veasy` the schema, and `Veasy` will update your component automatically, it will update the field item with the validation result and its according error message.
+?> You pass `Veasy` a schema and `Veasy` updates your component automatically, passing the validation result and error message to the field item.
 
-Even better, it could automatically bind the `props` to field item and invoke `setState()` for you.
+Even better, you can automatically bind the `props` to the field item so that it invokes `setState()` for you.
 
 So, [let's begin.](/howto)
 

@@ -1,10 +1,10 @@
 # Step 2/3: Initial State
 
-It's just like how you bind your `state` to the `React component`. But first you need to know what does the state look like.
+It's just like when you bind your `state` to the `React component`. But first you need to know what the state looks like.
 
 ## Create initial state with default value
 
-`Veasy` will generate the initial state for you according to the `schema` you just defined. We'll eliminate boilerplate code as much as possible.
+`Veasy` will generate the initial state for you according to the defined `schema`. We eliminate boilerplate code as much as possible.
 
 ```javascript
 import { createInitialState } from 'veasy';
@@ -34,7 +34,7 @@ And it will result in the following `initialState`:
 
 Wait, why the `age` field starts with a value of `16` rather than the empty string like `title`?
 
-Yes, that's right, since you can define its default value when you define the schema:
+Yes, that's right, because you can define its default value when you define the schema:
 
 ```javascript
 {
@@ -46,7 +46,7 @@ Yes, that's right, since you can define its default value when you define the sc
 }
 ```
 
-Just that easy, you declare how you want it to be, then it will just looks like that. :)
+It's that easy! You define it and that's how it will be :)
 
 ## How to get all the values
 

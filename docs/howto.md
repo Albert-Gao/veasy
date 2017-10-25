@@ -2,15 +2,15 @@
 
 ## Brief
 
-A high level abstraction of what you need to do would be:
+At a high level, here's what you'll be doing:
 
 1. `npm install --save veasy`
-1. Write your validation schema in `JSON`
-1. Generate the initial state for the form component.
+1. Define a `JSON` validation schema
+1. Generate the initial state of the form component.
 1. Bind 3 props to your field item component:
-    - `status`: For changing the look, ('normal', 'ok' and 'error')
-    - `errorText`: For showing the error message.
-    - `value`: Like how you bind the value for every `controlled component` :)
+    - `status`: Use to affect the field's appearance, ('normal', 'ok' and 'error')
+    - `errorText`: Use as the error message.
+    - `value`: Use to bind the field's value, making it a `controlled component` :)
 
 **Now your field component could get the validation result anytime the user changes something, Enjoy :)**
 
