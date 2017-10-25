@@ -3,6 +3,7 @@
 # Veasy.js
 
 [![Build Status](https://travis-ci.org/Albert-Gao/veasy.svg?branch=master)](https://travis-ci.org/Albert-Gao/veasy)
+[![npm version](https://badge.fury.io/js/veasy.svg)](https://badge.fury.io/js/veasy)
 
 An elegant react form solution which focuses on form validation and more.
 
