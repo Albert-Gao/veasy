@@ -1,7 +1,7 @@
 <!-- background image -->
 ![](_media/logo.png)
 
-# veasy <small>0.7.1</small>
+# veasy
 
 > An elegant react form solution which focus on form validation and more.
 
