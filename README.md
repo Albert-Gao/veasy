@@ -4,6 +4,7 @@
 
 [![Build Status](https://travis-ci.org/Albert-Gao/veasy.svg?branch=master)](https://travis-ci.org/Albert-Gao/veasy)
 [![npm version](https://badge.fury.io/js/veasy.svg)](https://badge.fury.io/js/veasy)
+[![Coverage Status](https://coveralls.io/repos/github/Albert-Gao/veasy/badge.svg)](https://coveralls.io/github/Albert-Gao/veasy)
 
 An elegant react form solution which focuses on form validation and more.
 

@@ -12,6 +12,7 @@ lib-cov
 
 # Coverage directory used by tools like istanbul
 coverage
+coverage/.coveralls.yml
 
 # node-waf configuration
 .lock-wscript

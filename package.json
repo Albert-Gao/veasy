@@ -15,11 +15,12 @@
         "lint": "eslint src test",
         "clean": "rimraf dist/",
         "build": "rimraf dist/ && babel src/ --out-dir dist/",
-        "test": "./node_modules/.bin/jest",
+        "test": "./node_modules/.bin/jest --coverage",
         "doc": "docsify serve ./docs",
         "example": "node example.js",
         "prepare": "npm run clean && npm run lint && npm run test && npm run build",
-        "pub": "./node_modules/.bin/np"
+        "pub": "./node_modules/.bin/np",
+        "coveralls": "cat ./coverage/lcov.info | coveralls"
     },
     "repository": {
         "type": "git",
@@ -42,6 +43,7 @@
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
         "babel-preset-env": "1.6.1",
         "babel-preset-react": "6.24.1",
+        "coveralls": "3.0.0",
         "enzyme": "3.1.0",
         "enzyme-adapter-react-16": "1.0.2",
         "enzyme-to-json": "3.1.4",
