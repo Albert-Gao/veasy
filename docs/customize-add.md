@@ -4,7 +4,7 @@ Before we start, remember one rule:
 
 !> As long as you don't have conflicts with the 3 default state for a single field, `status`, `errorText` and `value`, you can do whatever you want. :)
 
-`EasyV` will give you the ability to add your own state, otherwise, it's useless. Since validation will not be the only feature you want to implement for a form.
+`Veasy` will give you the ability to add your own state, otherwise, it's useless. Since validation will not be the only feature you want to implement for a form.
 
 ## Add your own state
 

@@ -4,7 +4,7 @@ It's just like how you bind your `state` to the `React component`. But first you
 
 ## Create initial state with default value
 
-`EasyV` will generate the initial state for you according to the `schema` you just defined. We'll eliminate boilerplate code as much as possible.
+`Veasy` will generate the initial state for you according to the `schema` you just defined. We'll eliminate boilerplate code as much as possible.
 
 ```javascript
 import { createInitialState } from 'veasy';

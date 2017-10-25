@@ -21,14 +21,14 @@ Now, the `props` will be:
 }
 ```
 
-!> `EasyV` may accept array as value for some rules. But the rule of thumb is: You can always wrap them in an array, and set your error message as the 2nd item.
+!> `Veasy` may accept array as value for some rules. But the rule of thumb is: You can always wrap them in an array, and set your error message as the 2nd item.
 
 An example:
 
 ```javascript
 const formSchema = {
     title: {
-        enum: [
+        inArray: [
           ['a.com', 'b.com', 'c.com'],
           'Please choose between the 3'
         ]
@@ -38,8 +38,7 @@ const formSchema = {
 
 Customize an error message has never been this easy.
 
-
-## What's next:
+## What's next
 
 - Move on to [Step 2. initial state](/initial-state).
 

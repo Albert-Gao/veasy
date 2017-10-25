@@ -5,7 +5,7 @@
 
 > An elegant react form solution which focus on form validation and more.
 
-[GitHub](https://github.com/Albert-Gao/easyV)
+[GitHub](https://github.com/Albert-Gao/veasy)
 [Intro](index)
 
 

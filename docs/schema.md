@@ -27,7 +27,7 @@ const formSchema = {
 };
 ```
 
-!> Tip: Don't worry about that `isInt` rule, EasyV knows it's always a string from a form field, we handle that converting as well :)
+!> Tip: Don't worry about that `isInt` rule, `Veasy` knows it's always a string from a form field, we handle that converting as well :)
 
 Now, when the value of `title` is not matching the rule, the following `props` will pass to your `title` component:
 
