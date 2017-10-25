@@ -3,14 +3,14 @@ import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import EasyValidator from '../src/Veasy';
+import Veasy from '../src/Veasy';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 const Input = () => <input type="text" />
 const Email = () => <input type="email" />
 
-describe('Test the <EasyVLib />', () => {
+describe('Test the <Veasy />', () => {
   let mockSchema;
   let mockTarget;
   let mockComponent;
@@ -41,15 +41,15 @@ describe('Test the <EasyVLib />', () => {
 
   test('should allows to set 3 props', () => {
     const wrapper = mount(
-      <EasyValidator
+      <Veasy
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
       >
         <Input name="title" />
-      </EasyValidator>
+      </Veasy>
     );
-    expect(wrapper.find(EasyValidator)).toHaveLength(1);
+    expect(wrapper.find(Veasy)).toHaveLength(1);
     expect(wrapper.props().schema).toEqual(mockSchema);
     expect(wrapper.props().allState).toEqual(mockComponent.state);
     expect(wrapper.props().update).toEqual(mockComponent.setState);
@@ -57,7 +57,7 @@ describe('Test the <EasyVLib />', () => {
 
   test('Should render a section as container with a onChange function', () => {
     const wrapper = mount(
-      <EasyValidator
+      <Veasy
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -65,7 +65,7 @@ describe('Test the <EasyVLib />', () => {
         <Input name="title" />
         <input />
         <input />
-      </EasyValidator>
+      </Veasy>
     );
     expect(wrapper.find('section')).toHaveLength(1);
     expect(typeof wrapper.find('section').prop('onChange')).toEqual('function');
@@ -77,7 +77,7 @@ describe('Test the <EasyVLib />', () => {
 
   test('Should render 3 inputs as children of section', () => {
     const wrapper = shallow(
-      <EasyValidator
+      <Veasy
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -85,7 +85,7 @@ describe('Test the <EasyVLib />', () => {
         <input />
         <input />
         <input />
-      </EasyValidator>
+      </Veasy>
     );
     const children = wrapper.find('section').children();
     expect(children).toHaveLength(3);
@@ -94,7 +94,7 @@ describe('Test the <EasyVLib />', () => {
 
   test('The 1st children should have extra props', () => {
     const wrapper = shallow(
-      <EasyValidator
+      <Veasy
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -102,7 +102,7 @@ describe('Test the <EasyVLib />', () => {
         <Input name="title" />
         <input />
         <input />
-      </EasyValidator>
+      </Veasy>
     );
     const targetInput = wrapper.find('Input').at(0);
     expect(targetInput.prop('name')).toEqual('title');
@@ -113,7 +113,7 @@ describe('Test the <EasyVLib />', () => {
 
   test('The 2nd and 3rd children shouldn`t have extra props', () => {
     const wrapper = shallow(
-      <EasyValidator
+      <Veasy
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -121,7 +121,7 @@ describe('Test the <EasyVLib />', () => {
         <Input name="title" />
         <input />
         <input />
-      </EasyValidator>
+      </Veasy>
     );
     const targetInput = wrapper.find('input').at(1);
     expect(targetInput.prop('name')).toBe(undefined);
@@ -138,7 +138,7 @@ describe('Test the <EasyVLib />', () => {
 
   test('Should bind recursive element', () => {
     const wrapper = shallow(
-      <EasyValidator
+      <Veasy
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -152,7 +152,7 @@ describe('Test the <EasyVLib />', () => {
         <div>
           <input />
         </div>
-      </EasyValidator>
+      </Veasy>
     );
     const targetInput = wrapper.find('Input').at(0);
     expect(targetInput.prop('name')).toBe('title');
@@ -163,7 +163,7 @@ describe('Test the <EasyVLib />', () => {
 
   test('Should maintain the user`s prop', () => {
     const wrapper = shallow(
-      <EasyValidator
+      <Veasy
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -177,7 +177,7 @@ describe('Test the <EasyVLib />', () => {
         <div>
           <Email super="ok" cool="true" />
         </div>
-      </EasyValidator>
+      </Veasy>
     );
     const targetInput = wrapper.find('Email').at(0);
     expect(targetInput.prop('super')).toBe('ok');

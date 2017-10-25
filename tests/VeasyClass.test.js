@@ -1,8 +1,7 @@
 /* eslint-disable no-new */
 import * as lib from '../src/helpers';
-import EasyVClass from '../src/VeasyClass';
+import VeasyClass from '../src/VeasyClass';
 
-const EasyV = EasyVClass;
 const { getConstructorErrorMessage } = lib;
 
 describe('test the constructor - Property component', () => {
@@ -10,25 +9,25 @@ describe('test the constructor - Property component', () => {
 
   test('should throw when give none parameters', () => {
     expect(() => {
-      new EasyV();
+      new VeasyClass();
     }).toThrow(getConstructorErrorMessage('Parameter component', undefined));
   });
 
   test('Should throw when give a number', () => {
     expect(() => {
-      new EasyV(1, schema);
+      new VeasyClass(1, schema);
     }).toThrow(getConstructorErrorMessage('Parameter component', 1));
   });
 
   test('Should throw when give a string', () => {
     expect(() => {
-      new EasyV('a', schema);
+      new VeasyClass('a', schema);
     }).toThrow(getConstructorErrorMessage('Parameter component', 'a'));
   });
 
   test('Should throw when give an empty object', () => {
     expect(() => {
-      new EasyV({}, schema);
+      new VeasyClass({}, schema);
     }).toThrow(
       getConstructorErrorMessage('Parameter component', '[object Object]')
     );
@@ -36,13 +35,13 @@ describe('test the constructor - Property component', () => {
 
   test('Should not throw when give an object with none value property', () => {
     expect(() => {
-      new EasyV({ name: null }, schema);
+      new VeasyClass({ name: null }, schema);
     }).not.toThrow();
   });
 
   test('Should throw when has an empty object as an property', () => {
     expect(() => {
-      new EasyV({ name: {} }, schema);
+      new VeasyClass({ name: {} }, schema);
     }).not.toThrow();
   });
 });
@@ -52,25 +51,25 @@ describe('test the constructor - Property schema', () => {
 
   test('should throw when give none parameters', () => {
     expect(() => {
-      new EasyV(component);
+      new VeasyClass(component);
     }).toThrow(getConstructorErrorMessage('Parameter schema', undefined));
   });
 
   test('Should throw when give a number', () => {
     expect(() => {
-      new EasyV(component, 1);
+      new VeasyClass(component, 1);
     }).toThrow(getConstructorErrorMessage('Parameter schema', 1));
   });
 
   test('Should throw when give a string', () => {
     expect(() => {
-      new EasyV(component, 'a');
+      new VeasyClass(component, 'a');
     }).toThrow(getConstructorErrorMessage('Parameter schema', 'a'));
   });
 
   test('Should throw when give an empty object', () => {
     expect(() => {
-      new EasyV(component, {});
+      new VeasyClass(component, {});
     }).toThrow(
       getConstructorErrorMessage('Parameter schema', '[object Object]')
     );
@@ -78,13 +77,13 @@ describe('test the constructor - Property schema', () => {
 
   test('Should throw when give an object with none value property', () => {
     expect(() => {
-      new EasyV(component, { name: { first: 'albert' }, age: null });
+      new VeasyClass(component, { name: { first: 'albert' }, age: null });
     }).toThrow('[Veasy - schema.age] Expect: non empty object. Actual: null');
   });
 
   test('Should throw when give an empty object as an property', () => {
     expect(() => {
-      new EasyV(component, { name: {}, age: 26 });
+      new VeasyClass(component, { name: {}, age: 26 });
     }).toThrow(
       '[Veasy - schema.name] ' +
         'Expect: non empty object. Actual: [object Object]'
@@ -101,8 +100,8 @@ describe('test the constructor - Property schema', () => {
     const mockSchema = { name: { isIP: false } };
     const mockTarget = { abc: 123 };
 
-    const easyV = new EasyV(mockComponent, mockSchema);
-    easyV.validate(mockTarget);
+    const veasy = new VeasyClass(mockComponent, mockSchema);
+    veasy.validate(mockTarget);
     expect(mockUpdate.mock.calls.length).toEqual(1);
     expect(mockUpdate.mock.calls[0][0]).toEqual(mockTarget);
     expect(mockUpdate.mock.calls[0][1]).toEqual(mockSchema);
@@ -121,10 +120,9 @@ describe('Test the class methods', () => {
       setState: () => {}
     };
     const mockSchema = { name: { isIP: false } };
-    const mockTarget = { abc: 123 };
 
-    const easyV = new EasyV(mockComponent, mockSchema);
-    easyV.getFieldsValue();
+    const veasy = new VeasyClass(mockComponent, mockSchema);
+    veasy.getFieldsValue();
     expect(mockUpdate.mock.calls.length).toEqual(1);
     expect(mockUpdate.mock.calls[0][0]).toEqual(mockSchema);
     expect(mockUpdate.mock.calls[0][1]).toEqual(mockComponent.state);

@@ -1,6 +1,6 @@
 import * as lib from '../src/helpers';
 /* eslint-disable no-new */
-import EasyV from '../src/VeasyClass';
+import VeasyClass from '../src/VeasyClass';
 
 describe('Test the createInitialState method', () => {
   let schema;
@@ -11,7 +11,7 @@ describe('Test the createInitialState method', () => {
   });
 
   test('Should return an object with certain properties', () => {
-    const state = new EasyV(component, schema).createInitialState();
+    const state = new VeasyClass(component, schema).createInitialState();
     expect(state).toEqual({
       isFormOK: false,
       name: {
@@ -30,7 +30,7 @@ describe('Test the createInitialState method', () => {
   test('Should return an object with value equal default if there is', () => {
     schema.title.default = 'I am default';
     schema.name.default = 'albert';
-    const state = new EasyV(component, schema).createInitialState();
+    const state = new VeasyClass(component, schema).createInitialState();
     expect(state).toEqual({
       isFormOK: false,
       name: {
@@ -57,7 +57,7 @@ describe('Test the createInitialState method', () => {
       },
       C: 1
     };
-    const state = new EasyV(component, schema).createInitialState(userState);
+    const state = new VeasyClass(component, schema).createInitialState(userState);
     expect(state).toEqual({
       isFormOK: false,
       name: {
@@ -97,7 +97,7 @@ describe('Test the createInitialState method', () => {
       },
       C: 1
     };
-    const state = new EasyV(component, schema).createInitialState(userState);
+    const state = new VeasyClass(component, schema).createInitialState(userState);
     expect(state).toEqual({
       isFormOK: false,
       name: {
