@@ -288,10 +288,26 @@ describe('Test the checkIsFormOK method', () => {
     expect(state.isFormOK).toBe(false);
   });
 
-  test('could restore the isFormOK to false', () => { 
+  test('could restore the isFormOK to false - error', () => { 
     state.isFormOK = true;
     state.title.status = 'error';
     lib.checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
+   });
+
+   test('could restore the isFormOK to false - normal', () => { 
+    state.isFormOK = true;
+    state.title.status = 'normal';
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(false);
+   });
+
+   test('could restore the isFormOK to false - collectValues', () => { 
+    schema.collectValues = {
+      firstName: 'firstName'
+    }
+    state.description.status = 'ok';
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(true);
    });
 });

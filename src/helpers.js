@@ -248,6 +248,7 @@ export function checkIsFormOK(schema, componentState) {
   const properties = Object.keys(schema);
   let isError = false;
   properties.some(prop => {
+    if (prop === 'collectValues') return false;
     if (
       componentState[prop].status === 'error' ||
       componentState[prop].status === 'normal'
