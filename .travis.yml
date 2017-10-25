@@ -6,7 +6,7 @@ node_js:
 matrix:
   fast_finish: true
 script: npm run prepare
-after_success: 'npm run coveralls'
+after_success: npm run coveralls
 notifications:
   email:
     recipients:
