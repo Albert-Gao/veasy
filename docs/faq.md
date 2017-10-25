@@ -16,7 +16,7 @@ You could, check this [section](/customize-error-text)
 
 Very easy. Check this [section](/customize-add)
 
-## I have my own state for the field which want to add to the same state, how to do that
+## I wanna put my own field state under the same name of `veasy` field state, how to do that
 
 Very easy. Check this [section](/customize-reuse)
 
