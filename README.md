@@ -3,6 +3,7 @@
 # Veasy.js
 
 [![npm version](https://badge.fury.io/js/veasy.svg)](https://badge.fury.io/js/veasy)
+[![npm](https://img.shields.io/npm/l/express.svg)](https://www.npmjs.com/package/veasy)
 [![Build Status](https://travis-ci.org/Albert-Gao/veasy.svg?branch=master)](https://travis-ci.org/Albert-Gao/veasy)
 [![Coverage Status](https://coveralls.io/repos/github/Albert-Gao/veasy/badge.svg)](https://coveralls.io/github/Albert-Gao/veasy)
 
