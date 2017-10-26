@@ -3,17 +3,19 @@ import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import Veasy from '../src/Veasy';
+import VeasyForm from '../src/VeasyForm';
+import * as lib from '../src/helpers';
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const Input = () => <input type="text" />
-const Email = () => <input type="email" />
+const Input = () => <input type="text" />;
+const Email = () => <input type="email" />;
 
 describe('Test the <Veasy />', () => {
   let mockSchema;
   let mockTarget;
   let mockComponent;
+  let componentToRender;
 
   beforeEach(() => {
     mockSchema = {
@@ -37,19 +39,36 @@ describe('Test the <Veasy />', () => {
       },
       setState: x => {}
     };
+    componentToRender = (
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+      >
+        <div>
+          <p>
+            <Input name="title" />
+          </p>
+        </div>
+        <input />
+        <div>
+          <Email super="ok" cool="true" />
+        </div>
+      </VeasyForm>
+    );
   });
 
   test('should allows to set 3 props', () => {
     const wrapper = mount(
-      <Veasy
+      <VeasyForm
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
       >
         <Input name="title" />
-      </Veasy>
+      </VeasyForm>
     );
-    expect(wrapper.find(Veasy)).toHaveLength(1);
+    expect(wrapper.find(VeasyForm)).toHaveLength(1);
     expect(wrapper.props().schema).toEqual(mockSchema);
     expect(wrapper.props().allState).toEqual(mockComponent.state);
     expect(wrapper.props().update).toEqual(mockComponent.setState);
@@ -57,7 +76,7 @@ describe('Test the <Veasy />', () => {
 
   test('Should render a section as container with a onChange function', () => {
     const wrapper = mount(
-      <Veasy
+      <VeasyForm
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -65,19 +84,20 @@ describe('Test the <Veasy />', () => {
         <Input name="title" />
         <input />
         <input />
-      </Veasy>
+      </VeasyForm>
     );
-    expect(wrapper.find('section')).toHaveLength(1);
-    expect(typeof wrapper.find('section').prop('onChange')).toEqual('function');
-    wrapper.find('section').prop('onChange')({ 
-      preventDefault: () => {}, 
+    expect(wrapper.find('form')).toHaveLength(1);
+    expect(wrapper.find('section')).toHaveLength(0);
+    expect(typeof wrapper.find('form').prop('onChange')).toEqual('function');
+    wrapper.find('form').prop('onChange')({
+      preventDefault: () => {},
       target: mockTarget
     });
   });
 
   test('Should render 3 inputs as children of section', () => {
     const wrapper = shallow(
-      <Veasy
+      <VeasyForm
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -85,16 +105,16 @@ describe('Test the <Veasy />', () => {
         <input />
         <input />
         <input />
-      </Veasy>
+      </VeasyForm>
     );
-    const children = wrapper.find('section').children();
+    const children = wrapper.find('form').children();
     expect(children).toHaveLength(3);
     expect(children.find('input')).toHaveLength(3);
   });
 
   test('The 1st children should have extra props', () => {
     const wrapper = shallow(
-      <Veasy
+      <VeasyForm
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -102,7 +122,7 @@ describe('Test the <Veasy />', () => {
         <Input name="title" />
         <input />
         <input />
-      </Veasy>
+      </VeasyForm>
     );
     const targetInput = wrapper.find('Input').at(0);
     expect(targetInput.prop('name')).toEqual('title');
@@ -113,7 +133,7 @@ describe('Test the <Veasy />', () => {
 
   test('The 2nd and 3rd children shouldn`t have extra props', () => {
     const wrapper = shallow(
-      <Veasy
+      <VeasyForm
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
@@ -121,7 +141,7 @@ describe('Test the <Veasy />', () => {
         <Input name="title" />
         <input />
         <input />
-      </Veasy>
+      </VeasyForm>
     );
     const targetInput = wrapper.find('input').at(1);
     expect(targetInput.prop('name')).toBe(undefined);
@@ -137,23 +157,7 @@ describe('Test the <Veasy />', () => {
   });
 
   test('Should bind recursive element', () => {
-    const wrapper = shallow(
-      <Veasy
-        schema={mockSchema}
-        allState={mockComponent.state}
-        update={mockComponent.setState}
-      >
-        <div>
-          <p>
-            <Input name="title" />
-          </p>
-        </div>
-        <input />
-        <div>
-          <input />
-        </div>
-      </Veasy>
-    );
+    const wrapper = shallow(componentToRender);
     const targetInput = wrapper.find('Input').at(0);
     expect(targetInput.prop('name')).toBe('title');
     expect(targetInput.prop('status')).toBe('normal');
@@ -162,35 +166,31 @@ describe('Test the <Veasy />', () => {
   });
 
   test('Should maintain the user`s prop', () => {
-    const wrapper = shallow(
-      <Veasy
-        schema={mockSchema}
-        allState={mockComponent.state}
-        update={mockComponent.setState}
-      >
-        <div>
-          <p>
-            <Input name="title" />
-          </p>
-        </div>
-        <input />
-        <div>
-          <Email super="ok" cool="true" />
-        </div>
-      </Veasy>
-    );
+    const wrapper = shallow(componentToRender);
     const targetInput = wrapper.find('Email').at(0);
     expect(targetInput.prop('super')).toBe('ok');
     expect(targetInput.prop('cool')).toBe('true');
   });
 
   test('trigger onBlur should invoke triggerValidation', () => {
-    
+    const wrapper = shallow(componentToRender);
+    const mockTrigger = jest.fn();
+    wrapper.instance().triggerValidation = mockTrigger;
+    expect(mockTrigger.mock.calls.length).toBe(0);
+    const target = wrapper.find('form').at(0);
+    target.simulate('blur');
+    expect(mockTrigger.mock.calls.length).toBe(1);
+  });
+
+  test('should trigger lib.resetForm', () => {
+    const mockReset = jest.fn();
+    const mockUpdate = jest.fn();
+    lib.resetForm = mockReset;
     const wrapper = shallow(
-      <Veasy
+      <VeasyForm
         schema={mockSchema}
         allState={mockComponent.state}
-        update={mockComponent.setState}
+        update={mockUpdate}
       >
         <div>
           <p>
@@ -201,13 +201,17 @@ describe('Test the <Veasy />', () => {
         <div>
           <Email super="ok" cool="true" />
         </div>
-      </Veasy>
+      </VeasyForm>
     );
-    const mockTrigger = jest.fn();
-    wrapper.instance().triggerValidation = mockTrigger;
-    expect(mockTrigger.mock.calls.length).toBe(0);
-    const target = wrapper.find('section').at(0);
-    target.simulate('blur');
-    expect(mockTrigger.mock.calls.length).toBe(1);
+    const target = wrapper.find('form').at(0);
+    target.simulate('reset', { preventDefault: () => {} });
+    expect(mockReset.mock.calls.length).toBe(1);
+    expect(mockReset).toBeCalledWith({
+      title: {
+        default: '',
+        minLength: 1
+      }
+    });
+    expect(mockUpdate.mock.calls.length).toBe(1);
   });
 });

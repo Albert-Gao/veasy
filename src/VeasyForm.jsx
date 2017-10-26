@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import * as lib from './helpers';
 
-export default class Veasy extends React.Component {
+export default class VeasyForm extends React.Component {
   triggerValidation = e => {
     e.preventDefault();
     const { schema, allState, update } = this.props;
@@ -52,21 +52,31 @@ export default class Veasy extends React.Component {
       }
       return child;
     });
+  
+  handleReset = (e) => {
+    e.preventDefault();
+    const { update, schema } = this.props;
+    update(lib.resetForm(schema));
+  };
 
   render() {
     return (
-      <section onChange={this.handleOnChange} onBlur={this.handleBlur}>
+      <form
+        onChange={this.handleOnChange}
+        onBlur={this.handleBlur}
+        onReset={this.handleReset}
+      >
         {this.recursiveCloneChildren(this.props.children)}
-      </section>
+      </form>
     );
   }
 }
 
-Veasy.defaultProps = {
+VeasyForm.defaultProps = {
   allState: undefined
 };
 
-Veasy.propTypes = {
+VeasyForm.propTypes = {
   schema: PropTypes.object.isRequired,
   allState: PropTypes.object,
   update: PropTypes.func.isRequired,

@@ -164,8 +164,8 @@ describe('Test the shouldChange method', () => {
 });
 
 describe('Test the getFieldsValue method', () => {
-  let state;
   let schema;
+  let state;
 
   beforeEach(() => {
     state = {
@@ -333,4 +333,87 @@ describe('Test the shouldValidate method', () => {
     result = lib.shouldValidate(keys, targetName);
     expect(result).toBe(false);
    });
+});
+
+describe('Test the resetForm method', () => {
+  let schema;
+  let state;
+
+  beforeEach(() => {
+    state = {
+      title: {
+        status: 'error',
+        errorText: 'too short',
+        value: 'abc'
+      },
+      description: {
+        status: 'ok',
+        errorText: '',
+        value: '12345678901'
+      }
+    };
+    schema = {
+      title: {
+        minLength: 5,
+        maxLength: 10
+      },
+      description: {
+        minLength: 10,
+        maxLength: 20
+      }
+    };
+  });
+
+  test('should reset the state', () => {
+    const result = lib.resetForm(schema);
+    expect(result).toEqual({
+      title: {
+        status: 'normal',
+        errorText: '',
+        value: ''
+      },
+      description: {
+        status: 'normal',
+        errorText: '',
+        value: ''
+      }
+    });
+  });
+
+  test('should ignore collectValues', () => {
+    schema.collectValues = {
+      abc: 'abc',
+      def: 'def'
+    };
+    const result = lib.resetForm(schema);
+    expect(result).toEqual({
+      title: {
+        status: 'normal',
+        errorText: '',
+        value: ''
+      },
+      description: {
+        status: 'normal',
+        errorText: '',
+        value: ''
+      }
+    });
+  });
+
+  test('should honour the default', () => {
+    schema.title.default = 'albert'
+    const result = lib.resetForm(schema);
+    expect(result).toEqual({
+      title: {
+        status: 'normal',
+        errorText: '',
+        value: 'albert'
+      },
+      description: {
+        status: 'normal',
+        errorText: '',
+        value: ''
+      }
+    });
+  });
 });

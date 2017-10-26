@@ -1,3 +1,3 @@
-export { default } from './Veasy';
+export { default } from './VeasyForm';
 export { default as VeasyClass } from './VeasyClass';
 export { createInitialState, getFieldsValue } from './helpers';

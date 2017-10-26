@@ -198,6 +198,21 @@ function ruleRunner(ruleHandler, fieldName, value, pschema) {
   throwError(value, userErrorText || result.errorText);
 }
 
+export function resetForm(schema) {
+  const newSchema = {...schema};
+  delete newSchema.collectValues;
+  const fieldNames = Object.keys(newSchema);
+  const result = {};
+  fieldNames.forEach((name) => {
+    result[name] = {
+      status: 'normal',
+      errorText: '', 
+      value: createInitialValue(schema[name])
+    }
+  });
+  return result;
+}
+
 /**
  * It will run through the user's settings for a field,
  * and try matching to the matchers.js,
