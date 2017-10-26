@@ -82,15 +82,16 @@ Then wrap using our `<Veasy>` component:
 </VeasyForm>
 ```
 
-Congrats! Now your `FieldItem` will get the following `props` at runtime:
+Congrats! Now you automatically get the following features:
 
-- `status`: For changing the look, ('normal', 'ok' and 'error')
-- `errorText`: For showing the error message.
-- `value`: Like how you bind the value for every `controlled component` :)
-
-**And anytime the user changes something, the above 3 `props` will auto updated by `Veasy`, Enjoy :)**
-
-Even better, the validation will be triggered for both `onChange` and `onBlur` event.
+1. Your `FieldItem` will get the following `props` at runtime:
+    - `status`: For changing the look, ('normal', 'ok' and 'error')
+    - `errorText`: For showing the error message.
+    - `value`: Like how you bind the value for every `controlled component` :)
+1. Anytime the user changes something, the above 3 `props` will auto updated by `Veasy`
+1. `OnChange` and `onBlur` will auto trigger the validation as well.
+1. `isFormOK` will be true when all fields's status equals to `ok`.
+1. `onReset` has been handled for resetting the state to initial state, you just need to add a plain form reset button ( < button type='reset' > ).
 
 There is even a `getFieldsValue()` method for you to get all the fields value, even you don't include all the fields in the schema, [we cover that case for you](https://albert-gao.github.io/veasy/#/collect-values) :)
 
