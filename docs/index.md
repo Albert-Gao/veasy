@@ -1,16 +1,29 @@
 # Veasy
 
-An elegant react form solution which focuses on form validation and more.
+A comprehensive react form solution which aims to eliminate all tedious logic.
 
 ## Features
 
+- Field validation (We handle the validation logic!)
+- Form status (check whether all fields ready or not)
+- Generate initial state with default value
+- Get fields value for submitting
+- Auto update fields `props` according to validation result
+- Auto binding fields `props`
+- onBlur: trigger validation automatically
+- onChange: trigger validation automatically
+- onReset: reset form to default state
+- Need more features? Raise an [issue](https://github.com/Albert-Gao/veasy) :)
+
+## Why use
+
 - Declarative way to define your validation rule
-- Comprehensive validation rule set
+- Comprehensive validation rule set and easy to extend
 - Progressive validation mechanism.
-- More than validation: Auto generate initial state, set fields with default value, get fields values, etc.
 - Highly customizable: error message, default state, whatever you want.
 - Clean JSX hierarchy, use your own field item component.
-- Promise based architecture
+- Promise based architecture.
+- Handle all the tedious logic without learning too much.
 - Easy to learn.
 
 ## Design concept

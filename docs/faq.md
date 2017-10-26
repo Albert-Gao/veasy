@@ -8,6 +8,18 @@ To follow the best practice, We treat your state as immutable data, so every tim
 
 Not really, we will check `status`, `errorText` and `value`, if they are all the same, we won't trigger the update.
 
+## So `veasy` will handle the `onChange`, what about `onBlur` event
+
+The validation will be triggered when the `onBlur` been triggered.
+
+## What about the `reset` button
+
+`<VeasyForm>` handles the `onReset` event, it will reset the state to the initialState. All you need to do is to add a button which `type` is `reset`:
+
+```html
+<button type='reset'> Reset </button>
+```
+
 ## How to customize the error text
 
 You could, check this [section](/customize-error-text)

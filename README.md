@@ -7,19 +7,32 @@
 [![Build Status](https://travis-ci.org/Albert-Gao/veasy.svg?branch=master)](https://travis-ci.org/Albert-Gao/veasy)
 [![Coverage Status](https://coveralls.io/repos/github/Albert-Gao/veasy/badge.svg)](https://coveralls.io/github/Albert-Gao/veasy)
 
-An elegant react form solution which focuses on form validation and much more.
+A comprehensive react form solution which aims to eliminate all tedious logic.
 
 **[Documentation](https://albert-gao.github.io/veasy/)**
+
+## Features
+
+- field validation (We handle the validation logic!)
+- Form status (check whether all fields ready or not)
+- generate initial state with default value
+- get fields value for submitting
+- Auto update fields `props` according to validation result
+- Auto binding fields `props`
+- onBlur: trigger validation automatically
+- onChange: trigger validation automatically
+- onReset: reset form to default state
+- Need more features? Raise an [issue](https://github.com/Albert-Gao/veasy) :)
 
 ## Why use
 
 - Declarative way to define your validation rule
 - Comprehensive validation rule set and easy to extend
 - Progressive validation mechanism.
-- More than validation: Auto generate initial state, set fields with default value, get fields values, etc.
 - Highly customizable: error message, default state, whatever you want.
 - Clean JSX hierarchy, use your own field item component.
-- Promise based architecture
+- Promise based architecture.
+- Handle all the tedious logic without learning too much.
 - Easy to learn.
 
 ## Install
@@ -39,7 +52,7 @@ Suppose you have a form field component:
 ### Step 1: You can write a schema using json
 
 ```javascript
-import Veasy, {createInitialState} from 'veasy';
+import VeasyForm, {createInitialState} from 'veasy';
 
 // `title` here should match the name of the field
 const formSchema = {
@@ -60,13 +73,13 @@ this.state = createInitialState(formSchema);
 Then wrap using our `<Veasy>` component:
 
 ```xml
-<Veasy
+<VeasyForm
   schema={formSchema}
   allState={this.state}
   update={(fieldState) => {this.setState(fieldState);}}
 >
   <FieldItem name="title" />
-</Veasy>
+</VeasyForm>
 ```
 
 Congrats! Now your `FieldItem` will get the following `props` at runtime:
@@ -76,6 +89,8 @@ Congrats! Now your `FieldItem` will get the following `props` at runtime:
 - `value`: Like how you bind the value for every `controlled component` :)
 
 **And anytime the user changes something, the above 3 `props` will auto updated by `Veasy`, Enjoy :)**
+
+Even better, the validation will be triggered for both `onChange` and `onBlur` event.
 
 There is even a `getFieldsValue()` method for you to get all the fields value, even you don't include all the fields in the schema, [we cover that case for you](https://albert-gao.github.io/veasy/#/collect-values) :)
 

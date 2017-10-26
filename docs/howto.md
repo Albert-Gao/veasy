@@ -14,7 +14,7 @@ At a high level, here's what you'll be doing:
 
 **Now your field component could get the validation result anytime the user changes something, Enjoy :)**
 
-Even better, `step 3` and `step 4` could be simplified by using our powerful `createInitialState()` and `<Veasy>` wrapper.
+Even better, `step 3` and `step 4` could be simplified by using our powerful `createInitialState()` and `<VeasyForm>` wrapper.
 
 > Tip: There is an extra `isFormOK` prop at the root level of `state` to indicate the status of the form according to all the fields defined in the schema.
 

@@ -4,12 +4,12 @@ Sweet! `Veasy` is now managing all the `state` for you. But it still leaves you 
 
 ## Auto binding
 
-When you wrap your field components with `<Veasy>`, it will bind all 3 props for you! It doesn't matter whether the field is a direct child or not, `<Veasy>` will find it :)
+When you wrap your field components with `<VeasyForm>`, it will bind all 3 props for you! It doesn't matter whether the field is a direct child or not, `<VeasyForm>` will find it :)
 
 !> **This is true, so long as the `name` of the element matches the name in the `schema`.**
 
 ```jsx
-<Veasy
+<VeasyForm
   schema={formSchema}
   allState={this.state}
   update={this.update}
@@ -18,14 +18,16 @@ When you wrap your field components with `<Veasy>`, it will bind all 3 props for
   <div>
     <FieldItem name="age" />
   </div>
-</Veasy>
+</VeasyForm>
 ```
 
-As you see, `<Veasy>` expects 3 `props`:
+As you see, `<VeasyForm>` expects 3 `props`:
 
 1. `schema`: This is the `schema` you just declared.
 1. `allState`: This is the `state` of the current form component.
 1. `update`: This is a method which wraps the `setState` and pass it to `Veasy`.
+
+!> In fact, `<VeasyForm>` will just render a plain `<form>` for you. Feel free to add more `props` to the form, and they will all be added to the final `<form>` tag.
 
 ## Update method
 
@@ -46,6 +48,14 @@ updateState = newState => this.setState(newState);
 ```
 
 Then `Veasy` will call this method whenever there is a update.
+
+!> The `update` will be used when the following 3 events been triggered:
+
+- `onChange`
+- `onBlur`
+- `onReset`
+
+> `<VeasyForm>` will handle the above 3 events for you, all you need to do is to wrap the `setState` method and pass it as a `update` prop to `<VeasyForm>`. But for onReset you need a reset button: < button type='reset' >.
 
 ## Passing Props
 
