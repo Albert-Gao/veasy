@@ -5,11 +5,15 @@ import React from 'react';
 import * as lib from './helpers';
 
 export default class Veasy extends React.Component {
-  handleOnChange = e => {
+  triggerValidation = e => {
     e.preventDefault();
     const { schema, allState, update } = this.props;
     lib.startValidating(e.target, schema, update, allState);
   };
+
+  handleOnChange = e => this.triggerValidation(e);
+
+  handleBlur = e => this.triggerValidation(e);
 
   isRegisteredComponent = (child, childName) => {
     if (is.string(child.type)) {
@@ -33,7 +37,7 @@ export default class Veasy extends React.Component {
     });
   };
 
-  recursiveCloneChildren = children => (
+  recursiveCloneChildren = children =>
     React.Children.map(children, child => {
       const childName = child.props.name;
       if (this.isRegisteredComponent(child, childName)) {
@@ -47,12 +51,11 @@ export default class Veasy extends React.Component {
         return React.cloneElement(child, childProps);
       }
       return child;
-    })
-  );
+    });
 
   render() {
     return (
-      <section onChange={this.handleOnChange}>
+      <section onChange={this.handleOnChange} onBlur={this.handleBlur}>
         {this.recursiveCloneChildren(this.props.children)}
       </section>
     );

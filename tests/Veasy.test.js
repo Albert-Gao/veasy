@@ -183,4 +183,31 @@ describe('Test the <Veasy />', () => {
     expect(targetInput.prop('super')).toBe('ok');
     expect(targetInput.prop('cool')).toBe('true');
   });
+
+  test('trigger onBlur should invoke triggerValidation', () => {
+    
+    const wrapper = shallow(
+      <Veasy
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+      >
+        <div>
+          <p>
+            <Input name="title" />
+          </p>
+        </div>
+        <input />
+        <div>
+          <Email super="ok" cool="true" />
+        </div>
+      </Veasy>
+    );
+    const mockTrigger = jest.fn();
+    wrapper.instance().triggerValidation = mockTrigger;
+    expect(mockTrigger.mock.calls.length).toBe(0);
+    const target = wrapper.find('section').at(0);
+    target.simulate('blur');
+    expect(mockTrigger.mock.calls.length).toBe(1);
+  });
 });
