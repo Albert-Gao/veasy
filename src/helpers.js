@@ -8,6 +8,12 @@ import handlerMatcher, {
   RuleWhichNeedsBoolean
 } from './ruleHandlers/matchers';
 
+export const FieldStatus = {
+  ok: 'ok',
+  error: 'error',
+  normal: 'normal'
+};
+
 /**
  * Return error message for checking the parameters of the constructor.
  */
@@ -68,7 +74,7 @@ export function createInitialValue(schema) {
  */
 export function createNewFieldState(needValue = false, fieldSchema) {
   const result = {
-    status: 'normal',
+    status: FieldStatus.normal,
     errorText: ''
   };
   if (needValue) {
@@ -144,7 +150,7 @@ export function getFieldsValue(schema, state, mustOK = true) {
       return;
     }
     const fieldState = state[name];
-    if (mustOK && fieldState.status !== 'ok') return;
+    if (mustOK && fieldState.status !== FieldStatus.ok) return;
     result[name] = fieldState.value;
   });
 
@@ -155,7 +161,7 @@ export function getFieldsValue(schema, state, mustOK = true) {
  * throw an error with defined text, usually calls by ruleRunner().
  */
 export function throwError(value, errorText) {
-  const error = { value, errorText, status: 'error' };
+  const error = { value, errorText, status: FieldStatus.error };
   throw error;
 }
 
@@ -205,7 +211,7 @@ export function resetForm(schema, state) {
   const fieldNames = Object.keys(newSchema);
   fieldNames.forEach(name => {
     const newField = newState[name];
-    newField.status = 'normal';
+    newField.status = FieldStatus.normal;
     newField.errorText = '';
     newField.value = createInitialValue(schema[name]);
   });
@@ -247,7 +253,7 @@ export function rulesRunner(value, schema) {
   fieldState.value = value;
 
   if (is.existy(value) && is.not.empty(value)) {
-    fieldState.status = 'ok';
+    fieldState.status = FieldStatus.ok;
   }
 
   return runMatchers(handlerMatcher, fieldState, schema);
@@ -265,8 +271,8 @@ export function checkIsFormOK(schema, componentState) {
   properties.some(prop => {
     if (prop === 'collectValues') return false;
     if (
-      componentState[prop].status === 'error' ||
-      componentState[prop].status === 'normal'
+      componentState[prop].status === FieldStatus.error ||
+      componentState[prop].status === FieldStatus.normal
     ) {
       isError = true;
       return true;

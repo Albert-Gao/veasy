@@ -45,3 +45,17 @@ an object with all the values of the fields.
 ### Tips:
 
 Even some of the fields are not included in the `schema` for validation, you can still grab its value, check [collect-values](/collect-values) for more information.
+
+## 3. FieldStatus
+
+It's a object which contains 3 property for you to refer the 3 status of field to prevent add raw string in the code.
+
+```javascript
+import { FieldStatus } from 'veasy';
+
+FieldStatus.ok
+FieldStatus.error
+FieldStatus.normal
+```
+
+!> Do not set its value! Just use it to refer.

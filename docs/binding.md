@@ -65,6 +65,8 @@ In the above example, the two `<FieldItem>`'s named `title` and `age` will recei
 1. `errorText`: The error message for validation. Will be empty if all rules pass for this field.
 1. `value`: The actual value bound to the `controlled component` of `React`.
 
+!> You can import `FieldStatus` to refer the 3 status for preventing using hard code string. See [API](/api) for more information.
+
 This happens automatically whenever `Veasy` finds the field's name (`title` and `age`) in the `schema`:
 
 ```javascript
