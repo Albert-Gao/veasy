@@ -206,11 +206,16 @@ describe('Test the <Veasy />', () => {
     const target = wrapper.find('form').at(0);
     target.simulate('reset', { preventDefault: () => {} });
     expect(mockReset.mock.calls.length).toBe(1);
-    expect(mockReset).toBeCalledWith({
+    const params = mockReset.mock.calls[0];
+    expect(params[0]).toEqual({
       title: {
         default: '',
         minLength: 1
       }
+    });
+    expect(params[1]).toEqual({
+      isFormOK: false,
+      title: { errorText: '', status: 'normal', value: '' }
     });
     expect(mockUpdate.mock.calls.length).toBe(1);
   });
@@ -221,8 +226,8 @@ describe('Test the <Veasy />', () => {
         schema={mockSchema}
         allState={mockComponent.state}
         update={mockComponent.setState}
-        name='super'
-        action='google'
+        name="super"
+        action="google"
         onSubmit={() => {}}
       >
         <Input name="title" />
@@ -232,7 +237,7 @@ describe('Test the <Veasy />', () => {
     );
     const form = wrapper.find('form').at(0);
     expect(form.prop('name')).toEqual('super');
-    expect(form.prop('action')).toEqual('google');  
+    expect(form.prop('action')).toEqual('google');
     expect(typeof form.prop('onSubmit')).toEqual('function');
   });
 });

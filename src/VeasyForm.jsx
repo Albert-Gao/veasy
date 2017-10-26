@@ -55,8 +55,8 @@ export default class VeasyForm extends React.Component {
 
   handleReset = e => {
     e.preventDefault();
-    const { update, schema } = this.props;
-    update(lib.resetForm(schema));
+    const { update, schema, allState } = this.props;
+    update(lib.resetForm(schema, allState));
   };
 
   render() {
