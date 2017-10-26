@@ -230,7 +230,6 @@ describe('Test the <Veasy />', () => {
         <input />
       </VeasyForm>
     );
-    console.log(wrapper.debug());
     const form = wrapper.find('form').at(0);
     expect(form.prop('name')).toEqual('super');
     expect(form.prop('action')).toEqual('google');  
