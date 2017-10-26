@@ -27,6 +27,27 @@ describe('Test the createInitialState method', () => {
     });
   });
 
+  test('Should ignore the collectValues in schema', () => {
+    schema.collectValues = {
+      super: 'girl',
+      flash: 'Season4'
+    };
+    const state = new VeasyClass(component, schema).createInitialState();
+    expect(state).toEqual({
+      isFormOK: false,
+      name: {
+        status: 'normal',
+        errorText: '',
+        value: ''
+      },
+      title: {
+        status: 'normal',
+        errorText: '',
+        value: ''
+      }
+    });
+  });
+
   test('Should return an object with value equal default if there is', () => {
     schema.title.default = 'I am default';
     schema.name.default = 'albert';

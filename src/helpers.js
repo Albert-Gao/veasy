@@ -90,6 +90,7 @@ export function createInitialState(schema, userState) {
   };
 
   Object.keys(schema).forEach(prop => {
+    if (prop==='collectValues') return;
     initialState[prop] = createNewFieldState(true, schema[prop]);
   });
 
