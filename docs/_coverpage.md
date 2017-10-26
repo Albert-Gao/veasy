@@ -3,7 +3,7 @@
 
 # veasy
 
-> An elegant react form solution which focus on form validation and more.
+> An elegant react form solution which focus on form validation and much more.
 
 [GitHub](https://github.com/Albert-Gao/veasy)
 [Intro](index)

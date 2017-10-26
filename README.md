@@ -7,7 +7,7 @@
 [![Build Status](https://travis-ci.org/Albert-Gao/veasy.svg?branch=master)](https://travis-ci.org/Albert-Gao/veasy)
 [![Coverage Status](https://coveralls.io/repos/github/Albert-Gao/veasy/badge.svg)](https://coveralls.io/github/Albert-Gao/veasy)
 
-An elegant react form solution which focuses on form validation and more.
+An elegant react form solution which focuses on form validation and much more.
 
 **[Documentation](https://albert-gao.github.io/veasy/)**
 
