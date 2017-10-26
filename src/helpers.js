@@ -198,19 +198,19 @@ function ruleRunner(ruleHandler, fieldName, value, pschema) {
   throwError(value, userErrorText || result.errorText);
 }
 
-export function resetForm(schema) {
-  const newSchema = {...schema};
+export function resetForm(schema, state) {
+  const newSchema = { ...schema };
   delete newSchema.collectValues;
+  const newState = { ...state };
   const fieldNames = Object.keys(newSchema);
-  const result = {};
-  fieldNames.forEach((name) => {
-    result[name] = {
-      status: 'normal',
-      errorText: '', 
-      value: createInitialValue(schema[name])
-    }
+  fieldNames.forEach(name => {
+    const newField = newState[name];
+    newField.status = 'normal';
+    newField.errorText = '';
+    newField.value = createInitialValue(schema[name]);
   });
-  return result;
+  newState.isFormOK = false;
+  return newState;
 }
 
 /**
@@ -311,7 +311,7 @@ function updateWhenNeeded(
 }
 
 export function shouldValidate(keys, targetName) {
-  return keys.some((name) => name === targetName);
+  return keys.some(name => name === targetName);
 }
 
 export function startValidating(target, schema, update, allState) {

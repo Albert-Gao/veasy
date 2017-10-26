@@ -288,28 +288,28 @@ describe('Test the checkIsFormOK method', () => {
     expect(state.isFormOK).toBe(false);
   });
 
-  test('could restore the isFormOK to false - error', () => { 
+  test('could restore the isFormOK to false - error', () => {
     state.isFormOK = true;
     state.title.status = 'error';
     lib.checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
-   });
+  });
 
-   test('could restore the isFormOK to false - normal', () => { 
+  test('could restore the isFormOK to false - normal', () => {
     state.isFormOK = true;
     state.title.status = 'normal';
     lib.checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
-   });
+  });
 
-   test('could restore the isFormOK to false - collectValues', () => { 
+  test('could restore the isFormOK to false - collectValues', () => {
     schema.collectValues = {
       firstName: 'firstName'
-    }
+    };
     state.description.status = 'ok';
     lib.checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(true);
-   });
+  });
 });
 
 describe('Test the shouldValidate method', () => {
@@ -318,21 +318,21 @@ describe('Test the shouldValidate method', () => {
   let result;
 
   beforeEach(() => {
-    keys = [ 'title', 'description', 'collectValues' ];
+    keys = ['title', 'description', 'collectValues'];
     targetName = '';
   });
-  
+
   test('should return true when it`s in schema', () => {
     targetName = 'title';
     result = lib.shouldValidate(keys, targetName);
     expect(result).toBe(true);
   });
 
-  test('should return false when it`s not in schema', () => { 
-    targetName = 'albert';    
+  test('should return false when it`s not in schema', () => {
+    targetName = 'albert';
     result = lib.shouldValidate(keys, targetName);
     expect(result).toBe(false);
-   });
+  });
 });
 
 describe('Test the resetForm method', () => {
@@ -341,6 +341,7 @@ describe('Test the resetForm method', () => {
 
   beforeEach(() => {
     state = {
+      isFormOK: true,
       title: {
         status: 'error',
         errorText: 'too short',
@@ -365,8 +366,9 @@ describe('Test the resetForm method', () => {
   });
 
   test('should reset the state', () => {
-    const result = lib.resetForm(schema);
+    const result = lib.resetForm(schema, state);
     expect(result).toEqual({
+      isFormOK: false,
       title: {
         status: 'normal',
         errorText: '',
@@ -385,8 +387,9 @@ describe('Test the resetForm method', () => {
       abc: 'abc',
       def: 'def'
     };
-    const result = lib.resetForm(schema);
+    const result = lib.resetForm(schema, state);
     expect(result).toEqual({
+      isFormOK: false,
       title: {
         status: 'normal',
         errorText: '',
@@ -401,9 +404,10 @@ describe('Test the resetForm method', () => {
   });
 
   test('should honour the default', () => {
-    schema.title.default = 'albert'
-    const result = lib.resetForm(schema);
+    schema.title.default = 'albert';
+    const result = lib.resetForm(schema, state);
     expect(result).toEqual({
+      isFormOK: false,
       title: {
         status: 'normal',
         errorText: '',
@@ -413,6 +417,57 @@ describe('Test the resetForm method', () => {
         status: 'normal',
         errorText: '',
         value: ''
+      }
+    });
+  });
+
+  test('should honour user state', () => {
+    schema.title.default = 'albert';
+    const tempFunc = () => {};
+    state.title.super = {
+      a: 'a',
+      b: 1,
+      c: {
+        d: 'd',
+        e: 2
+      }
+    };
+    state.super = {
+      name: {
+        first: 'albert',
+        last: 'gao'
+      },
+      age: 16,
+      call: tempFunc
+    };
+    const result = lib.resetForm(schema, state);
+    expect(result).toEqual({
+      isFormOK: false,
+      title: {
+        status: 'normal',
+        errorText: '',
+        value: 'albert',
+        super: {
+          a: 'a',
+          b: 1,
+          c: {
+            d: 'd',
+            e: 2
+          }
+        }
+      },
+      description: {
+        status: 'normal',
+        errorText: '',
+        value: ''
+      },
+      super: {
+        name: {
+          first: 'albert',
+          last: 'gao'
+        },
+        age: 16,
+        call: tempFunc
       }
     });
   });
