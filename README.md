@@ -13,10 +13,10 @@ A comprehensive react form solution which aims to eliminate all tedious logic.
 
 ## Features
 
-- field validation (We handle the validation logic!)
+- Field validation (We handle the validation logic!)
 - Form status (check whether all fields ready or not)
-- generate initial state with default value
-- get fields value for submitting
+- Generate initial state with default value
+- Get fields value for submitting
 - Auto update fields `props` according to validation result
 - Auto binding fields `props`
 - onBlur: trigger validation automatically
