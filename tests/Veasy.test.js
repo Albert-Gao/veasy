@@ -214,4 +214,26 @@ describe('Test the <Veasy />', () => {
     });
     expect(mockUpdate.mock.calls.length).toBe(1);
   });
+
+  test('Should render a form with 3 inputs with extra props', () => {
+    const wrapper = shallow(
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+        name='super'
+        action='google'
+        onSubmit={() => {}}
+      >
+        <Input name="title" />
+        <input />
+        <input />
+      </VeasyForm>
+    );
+    console.log(wrapper.debug());
+    const form = wrapper.find('form').at(0);
+    expect(form.prop('name')).toEqual('super');
+    expect(form.prop('action')).toEqual('google');  
+    expect(typeof form.prop('onSubmit')).toEqual('function');
+  });
 });

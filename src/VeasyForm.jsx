@@ -60,13 +60,16 @@ export default class VeasyForm extends React.Component {
   };
 
   render() {
+    const { schema, allState, update, children, ...reset } = this.props;
+
     return (
       <form
         onChange={this.handleOnChange}
         onBlur={this.handleBlur}
         onReset={this.handleReset}
+        {...reset}
       >
-        {this.recursiveCloneChildren(this.props.children)}
+        {this.recursiveCloneChildren(children)}
       </form>
     );
   }
