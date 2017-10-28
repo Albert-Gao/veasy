@@ -1,6 +1,6 @@
 # How to use the example
 
-Create a new project using [Create react app](https://github.com/facebookincubator/create-react-app).
+1. Create a new project using [Create react app](https://github.com/facebookincubator/create-react-app).
 
 ```bash
 npm install -g create-react-app
@@ -10,20 +10,19 @@ cd my-app/
 npm start
 ```
 
-And copy all files into the `src` folder
+2. And copy all the example files into the `src` folder
 
-Then `yarn start` or `npm run start`
+3. `yarn start` or `npm run start`
 
-It will show two `TextInput` and three `RadioButton`.
+It will show a single example which two `TextInput`, three `RadioButton` and submit button and reset button.
 
 You can see how `veasy` can enable:
 
 - Generate initial state
 - Validation
+- Auto state update
 - Reset
 - Whole form status check
 - `getFieldsValue()`
 
-`FullBindingTextInput` and `SimpleBindingTextInput`:
-
-They are all the same, the only difference is `SimpleBindingTextInput` use `...rest` to handle the `placeholder`, `value` and `onChange`.
+With such less code.

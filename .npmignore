@@ -3,3 +3,4 @@ tests/
 .travis.yml
 example.js
 coverage/.coveralls.yml
+example/
