@@ -90,7 +90,7 @@ export function createInitialState(schema, userState) {
   };
 
   Object.keys(schema).forEach(prop => {
-    if (prop==='collectValues') return;
+    if (prop === 'collectValues') return;
     initialState[prop] = createNewFieldState(true, schema[prop]);
   });
 
@@ -117,20 +117,18 @@ export function shouldChange(oldState, newState) {
   return isErrorDifferent || isValueDifferent;
 }
 
+function getNestedValue(key, obj) {
+  return key.split('.').reduce((result1, key1) => result1[key1], obj);
+}
+
 function getCollectValues(collectSchema, state) {
   const fieldsToCollect = Object.keys(collectSchema);
   const result = {};
 
-  const getNestedObject = (path, obj) =>
-    path.split('.').reduce(
-      (prev, curr) => (prev ? prev[curr] : undefined),
-      // eslint-disable-next-line no-restricted-globals
-      obj || self
-    );
-
   fieldsToCollect.forEach(fieldName => {
-    result[fieldName] = getNestedObject(collectSchema[fieldName], state);
+    result[fieldName] = getNestedValue(collectSchema[fieldName], state);
   });
+  
   return result;
 }
 
