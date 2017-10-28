@@ -172,7 +172,7 @@ describe('Test the <Veasy />', () => {
     expect(targetInput1.prop('value')).toBe(undefined);
   });
 
-  test('Shouldn`t bind the html tag', () => {
+  test('Should not bind the html tag', () => {
     const wrapper = shallow(
       <VeasyForm
         schema={mockSchema}
@@ -184,6 +184,41 @@ describe('Test the <Veasy />', () => {
     );
     const targetInput = wrapper.find('input').at(0);
     expect(targetInput.prop('name')).toBe('title');
+    expect(targetInput.prop('status')).toBe(undefined);
+    expect(targetInput.prop('errorText')).toBe(undefined);
+    expect(targetInput.prop('value')).toBe(undefined);
+  });
+
+  test('Should not bind element which name is not in the schema', () => {
+    const wrapper = shallow(
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+      >
+        <Input name="super" />
+      </VeasyForm>
+    );
+    const targetInput = wrapper.find('Input').at(0);
+    expect(targetInput.prop('name')).toBe('super');
+    expect(targetInput.prop('status')).toBe(undefined);
+    expect(targetInput.prop('errorText')).toBe(undefined);
+    expect(targetInput.prop('value')).toBe(undefined);
+  });
+
+  test('Should not crash when dealing with non-react element', () => {
+    const wrapper = shallow(
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+      >
+        {true && <Input name="super" />}
+        <p>super hero</p>
+      </VeasyForm>
+    );
+    const targetInput = wrapper.find('Input').at(0);
+    expect(targetInput.prop('name')).toBe('super');
     expect(targetInput.prop('status')).toBe(undefined);
     expect(targetInput.prop('errorText')).toBe(undefined);
     expect(targetInput.prop('value')).toBe(undefined);

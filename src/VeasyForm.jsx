@@ -16,26 +16,17 @@ export default class VeasyForm extends React.Component {
   handleBlur = e => this.triggerValidation(e);
 
   isRegisteredComponent = child => {
-    // Skip HTML element
-    if (is.propertyDefined(child, 'type')) {
-      if (is.string(child.type)) {
-        if (is.lowerCase(child.type[0])) return false;
-      }
-    }
+    if (!React.isValidElement(child)) return false;
 
-    if (
-      !is.propertyDefined(child, 'props') ||
-      !is.propertyDefined(child.props, 'name')
-    ) {
-      return false;
-    }
+    // Skip HTML element
+    if (is.string(child.type)) return false;
+
+    if (!is.propertyDefined(child.props, 'name')) return false;
 
     const childName = child.props.name;
     const names = Object.keys(this.props.schema);
+    if (names.includes(childName)) return true;
 
-    if (React.isValidElement(child) && names.includes(childName)) {
-      return true;
-    }
     return false;
   };
 
@@ -55,18 +46,15 @@ export default class VeasyForm extends React.Component {
         return this.cloneElement(child, child.props.name);
       }
 
+      if (!React.isValidElement(child)) return child;
+
+      if (is.not.propertyDefined(child.props, 'children')) return child;
+
       const childProps = {};
 
-      if (is.propertyDefined(child, 'props')) {
-        if (child.props) {
-          // String has no Prop
-          childProps.children = this.recursiveCloneChildren(
-            child.props.children
-          );
-          return React.cloneElement(child, childProps);
-        }
-      }
-      return child;
+      // String has no Prop
+      childProps.children = this.recursiveCloneChildren(child.props.children);
+      return React.cloneElement(child, childProps);
     });
 
   handleReset = e => {
