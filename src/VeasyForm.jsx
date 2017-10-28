@@ -16,8 +16,6 @@ export default class VeasyForm extends React.Component {
   handleBlur = e => this.triggerValidation(e);
 
   isRegisteredComponent = child => {
-    if (!React.isValidElement(child)) return false;
-
     // Skip HTML element
     if (is.string(child.type)) return false;
 
@@ -42,11 +40,11 @@ export default class VeasyForm extends React.Component {
 
   recursiveCloneChildren = children =>
     React.Children.map(children, child => {
+      if (!React.isValidElement(child)) return child;
+      
       if (this.isRegisteredComponent(child)) {
         return this.cloneElement(child, child.props.name);
       }
-
-      if (!React.isValidElement(child)) return child;
 
       if (is.not.propertyDefined(child.props, 'children')) return child;
 
