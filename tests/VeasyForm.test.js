@@ -1,10 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies,react/jsx-filename-extension */
-import Enzyme, { mount, shallow } from 'enzyme';
+import Enzyme, { mount, shallow, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 import VeasyForm from '../src/VeasyForm';
 import * as lib from '../src/helpers';
+import renderer from 'react-test-renderer';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -74,7 +75,22 @@ describe('Test the <Veasy />', () => {
     expect(wrapper.props().update).toEqual(mockComponent.setState);
   });
 
-  test('Should render a section as container with a onChange function', () => {
+  test('should render properly with button', () => {
+    const wrapper = renderer.create(
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+      >
+        <Input name="title" />
+        <input type="text" />
+        <button type='reset' />
+      </VeasyForm>
+    );
+    expect(wrapper).toMatchSnapshot();
+  });
+
+  test('Should add onChange function to Input', () => {
     const wrapper = mount(
       <VeasyForm
         schema={mockSchema}
@@ -87,10 +103,10 @@ describe('Test the <Veasy />', () => {
       </VeasyForm>
     );
     expect(wrapper.find('form')).toHaveLength(1);
-    expect(wrapper.find('section')).toHaveLength(0);
-    expect(typeof wrapper.find('form').prop('onChange')).toEqual('function');
-    wrapper.find('form').prop('onChange')({
+    expect(typeof wrapper.find('Input').prop('onChange')).toEqual('function');
+    wrapper.find('Input').prop('onChange')({
       preventDefault: () => {},
+      persist: () => {},
       target: mockTarget
     });
   });

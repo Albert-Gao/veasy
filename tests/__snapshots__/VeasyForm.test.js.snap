@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test the <Veasy /> should render properly with button 1`] = `
+<form
+  onBlur={[Function]}
+  onReset={[Function]}
+>
+  <input
+    type="text"
+  />
+  <input
+    type="text"
+  />
+  <button
+    type="reset"
+  />
+</form>
+`;

@@ -15,13 +15,24 @@ export default class VeasyForm extends React.Component {
 
   handleBlur = e => this.triggerValidation(e);
 
-  isRegisteredComponent = (child, childName) => {
-    if (is.string(child.type)) {
-      // Skip HTML element
-      if (is.lowerCase(child.type[0])) return false;
+  isRegisteredComponent = child => {
+    // Skip HTML element
+    if (is.propertyDefined(child, 'type')) {
+      if (is.string(child.type)) {
+        if (is.lowerCase(child.type[0])) return false;
+      }
     }
 
+    if (
+      !is.propertyDefined(child, 'props') ||
+      !is.propertyDefined(child.props, 'name')
+    ) {
+      return false;
+    }
+
+    const childName = child.props.name;
     const names = Object.keys(this.props.schema);
+
     if (React.isValidElement(child) && names.includes(childName)) {
       return true;
     }
@@ -33,22 +44,27 @@ export default class VeasyForm extends React.Component {
     return React.cloneElement(child, {
       status: childProp.status,
       errorText: childProp.errorText,
-      value: childProp.value
+      value: childProp.value,
+      onChange: this.handleOnChange
     });
   };
 
   recursiveCloneChildren = children =>
     React.Children.map(children, child => {
-      const childName = child.props.name;
-      if (this.isRegisteredComponent(child, childName)) {
-        return this.cloneElement(child, childName);
+      if (this.isRegisteredComponent(child)) {
+        return this.cloneElement(child, child.props.name);
       }
 
       const childProps = {};
-      if (child.props) {
-        // String has no Prop
-        childProps.children = this.recursiveCloneChildren(child.props.children);
-        return React.cloneElement(child, childProps);
+
+      if (is.propertyDefined(child, 'props')) {
+        if (child.props) {
+          // String has no Prop
+          childProps.children = this.recursiveCloneChildren(
+            child.props.children
+          );
+          return React.cloneElement(child, childProps);
+        }
       }
       return child;
     });
@@ -63,12 +79,7 @@ export default class VeasyForm extends React.Component {
     const { schema, allState, update, children, ...reset } = this.props;
 
     return (
-      <form
-        onChange={this.handleOnChange}
-        onBlur={this.handleBlur}
-        onReset={this.handleReset}
-        {...reset}
-      >
+      <form onBlur={this.handleBlur} onReset={this.handleReset} {...reset}>
         {this.recursiveCloneChildren(children)}
       </form>
     );
