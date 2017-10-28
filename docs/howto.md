@@ -11,6 +11,7 @@ At a high level, here's what you'll be doing:
     - `status`: Use to affect the field's appearance, ('normal', 'ok' and 'error')
     - `errorText`: Use as the error message.
     - `value`: Use to bind the field's value, making it a `controlled component` :)
+    - 'onChange': A change handler for handling the validation when user changing the value.
 
 **Now your field component could get the validation result anytime the user changes something, Enjoy :)**
 

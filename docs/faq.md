@@ -39,3 +39,8 @@ Just call the `getFieldsValue()` function, check this [section](/collect-values)
 ## What about I want to collect some value from fields which not included in the schema
 
 We handle that case as well, check this [section](/collect-values)
+
+## How to handle radio buttons or combo box
+
+Check this [section](/collect-values?id=recommend-for-radio-buttons-and-combo-box)
+Or, check the working code example at [here](https://github.com/Albert-Gao/veasy/tree/master/example).

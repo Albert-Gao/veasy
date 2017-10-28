@@ -64,6 +64,7 @@ In the above example, the two `<FieldItem>`'s named `title` and `age` will recei
 1. `status`: `ok`, `error` and `normal` which you use to alter each field's appearance.
 1. `errorText`: The error message for validation. Will be empty if all rules pass for this field.
 1. `value`: The actual value bound to the `controlled component` of `React`.
+1. 'onChange': A change handler for handling the validation when user changing the value.
 
 !> You can import `FieldStatus` to refer the 3 status for preventing using hard code string. See [API](/api) for more information.
 
@@ -98,6 +99,7 @@ render() {
         status={this.state.title.status}
         errorText={this.state.title.errorText}
         value={this.state.title.value}
+        onChange={this.state.title.onChange}
       />
     </form>
   );
@@ -111,7 +113,8 @@ render() {
   const {
     title.status,
     title.errorText,
-    title.text
+    title.text,
+    title.onChange
   } = this.state;
 
   return (
@@ -121,6 +124,7 @@ render() {
         status={title.status}
         errorText={title.errorText}
         value={title.value}
+        onChange={title.onChange}
       />
     </form>
   );

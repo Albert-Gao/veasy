@@ -88,6 +88,7 @@ Congrats! Now you automatically get the following features:
     - `status`: For changing the look, ('normal', 'ok' and 'error')
     - `errorText`: For showing the error message.
     - `value`: Like how you bind the value for every `controlled component` :)
+    - 'onChange': A change handler for handling the validation when user changing the value.
 1. Anytime the user changes something, the above 3 `props` will auto updated by `Veasy`
 1. `OnChange` and `onBlur` will auto trigger the validation as well.
 1. `isFormOK` will be true when all fields's status equals to `ok`.
