@@ -6,7 +6,7 @@ import * as lib from './helpers';
 
 export default class VeasyForm extends React.Component {
   triggerValidation = e => {
-    e.preventDefault();
+    e.persist();
     const { schema, allState, update } = this.props;
     lib.startValidating(e.target, schema, update, allState);
   };
