@@ -156,6 +156,23 @@ describe('Test the <Veasy />', () => {
     expect(targetInput1.prop('value')).toBe(undefined);
   });
 
+  test('Shouldn`t bind the html tag', () => {
+    const wrapper = shallow(
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+      >
+        <input name="title" />
+      </VeasyForm>
+    );
+    const targetInput = wrapper.find('input').at(0);
+    expect(targetInput.prop('name')).toBe('title');
+    expect(targetInput.prop('status')).toBe(undefined);
+    expect(targetInput.prop('errorText')).toBe(undefined);
+    expect(targetInput.prop('value')).toBe(undefined);
+  });
+
   test('Should bind recursive element', () => {
     const wrapper = shallow(componentToRender);
     const targetInput = wrapper.find('Input').at(0);
