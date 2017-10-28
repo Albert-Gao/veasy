@@ -95,6 +95,8 @@ Congrats! Now you automatically get the following features:
 
 There is even a `getFieldsValue()` method for you to get all the fields value, even you don't include all the fields in the schema, [we cover that case for you](https://albert-gao.github.io/veasy/#/collect-values) :)
 
+Check the working code example at [here](https://github.com/Albert-Gao/veasy/tree/master/example).
+
 > Tip: There is an extra `isFormOK` prop at the root level of `state` to indicate the status of the form according to all the fields defined in the schema.
 
 Now you get it! Let's take several minutes to go through our **[documentation](https://albert-gao.github.io/veasy/)**.

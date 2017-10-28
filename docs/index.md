@@ -36,4 +36,6 @@ Even better, you can automatically bind the `props` to the field item so that it
 
 So, [let's begin.](/howto)
 
+Or, check the working example at [here](https://github.com/Albert-Gao/veasy/tree/master/example).
+
 > Tip: All the docs are written in different sections, and they are all very short, should take you 1 - 2 min per doc. :)
