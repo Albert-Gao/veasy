@@ -1,6 +1,6 @@
 {
     "name": "veasy",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "author": "AlbertGao",
     "main": "dist/index.js",
     "description": "An elegant react form solution which focus on form validation and more.",
