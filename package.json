@@ -14,7 +14,7 @@
     "scripts": {
         "lint": "eslint src test",
         "clean": "rimraf dist/",
-        "build": "rimraf dist/ && babel src/ --out-dir dist/",
+        "build": "rimraf dist/ && babel src/ --source-maps --out-dir dist/",
         "test": "./node_modules/.bin/jest --coverage",
         "doc": "docsify serve ./docs",
         "example": "node example.js",
