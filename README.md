@@ -70,7 +70,7 @@ this.state = createInitialState(formSchema);
 
 ### Step 2: Auto bind the props
 
-Then wrap using our `<Veasy>` component:
+Then wrap using our `<VeasyForm>` component:
 
 ```xml
 <VeasyForm

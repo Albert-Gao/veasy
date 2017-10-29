@@ -46,7 +46,24 @@ an object with all the values of the fields.
 
 Even some of the fields are not included in the `schema` for validation, you can still grab its value, check [collect-values](/collect-values) for more information.
 
-## 3. FieldStatus
+## 3. validate(e, schema, update, allState)
+
+### Arguments
+
+1. e: Event
+    - The event of onChange.
+1. schema: Object
+    - It's a set of validation rule which write in JSON. See [schema](/schema) chapter for more information.
+1. update: Function
+    - It's the function for update the state, most of the time, it should be as simple as `(newState) => this.setState(newState)`
+1. allState: Object
+    - It's the whole state of the current component, you can get it via `this.state`.
+
+### Tips
+
+You will need this, when you are dealing with a component A inside component B, and component B is included in the `schema`, which will prevent `VeasyForm` to bind component A, since it will only bind component B, while the `createInitialState()` still works, you just need to bind `value`, `status`, `errorText` and `onChange` yourself. And inside `onChange`, you just need to call this `validate()` and pass all these 4 parameters.
+
+## 4. FieldStatus
 
 It's a object which contains 3 property for you to refer the 3 status of field to prevent add raw string in the code.
 

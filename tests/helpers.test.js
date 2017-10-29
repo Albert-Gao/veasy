@@ -1,4 +1,5 @@
 import * as lib from '../src/helpers';
+import {startValidating} from '../src/helpers';
 /* eslint-disable no-new */
 import VeasyClass from '../src/VeasyClass';
 
@@ -508,5 +509,18 @@ describe('Test the resetForm method', () => {
         call: tempFunc
       }
     });
+  });
+});
+
+describe('Test the validate method', () => { 
+  test('should invoke persist() on e', () => { 
+    const mockPersist = jest.fn();
+    const mockSchema = 'schema';
+    const mockUpdate = 'update';
+    const mockState = 'state';
+    const e = { target: 'target', persist: mockPersist };
+    lib.validate(e, mockSchema, mockUpdate, mockState);
+    expect(mockPersist.mock.calls.length).toBe(1);
+    mockPersist.mockReset();
   });
 });
