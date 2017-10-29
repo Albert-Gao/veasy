@@ -17,7 +17,8 @@ export const RuleWhichNeedsBoolean = [
   'isDecimal',
   'isInt',
   'isNegative',
-  'isPositive'
+  'isPositive',
+  'isIntOrDecimal'
 ];
 
 const handlerMatcher = {
@@ -40,6 +41,7 @@ const handlerMatcher = {
   isNegative: number.isNegative,
   isInt: number.isInt,
   isDecimal: number.isDecimal,
+  isIntOrDecimal: number.isIntOrDecimal,
 
   /* General handlers */
   inArray: normal.inArray,

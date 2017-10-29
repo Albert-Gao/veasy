@@ -39,3 +39,8 @@ export const isDecimal = (name, value) => ({
   isValid: is.decimal(value * 1),
   errorText: `${name} should be decimal.`
 });
+
+export const isIntOrDecimal = (name, value) => ({
+  isValid: is.integer(value * 1) || is.decimal(value * 1),
+  errorText: `${name} should be either integer or decimal.`
+});

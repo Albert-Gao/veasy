@@ -47,6 +47,7 @@ For instance:
 - isNegative: `boolean`
 - isInt: `boolean`
 - isDecimal: `boolean`
+- isIntOrDecimal: `boolean`
 
 ### Normal rules
 

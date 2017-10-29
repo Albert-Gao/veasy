@@ -448,4 +448,60 @@ describe('Test the validate method - Number', () => {
       }
     });
   });
+
+  test('isIntOrDecimal should work - error case - letter', async () => {
+    mockSchema.age.isIntOrDecimal = true;
+    mockTarget.value = 'a';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'error',
+        errorText: 'age should be either integer or decimal.',
+        value: 'a'
+      }
+    });
+  });
+
+  test('isIntOrDecimal should work - ok case - int', async () => {
+    mockSchema.age.isIntOrDecimal = true;
+    mockTarget.value = '5';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '5'
+      }
+    });
+  });
+
+  test('isIntOrDecimal should work - ok case - decimal', async () => {
+    mockSchema.age.isIntOrDecimal = true;
+    mockTarget.value = '5.1';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: '5.1'
+      }
+    });
+  });
+
+  test('isIntOrDecimal should not work - set to false', async () => {
+    mockSchema.age.isIntOrDecimal = false;
+    mockTarget.value = 'a';
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      age: {
+        status: 'ok',
+        errorText: '',
+        value: 'a'
+      }
+    });
+  });
 });
