@@ -349,6 +349,41 @@ describe('Test the checkIsFormOK method', () => {
     lib.checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(true);
   });
+
+  test('should honour isRequired = false', () => {  
+    // It should ignore error field when isRequired = false
+    state.isFormOK = true;
+    state.description.status = 'error';
+    state.description.errorText = 'super error';
+    schema.description.isRequired = false;
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(false);
+  });
+
+  test('should honour isRequired = false', () => {  
+    // It should ignore error field when isRequired = false
+    state.description.status = 'normal';
+    schema.description.isRequired = false;
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(true);
+  });
+
+  test('should honour isRequired = false', () => {  
+    // It should ignore error field when isRequired = false
+    state.description.status = 'ok';
+    schema.description.isRequired = false;
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(true);
+  });
+
+  test('should honour isRequired = true', () => {  
+    // It should ignore error field when isRequired = false
+    state.isFormOK = true;
+    state.description.status = 'error';
+    schema.description.isRequired = true;
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(false);
+  });
 });
 
 describe('Test the shouldValidate method', () => {

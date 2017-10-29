@@ -52,6 +52,8 @@ For instance:
 ### Normal rules
 
 - inArray: `Array<string>`
+- isRequired: `boolean`
+  - Only affect the `isFormOK` currently, which means when it set to `false`, unless the field is `error`, the `isFormOK` will ignore its `status`.
 - matchRegex: `regex`
 - isEmail: `boolean`
 - isUrl: `boolean`

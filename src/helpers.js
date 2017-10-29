@@ -270,6 +270,12 @@ export function checkIsFormOK(schema, componentState) {
   properties.some(prop => {
     if (prop === 'collectValues') return false;
     if (
+      is.propertyDefined(schema[prop], 'isRequired') &&
+      schema[prop].isRequired === false &&
+      componentState[prop].status !== FieldStatus.error
+    ) return false;
+
+    if (
       componentState[prop].status === FieldStatus.error ||
       componentState[prop].status === FieldStatus.normal
     ) {
