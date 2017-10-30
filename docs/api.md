@@ -46,7 +46,7 @@ an object with all the values of the fields.
 
 Even some of the fields are not included in the `schema` for validation, you can still grab its value, check [collect-values](/collect-values) for more information.
 
-## 3. validate(e, schema, update, allState)
+## 3. validate(e, schema, allState, update)
 
 ### Arguments
 
@@ -54,10 +54,10 @@ Even some of the fields are not included in the `schema` for validation, you can
     - The event of onChange.
 1. schema: Object
     - It's a set of validation rule which write in JSON. See [schema](/schema) chapter for more information.
-1. update: Function
-    - It's the function for update the state, most of the time, it should be as simple as `(newState) => this.setState(newState)`
 1. allState: Object
     - It's the whole state of the current component, you can get it via `this.state`.
+1. update: Function
+    - It's the function for update the state, most of the time, it should be as simple as `(newState) => this.setState(newState)`
 
 ### Tips
 

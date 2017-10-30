@@ -348,7 +348,7 @@ export function startValidating(target, schema, update, allState) {
   );
 }
 
-export function validate (e, schema, update, allState) {
+export function validate (e, schema, allState, update) {
   e.persist();
   startValidating(e.target, schema, update, allState);
 }

@@ -554,7 +554,7 @@ describe('Test the validate method', () => {
     const mockUpdate = 'update';
     const mockState = 'state';
     const e = { target: 'target', persist: mockPersist };
-    lib.validate(e, mockSchema, mockUpdate, mockState);
+    lib.validate(e, mockSchema, mockState, mockUpdate);
     expect(mockPersist.mock.calls.length).toBe(1);
     mockPersist.mockReset();
   });
