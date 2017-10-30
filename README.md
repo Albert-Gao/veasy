@@ -33,7 +33,6 @@ A comprehensive react form solution which aims to eliminate all tedious logic.
 - Clean JSX hierarchy, use your own field item component.
 - Promise based architecture.
 - Handle all the tedious logic without learning too much.
-- Easy to learn.
 
 ## Install
 
