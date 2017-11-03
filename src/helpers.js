@@ -321,19 +321,12 @@ function updateWhenNeeded(
   update(checkIsFormOK(schema, finalState));
 }
 
-export function shouldValidate(keys, targetName) {
-  return keys.some(name => name === targetName);
-}
-
 export function startValidating(target, schema, update, allState) {
   const propName = target.name;
   const fieldInfo = {
     value: target.value,
     schema: { [propName]: schema[propName] }
   };
-
-  const keys = Object.keys(schema);
-  if (!shouldValidate(keys, target.name)) return false;
 
   return (
     Promise.resolve(fieldInfo)

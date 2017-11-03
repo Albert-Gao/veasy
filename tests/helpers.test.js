@@ -385,29 +385,6 @@ describe('Test the checkIsFormOK method', () => {
   });
 });
 
-describe('Test the shouldValidate method', () => {
-  let keys;
-  let targetName;
-  let result;
-
-  beforeEach(() => {
-    keys = ['title', 'description', 'collectValues'];
-    targetName = '';
-  });
-
-  test('should return true when it`s in schema', () => {
-    targetName = 'title';
-    result = lib.shouldValidate(keys, targetName);
-    expect(result).toBe(true);
-  });
-
-  test('should return false when it`s not in schema', () => {
-    targetName = 'albert';
-    result = lib.shouldValidate(keys, targetName);
-    expect(result).toBe(false);
-  });
-});
-
 describe('Test the resetForm method', () => {
   let schema;
   let state;

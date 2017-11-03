@@ -47,13 +47,6 @@ describe('Test the validate method - Number', () => {
     });
   });
 
-  test('min should not work - targetName not match case', async () => {
-    mockSchema.age.min = 1;
-    mockTarget.name = 'albert';
-    await startValidating(mockTarget, mockSchema, mockUpdate);
-    expect(mockUpdate.mock.calls.length).toBe(0);
-  });
-
   test('min should work - [int]ok case', async () => {
     mockSchema.age.min = 1;
     mockTarget.value = '2';
