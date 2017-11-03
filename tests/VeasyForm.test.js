@@ -308,4 +308,21 @@ describe('Test the <Veasy />', () => {
     expect(form.prop('action')).toEqual('google');
     expect(typeof form.prop('onSubmit')).toEqual('function');
   });
+
+  test('Should render a div when tag set to div', () => {
+    const wrapper = shallow(
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+        tag="div"
+      >
+        <input />
+        <input />
+      </VeasyForm>
+    );
+    expect(wrapper.find('form')).toHaveLength(0);
+    expect(wrapper.find('div')).toHaveLength(1);    
+    expect(wrapper.find('div').children()).toHaveLength(2);
+  });
 });

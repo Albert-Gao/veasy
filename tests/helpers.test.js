@@ -1,5 +1,4 @@
 import * as lib from '../src/helpers';
-import {startValidating} from '../src/helpers';
 /* eslint-disable no-new */
 import VeasyClass from '../src/VeasyClass';
 

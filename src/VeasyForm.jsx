@@ -62,23 +62,25 @@ export default class VeasyForm extends React.Component {
   };
 
   render() {
-    const { schema, allState, update, children, ...reset } = this.props;
-
+    const { schema, allState, update, children, tag, ...reset } = this.props;
+    const Component = tag;
     return (
-      <form onBlur={this.handleBlur} onReset={this.handleReset} {...reset}>
+      <Component onBlur={this.handleBlur} onReset={this.handleReset} {...reset}>
         {this.recursiveCloneChildren(children)}
-      </form>
+      </Component>
     );
   }
 }
 
 VeasyForm.defaultProps = {
-  allState: undefined
+  allState: undefined,
+  tag: 'form'
 };
 
 VeasyForm.propTypes = {
   schema: PropTypes.object.isRequired,
   allState: PropTypes.object,
   update: PropTypes.func.isRequired,
+  tag: PropTypes.string,
   children: PropTypes.any.isRequired
 };
