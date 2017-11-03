@@ -29,6 +29,14 @@ As you see, `<VeasyForm>` expects 3 `props`:
 
 !> In fact, `<VeasyForm>` will just render a plain `<form>` for you. Feel free to add more `props` to the form, and they will all be added to the final `<form>` tag.
 
+You can change the `tag` from `form` to something else if you give a `tag` prop to `<VeasyForm>`:
+
+```xml
+<VeasyForm
+  tag="div"
+/>
+```
+
 ## Update method
 
 Just like how you normally let the child component change the state of its parent component. You need to pass a handler function to `<VeasyForm>` in order to do the update, it will normally like this:
