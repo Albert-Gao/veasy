@@ -299,15 +299,15 @@ function updateWhenNeeded(
   propName,
   update,
   schema,
-  formStatus = undefined
+  formState = undefined
 ) {
   const fieldState = { [propName]: newFieldState };
-  if (formStatus === undefined) {
+  if (formState === undefined) {
     update(fieldState);
     return;
   }
 
-  const oldFieldState = formStatus[propName];
+  const oldFieldState = formState[propName];
   const newFieldState1 = {
     ...oldFieldState,
     ...fieldState[propName]
@@ -320,14 +320,25 @@ function updateWhenNeeded(
   }
 
   const finalState = {
-    ...formStatus,
+    ...formState,
     [propName]: { ...newFieldState1 }
   };
   update(checkIsFormOK(schema, finalState));
 }
 
-export function startValidating(target, schema, update, allState) {
-  const propName = target.name;
+export function startValidating(
+  target,
+  schema,
+  update,
+  allState,
+  targetName = undefined
+) {
+  const propName = targetName || target.name;
+
+  if (is.not.existy(propName)) {
+    throw new Error('target.name and targetName are both non-existy');
+  }
+
   const fieldInfo = {
     value: target.value,
     schema: { [propName]: schema[propName] }
@@ -346,7 +357,7 @@ export function startValidating(target, schema, update, allState) {
   );
 }
 
-export function validate(e, schema, allState, update) {
+export function validate(e, schema, allState, update, targetName) {
   e.persist();
-  startValidating(e.target, schema, update, allState);
+  startValidating(e.target, schema, update, allState, targetName);
 }

@@ -529,8 +529,21 @@ describe('Test the validate method', () => {
     const mockSchema = 'schema';
     const mockUpdate = 'update';
     const mockState = 'state';
-    const e = { target: 'target', persist: mockPersist };
+    const e = { target: { name: 'a' }, persist: mockPersist };
     lib.validate(e, mockSchema, mockState, mockUpdate);
+    expect(mockPersist.mock.calls.length).toBe(1);
+    mockPersist.mockReset();
+  });
+
+  test('should throw when targetName and target.name is null', () => { 
+    const mockPersist = jest.fn();
+    const mockSchema = 'schema';
+    const mockUpdate = 'update';
+    const mockState = 'state';
+    const e = { target: 'a', persist: mockPersist };
+    expect(() => {
+      lib.validate(e, mockSchema, mockState, mockUpdate);
+    }).toThrowError();
     expect(mockPersist.mock.calls.length).toBe(1);
     mockPersist.mockReset();
   });

@@ -46,7 +46,7 @@ an object with all the values of the fields.
 
 Even some of the fields are not included in the `schema` for validation, you can still grab its value, check [collect-values](/collect-values) for more information.
 
-## 3. validate(e, schema, allState, update)
+## 3. validate(e, schema, allState, update, targetName)
 
 ### Arguments
 
@@ -58,8 +58,10 @@ Even some of the fields are not included in the `schema` for validation, you can
     - It's the whole state of the current component, you can get it via `this.state`.
 1. update: Function
     - It's the function for update the state, most of the time, it should be as simple as `(newState) => this.setState(newState)`
-
-### Tips
+1. targetName: String, [Optional]
+    - Sometimes, when you are dealing with RadioButton, you may not have name set to equal the name in the `schema` because every `RadioButton` may have its own name and its wrapper may not have `name` attribute as well. Which will make the `validate()` method not work because it expects a `name`, then you can pass the targetName as the last parameter. When you are sure that `e.target.name` matches the one in the `schema`, you don't need to pass parameter at all.
+ 
+ ### Tips
 
 You will need this, when you are dealing with a component A inside component B, and component B is included in the `schema`, which will prevent `VeasyForm` to bind component A, since it will only bind component B, while the `createInitialState()` still works, you just need to bind `value`, `status`, `errorText` and `onChange` yourself. And inside `onChange`, you just need to call this `validate()` and pass all these 4 parameters.
 
