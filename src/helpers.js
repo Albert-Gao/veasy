@@ -128,7 +128,7 @@ function getCollectValues(collectSchema, state) {
   fieldsToCollect.forEach(fieldName => {
     result[fieldName] = getNestedValue(collectSchema[fieldName], state);
   });
-  
+
   return result;
 }
 
@@ -273,7 +273,8 @@ export function checkIsFormOK(schema, componentState) {
       is.propertyDefined(schema[prop], 'isRequired') &&
       schema[prop].isRequired === false &&
       componentState[prop].status !== FieldStatus.error
-    ) return false;
+    )
+      return false;
 
     if (
       componentState[prop].status === FieldStatus.error ||
@@ -298,10 +299,10 @@ function updateWhenNeeded(
   propName,
   update,
   schema,
-  formStatus = ''
+  formStatus = undefined
 ) {
   const fieldState = { [propName]: newFieldState };
-  if (formStatus === '') {
+  if (formStatus === undefined) {
     update(fieldState);
     return;
   }
@@ -312,7 +313,11 @@ function updateWhenNeeded(
     ...fieldState[propName]
   };
 
-  if (!shouldChange(oldFieldState, newFieldState)) return;
+  if (is.existy(oldFieldState) && is.existy(newFieldState)) {
+    if (!shouldChange(oldFieldState, newFieldState)) return;
+  } else {
+    return;
+  }
 
   const finalState = {
     ...formStatus,
@@ -341,7 +346,7 @@ export function startValidating(target, schema, update, allState) {
   );
 }
 
-export function validate (e, schema, allState, update) {
+export function validate(e, schema, allState, update) {
   e.persist();
   startValidating(e.target, schema, update, allState);
 }
