@@ -4,7 +4,6 @@ import { startValidating } from '../src/helpers';
 describe('Test the Normal rules', () => {
   let mockSchema;
   const mockUpdate = jest.fn();
-  let mockComponent;
   let mockTarget;
 
   beforeEach(() => {
@@ -16,17 +15,6 @@ describe('Test the Normal rules', () => {
     mockTarget = {
       name: 'title',
       value: '6'
-    };
-    mockComponent = {
-      state: {
-        isFormOK: false,
-        title: {
-          status: 'normal',
-          errorText: '',
-          value: ''
-        }
-      },
-      setState: mockUpdate
     };
   });
 
