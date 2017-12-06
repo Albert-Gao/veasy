@@ -83,9 +83,54 @@ export function createNewFieldState(needValue = false, fieldSchema) {
   return result;
 }
 
+/**
+ * If all fields in the state has their status !== error
+ * Then we will set the isFormOK to true then return the state.
+ * Just mutate the value since it's already a new state object
+ *
+ */
+export function checkIsFormOK(schema, componentState) {
+  const properties = Object.keys(schema);
+  let isError = false;
+  properties.some(prop => {
+    if (prop === 'collectValues') return false;
+
+    if (
+      is.propertyDefined(schema[prop], 'isRequired') &&
+      schema[prop].isRequired === false &&
+      componentState[prop].status !== FieldStatus.error
+    )
+      return false;
+
+    if (componentState[prop].status === FieldStatus.error) {
+      isError = true;
+      return true;
+    }
+
+    if (componentState[prop].status === FieldStatus.normal) {
+      if (is.not.propertyDefined(schema[prop], 'default')) {
+        isError = true;
+        return true;
+      }        
+
+      if (schema[prop].default !== componentState[prop].value) {
+        isError = true;
+        return true;
+      }
+    }
+    return false;
+  });
+  if (!isError) {
+    componentState.isFormOK = true;
+  } else {
+    componentState.isFormOK = false;
+  }
+
+  return componentState;
+}
+
 export function createInitialState(schema, userState) {
   const initialState = {
-    isFormOK: false,
     ...userState
   };
 
@@ -103,6 +148,8 @@ export function createInitialState(schema, userState) {
       };
     }
   });
+
+  checkIsFormOK(schema, initialState);
 
   return initialState;
 }
@@ -256,52 +303,6 @@ export function rulesRunner(value, schema) {
   }
 
   return runMatchers(handlerMatcher, fieldState, schema);
-}
-
-/**
- * If all fields in the state has their status !== error
- * Then we will set the isFormOK to true then return the state.
- * Just mutate the value since it's already a new state object
- *
- */
-export function checkIsFormOK(schema, componentState) {
-  const properties = Object.keys(schema);
-  let isError = false;
-  properties.some(prop => {
-    if (prop === 'collectValues') return false;
-
-    if (
-      is.propertyDefined(schema[prop], 'isRequired') &&
-      schema[prop].isRequired === false &&
-      componentState[prop].status !== FieldStatus.error
-    )
-      return false;
-
-    if (componentState[prop].status === FieldStatus.error) {
-      isError = true;
-      return true;
-    }
-
-    if (componentState[prop].status === FieldStatus.normal) {
-      if (is.not.propertyDefined(schema[prop], 'default')) {
-        isError = true;
-        return true;
-      }        
-
-      if (schema[prop].default !== componentState[prop].value) {
-        isError = true;
-        return true;
-      }
-    }
-    return false;
-  });
-  if (!isError) {
-    componentState.isFormOK = true;
-  } else {
-    componentState.isFormOK = false;
-  }
-
-  return componentState;
 }
 
 function updateWhenNeeded(

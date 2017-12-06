@@ -35,7 +35,7 @@ describe('Test the createInitialState method', () => {
     }
     const state = new VeasyClass(component, schema).createInitialState();
     expect(state).toEqual({
-      isFormOK: false,
+      isFormOK: true,
       title: {
         status: 'normal',
         errorText: '',
@@ -70,7 +70,7 @@ describe('Test the createInitialState method', () => {
     schema.name.default = 'albert';
     const state = new VeasyClass(component, schema).createInitialState();
     expect(state).toEqual({
-      isFormOK: false,
+      isFormOK: true,
       name: {
         status: 'normal',
         errorText: '',
@@ -99,7 +99,7 @@ describe('Test the createInitialState method', () => {
       userState
     );
     expect(state).toEqual({
-      isFormOK: false,
+      isFormOK: true,
       name: {
         status: 'normal',
         errorText: '',
@@ -141,7 +141,7 @@ describe('Test the createInitialState method', () => {
       userState
     );
     expect(state).toEqual({
-      isFormOK: false,
+      isFormOK: true,
       name: {
         status: 'normal',
         errorText: '',
