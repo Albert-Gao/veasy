@@ -321,7 +321,40 @@ describe('Test the checkIsFormOK method', () => {
       }
     };
   });
-  test('shouldn`t change to ok if one status is normal', () => {
+
+  test('shouldn`t change to ok if one status is normal without default in schema', () => {
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(false);
+  });
+
+  test('should change to ok if one status is normal with default in schema', () => {
+    const value = 'i am default';
+    state.title = {
+      status: 'normal',
+      errorText: '',
+      value
+    };
+    schema.title = { default: value };
+
+    delete state.description;
+    delete schema.description;
+    
+    lib.checkIsFormOK(schema, state);
+    expect(state.isFormOK).toBe(true);
+  });
+
+  test('should change to false when `normal` and different default', () => {
+    const value = 'i am default';
+    state.title = {
+      status: 'normal',
+      errorText: '',
+      value
+    };
+    schema.title = { default: value + 'abc' };
+
+    delete state.description;
+    delete schema.description;
+    
     lib.checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
   });

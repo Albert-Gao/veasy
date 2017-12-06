@@ -269,6 +269,7 @@ export function checkIsFormOK(schema, componentState) {
   let isError = false;
   properties.some(prop => {
     if (prop === 'collectValues') return false;
+
     if (
       is.propertyDefined(schema[prop], 'isRequired') &&
       schema[prop].isRequired === false &&
@@ -276,12 +277,21 @@ export function checkIsFormOK(schema, componentState) {
     )
       return false;
 
-    if (
-      componentState[prop].status === FieldStatus.error ||
-      componentState[prop].status === FieldStatus.normal
-    ) {
+    if (componentState[prop].status === FieldStatus.error) {
       isError = true;
       return true;
+    }
+
+    if (componentState[prop].status === FieldStatus.normal) {
+      if (is.not.propertyDefined(schema[prop], 'default')) {
+        isError = true;
+        return true;
+      }        
+
+      if (schema[prop].default !== componentState[prop].value) {
+        isError = true;
+        return true;
+      }
     }
     return false;
   });
