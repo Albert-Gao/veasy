@@ -232,13 +232,11 @@ function extractUserDefinedMsg(handlerName, schema) {
   return result;
 }
 
-function ruleRunner(ruleHandler, fieldName, value, pschema) {
+function ruleRunner(ruleName, ruleHandler, fieldName, value, pschema) {
   const { schema, userErrorText } = extractUserDefinedMsg(
-    ruleHandler.name,
+    ruleName,
     pschema
   );
-
-  const ruleName = ruleHandler.name;
 
   if (RuleWhichNeedsBoolean.includes(ruleName)) {
     if (schema[ruleName] === false) return;
@@ -280,7 +278,13 @@ function runMatchers(matcher, fieldState, fieldSchema) {
   const schema = fieldSchema[fieldName];
   Object.keys(schema).forEach(ruleInSchema => {
     if (is.propertyDefined(matcher, ruleInSchema)) {
-      ruleRunner(matcher[ruleInSchema], fieldName, fieldState.value, schema);
+      ruleRunner(
+        ruleInSchema, 
+        matcher[ruleInSchema], 
+        fieldName, 
+        fieldState.value, 
+        schema
+      );
     }
     // TODO: Do something when the rule is not match
     // else if (ruleInSchema !== 'default') {
