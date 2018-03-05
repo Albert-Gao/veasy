@@ -1,6 +1,39 @@
 /* eslint-disable no-new */
 import { startValidating } from '../src/helpers';
 
+describe('Test the extra features', () => {
+  let mockSchema;
+  const mockUpdate = jest.fn();
+  let mockTarget;
+
+  beforeEach(() => {
+    mockSchema = {
+      title: {
+        default: '1',
+        before: undefined,
+      }
+    };
+    mockTarget = {
+      name: 'title',
+      value: '1'
+    };
+  });
+
+  test('Should honor the before rule', async () => {
+    mockSchema.title.before = value => `${value}023`;
+    expect(mockTarget.value).toBe('1');    
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: 1023
+      }
+    });
+  });
+});
+
 describe('Test the Normal rules', () => {
   let mockSchema;
   const mockUpdate = jest.fn();
