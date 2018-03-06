@@ -263,6 +263,14 @@ export function resetForm(schema, state) {
   return newState;
 }
 
+function handleBeforeValidation(fieldValue, handler) {
+  if (is.function(handler)) {
+    return handler(fieldValue);
+  }
+  console.warn(`[Veasy]: beforeValidation should be a function while the value is ${handler}`);
+  return fieldValue;
+}
+
 /**
  * It will run through the user's settings for a field,
  * and try matching to the matchers.js,
@@ -277,7 +285,12 @@ function runMatchers(matcher, fieldState, fieldSchema) {
   const fieldName = Object.keys(fieldSchema)[0];
   const schema = fieldSchema[fieldName];
   Object.keys(schema).forEach(ruleInSchema => {
-    if (is.propertyDefined(matcher, ruleInSchema)) {
+    if (ruleInSchema === 'beforeValidation') {
+      fieldState.value = handleBeforeValidation(
+        fieldState.value, 
+        schema.beforeValidation
+      );
+    } else if (is.propertyDefined(matcher, ruleInSchema)) {
       ruleRunner(
         ruleInSchema, 
         matcher[ruleInSchema], 
