@@ -267,7 +267,9 @@ function handleBeforeValidation(fieldValue, handler) {
   if (is.function(handler)) {
     return handler(fieldValue);
   }
-  console.warn(`[Veasy]: beforeValidation should be a function while the value is ${handler}`);
+  /* eslint no-console: 0 */
+  console.warn(`[Veasy]: Expect beforeValidation to be a function \
+while the value is ${handler}`);
   return fieldValue;
 }
 
