@@ -287,18 +287,19 @@ function runMatchers(matcher, fieldState, fieldSchema) {
   const fieldName = Object.keys(fieldSchema)[0];
   const schema = fieldSchema[fieldName];
   Object.keys(schema).forEach(ruleInSchema => {
-    if (ruleInSchema === 'beforeValidation') {
-      fieldState.value = handleBeforeValidation(
-        fieldState.value, 
-        schema.beforeValidation
-      );
-    } else if (is.propertyDefined(matcher, ruleInSchema)) {
+    if (is.propertyDefined(matcher, ruleInSchema)) {
       ruleRunner(
         ruleInSchema, 
         matcher[ruleInSchema], 
         fieldName, 
         fieldState.value, 
         schema
+      );
+    }
+    else if (ruleInSchema === 'beforeValidation') {
+      fieldState.value = handleBeforeValidation(
+        fieldState.value, 
+        schema.beforeValidation
       );
     }
     // TODO: Do something when the rule is not match
