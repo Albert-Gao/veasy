@@ -367,9 +367,10 @@ export function startValidating(
   const propName = targetName || target.name;
 
   if (is.not.existy(propName)) {
-    throw new Error('target.name and targetName are both non-existy');
+    /* eslint max-len: ["error", { "ignoreStrings": true }] */
+    throw new Error('can not find the name property, you need to add the name property to the component that you want to validate');
   }
-
+  
   const fieldInfo = {
     value: target.value,
     schema: { [propName]: schema[propName] }
