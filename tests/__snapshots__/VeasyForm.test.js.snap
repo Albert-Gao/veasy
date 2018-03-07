@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test the <Veasy /> should render properly with button 1`] = `
+exports[`Test the <VeasyForm /> rendering should render properly with button 1`] = `
 <form
   onBlur={[Function]}
   onReset={[Function]}

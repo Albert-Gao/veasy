@@ -12,7 +12,7 @@ Enzyme.configure({ adapter: new Adapter() });
 const Input = () => <input type="text" />;
 const Email = () => <input type="email" />;
 
-describe('Test the <Veasy />', () => {
+describe('Test the <VeasyForm /> rendering', () => {
   let mockSchema;
   let mockTarget;
   let mockComponent;
@@ -38,7 +38,7 @@ describe('Test the <Veasy />', () => {
           value: ''
         }
       },
-      setState: x => {}
+      setState: () => {}
     };
     componentToRender = (
       <VeasyForm
@@ -240,6 +240,92 @@ describe('Test the <Veasy />', () => {
     expect(targetInput.prop('cool')).toBe('true');
   });
 
+  test('Should render a form with 3 inputs with extra props', () => {
+    const wrapper = shallow(
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+        name="super"
+        action="google"
+        onSubmit={() => {}}
+      >
+        <Input name="title" />
+        <input />
+        <input />
+      </VeasyForm>
+    );
+    const form = wrapper.find('form').at(0);
+    expect(form.prop('name')).toEqual('super');
+    expect(form.prop('action')).toEqual('google');
+    expect(typeof form.prop('onSubmit')).toEqual('function');
+  });
+
+  test('Should render a div when tag set to div', () => {
+    const wrapper = shallow(
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+        tag="div"
+      >
+        <input />
+        <input />
+      </VeasyForm>
+    );
+    expect(wrapper.find('form')).toHaveLength(0);
+    expect(wrapper.find('div')).toHaveLength(1);    
+    expect(wrapper.find('div').children()).toHaveLength(2);
+  });
+});
+
+describe('Test the <VeasyForm /> interaction', () => {
+  let mockSchema;
+  let mockTarget;
+  let mockComponent;
+  let componentToRender;
+
+  beforeEach(() => {
+    mockSchema = {
+      title: {
+        minLength: 1,
+        default: ''
+      }
+    };
+    mockTarget = {
+      name: 'title',
+      value: 'abc'
+    };
+    mockComponent = {
+      state: {
+        isFormOK: false,
+        title: {
+          status: 'normal',
+          errorText: '',
+          value: ''
+        }
+      },
+      setState: () => {}
+    };
+    componentToRender = (
+      <VeasyForm
+        schema={mockSchema}
+        allState={mockComponent.state}
+        update={mockComponent.setState}
+      >
+        <div>
+          <p>
+            <Input name="title" />
+          </p>
+        </div>
+        <input />
+        <div>
+          <Email super="ok" cool="true" />
+        </div>
+      </VeasyForm>
+    );
+  });
+
   test('trigger onBlur should invoke triggerValidation', () => {
     const wrapper = shallow(componentToRender);
     const mockTrigger = jest.fn();
@@ -288,41 +374,16 @@ describe('Test the <Veasy />', () => {
     expect(mockUpdate.mock.calls.length).toBe(1);
   });
 
-  test('Should render a form with 3 inputs with extra props', () => {
-    const wrapper = shallow(
-      <VeasyForm
-        schema={mockSchema}
-        allState={mockComponent.state}
-        update={mockComponent.setState}
-        name="super"
-        action="google"
-        onSubmit={() => {}}
-      >
-        <Input name="title" />
-        <input />
-        <input />
-      </VeasyForm>
-    );
-    const form = wrapper.find('form').at(0);
-    expect(form.prop('name')).toEqual('super');
-    expect(form.prop('action')).toEqual('google');
-    expect(typeof form.prop('onSubmit')).toEqual('function');
-  });
+  test('should not validate if the event owner is not included in the schema', () => {
+    const wrapper = shallow(componentToRender);
+    const target = wrapper.find('Email').at(0);
+    expect(target.prop('onChange')).toBeFalsy();
+    expect(target).toBeTruthy();
 
-  test('Should render a div when tag set to div', () => {
-    const wrapper = shallow(
-      <VeasyForm
-        schema={mockSchema}
-        allState={mockComponent.state}
-        update={mockComponent.setState}
-        tag="div"
-      >
-        <input />
-        <input />
-      </VeasyForm>
-    );
-    expect(wrapper.find('form')).toHaveLength(0);
-    expect(wrapper.find('div')).toHaveLength(1);    
-    expect(wrapper.find('div').children()).toHaveLength(2);
+    const mockTrigger = jest.fn();
+    wrapper.instance().triggerValidation = mockTrigger;
+
+    target.simulate('change');
+    expect(mockTrigger.mock.calls.length).toBe(0);
   });
-});
+})
