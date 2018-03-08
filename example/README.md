@@ -7,12 +7,12 @@ npm install -g create-react-app
 
 create-react-app my-app
 cd my-app/
-npm start
+npm install veasy
 ```
 
 2. And copy all the example files into the `src` folder
 
-3. `yarn start` or `npm run start`
+3. `yarn start` or `npm start`
 
 It will show a single example which two `TextInput`, three `RadioButton` and submit button and reset button.
 
