@@ -1,6 +1,57 @@
 /* eslint-disable no-new */
 import { startValidating } from '../src/helpers';
 
+describe('Test the before feature', () => {
+  let mockSchema;
+  const mockUpdate = jest.fn();
+  let mockTarget;
+
+  beforeEach(() => {
+    mockSchema = {
+      title: {
+        default: '1',
+        beforeValidation: undefined,
+      }
+    };
+    mockTarget = {
+      name: 'title',
+      value: '1'
+    };
+  });
+
+  afterEach(() => {
+    mockUpdate.mockReset();
+  });
+
+  test('Should execute the function in beforeValidation rule', async () => {
+    mockSchema.title.beforeValidation = value => `${value}023`;
+    expect(mockTarget.value).toBe('1');    
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: '1023'
+      }
+    });
+  });
+
+  test('Should ignore before rule if not a function', async () => {
+    mockSchema.title.before = 1;
+    expect(mockTarget.value).toBe('1');    
+    await startValidating(mockTarget, mockSchema, mockUpdate);
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      title: {
+        status: 'ok',
+        errorText: '',
+        value: '1'
+      }
+    });
+  });
+});
+
 describe('Test the Normal rules', () => {
   let mockSchema;
   const mockUpdate = jest.fn();

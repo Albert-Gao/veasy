@@ -568,15 +568,14 @@ describe('Test the validate method', () => {
     mockPersist.mockReset();
   });
 
-  test('should throw when targetName and target.name is null', () => { 
+  test('should return undefined when targetName and target.name is null', async () => { 
     const mockPersist = jest.fn();
     const mockSchema = 'schema';
     const mockUpdate = 'update';
     const mockState = 'state';
     const e = { target: 'a', persist: mockPersist };
-    expect(() => {
-      lib.validate(e, mockSchema, mockState, mockUpdate);
-    }).toThrowError();
+    const result = await lib.validate(e, mockSchema, mockState, mockUpdate);
+    expect(result).toBe(undefined);
     expect(mockPersist.mock.calls.length).toBe(1);
     mockPersist.mockReset();
   });

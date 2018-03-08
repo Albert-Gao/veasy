@@ -51,6 +51,11 @@ For instance:
 
 ### Normal rules
 
+- beforeValidation: `(fieldValue) => fieldValue`
+  - This is a function which will executed before validation.
+  - It will get a value, and return a value.
+  - The returned value will be used for this field.
+  - Such that, you can change field to do some formatting thing before validation happens.
 - inArray: `Array<string>`
 - isRequired: `boolean`
   - Only affect the `isFormOK` currently, which means when it set to `false`, unless the field is `error`, the `isFormOK` will ignore its `status`.

@@ -263,6 +263,16 @@ export function resetForm(schema, state) {
   return newState;
 }
 
+function handleBeforeValidation(fieldValue, handler) {
+  if (is.function(handler)) {
+    return handler(fieldValue);
+  }
+  /* eslint no-console: 0 */
+  console.warn(`[Veasy]: Expect beforeValidation to be a function \
+while the value is ${handler}`);
+  return fieldValue;
+}
+
 /**
  * It will run through the user's settings for a field,
  * and try matching to the matchers.js,
@@ -284,6 +294,12 @@ function runMatchers(matcher, fieldState, fieldSchema) {
         fieldName, 
         fieldState.value, 
         schema
+      );
+    }
+    else if (ruleInSchema === 'beforeValidation') {
+      fieldState.value = handleBeforeValidation(
+        fieldState.value, 
+        schema.beforeValidation
       );
     }
     // TODO: Do something when the rule is not match
@@ -351,9 +367,11 @@ export function startValidating(
   const propName = targetName || target.name;
 
   if (is.not.existy(propName)) {
-    throw new Error('target.name and targetName are both non-existy');
+    // If the user includes non-form field component
+    // Instead of throw, we should just ignore
+    return undefined;
   }
-
+  
   const fieldInfo = {
     value: target.value,
     schema: { [propName]: schema[propName] }
