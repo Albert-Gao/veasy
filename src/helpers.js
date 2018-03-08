@@ -367,8 +367,9 @@ export function startValidating(
   const propName = targetName || target.name;
 
   if (is.not.existy(propName)) {
-    /* eslint max-len: ["error", { "ignoreStrings": true }] */
-    throw new Error('can not find the name property, you need to add the name property to the component that you want to validate');
+    // If the user includes non-form field component
+    // Instead of throw, we should just ignore
+    return undefined;
   }
   
   const fieldInfo = {
