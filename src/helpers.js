@@ -344,7 +344,10 @@ function updateWhenNeeded(
     ...fieldState[propName]
   };
 
-  if (is.existy(oldFieldState) && is.existy(newFieldState)) {
+  if (
+    is.existy(oldFieldState) && 
+    is.existy(newFieldState)
+  ) {
     if (!shouldChange(oldFieldState, newFieldState)) return;
   } else {
     return;
