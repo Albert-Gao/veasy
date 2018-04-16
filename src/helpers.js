@@ -111,7 +111,7 @@ export function checkIsFormOK(schema, componentState) {
       if (is.not.propertyDefined(schema[prop], 'default')) {
         isError = true;
         return true;
-      }        
+      }
 
       if (schema[prop].default !== componentState[prop].value) {
         isError = true;
@@ -120,13 +120,39 @@ export function checkIsFormOK(schema, componentState) {
     }
     return false;
   });
-  if (!isError) {
-    componentState.isFormOK = true;
-  } else {
-    componentState.isFormOK = false;
-  }
+  componentState.isFormOK = !isError;
 
   return componentState;
+}
+
+/**
+ * When the schema contains a default rule
+ */
+function validateStateIfHasDefaultValue(schema, fieldName, fieldValue) {
+  let result;
+  if (is.propertyDefined(schema[fieldName], 'default')){
+    try {
+      result = rulesRunner(fieldValue, schema)
+    } catch (err) {
+      result = err
+    }
+  }
+  return result;
+}
+
+function createFieldState(schema, fieldName){
+  const initialFieldState = createNewFieldState(true, schema[fieldName]);
+
+  const result = validateStateIfHasDefaultValue(
+    schema,
+    fieldName,
+    initialFieldState.value
+  );
+
+  if (result) {
+    return result;
+  }
+  return initialFieldState;
 }
 
 export function createInitialState(schema, userState) {
@@ -134,9 +160,9 @@ export function createInitialState(schema, userState) {
     ...userState
   };
 
-  Object.keys(schema).forEach(prop => {
-    if (prop === 'collectValues') return;
-    initialState[prop] = createNewFieldState(true, schema[prop]);
+  Object.keys(schema).forEach(fieldName => {
+    if (fieldName === 'collectValues') return;
+    initialState[fieldName] = createFieldState(schema, fieldName);
   });
 
   const schemaItems = Object.keys(schema);
@@ -207,8 +233,8 @@ export function getFieldsValue(schema, state, mustOK = true) {
  * throw an error with defined text, usually calls by ruleRunner().
  */
 export function throwError(value, errorText) {
-  const error = { value, errorText, status: FieldStatus.error };
-  throw error;
+  // eslint-disable-next-line no-throw-literal
+  throw { value, errorText, status: FieldStatus.error };
 }
 
 function extractUserDefinedMsg(handlerName, schema) {
@@ -254,12 +280,12 @@ export function resetForm(schema, state) {
   const newState = { ...state };
   const fieldNames = Object.keys(newSchema);
   fieldNames.forEach(name => {
-    const newField = newState[name];
-    newField.status = FieldStatus.normal;
-    newField.errorText = '';
-    newField.value = createInitialValue(schema[name]);
+    const initialFieldState = createFieldState(schema, name);
+    newState[name].value = initialFieldState.value;
+    newState[name].status = initialFieldState.status;
+    newState[name].errorText = initialFieldState.errorText;
   });
-  newState.isFormOK = false;
+  checkIsFormOK(schema, newState);
   return newState;
 }
 
@@ -289,16 +315,16 @@ function runMatchers(matcher, fieldState, fieldSchema) {
   Object.keys(schema).forEach(ruleInSchema => {
     if (is.propertyDefined(matcher, ruleInSchema)) {
       ruleRunner(
-        ruleInSchema, 
-        matcher[ruleInSchema], 
-        fieldName, 
-        fieldState.value, 
+        ruleInSchema,
+        matcher[ruleInSchema],
+        fieldName,
+        fieldState.value,
         schema
       );
     }
     else if (ruleInSchema === 'beforeValidation') {
       fieldState.value = handleBeforeValidation(
-        fieldState.value, 
+        fieldState.value,
         schema.beforeValidation
       );
     }
@@ -344,7 +370,10 @@ function updateWhenNeeded(
     ...fieldState[propName]
   };
 
-  if (is.existy(oldFieldState) && is.existy(newFieldState)) {
+  if (
+    is.existy(oldFieldState) &&
+    is.existy(newFieldState)
+  ) {
     if (!shouldChange(oldFieldState, newFieldState)) return;
   } else {
     return;
@@ -371,7 +400,7 @@ export function startValidating(
     // Instead of throw, we should just ignore
     return undefined;
   }
-  
+
   const fieldInfo = {
     value: target.value,
     schema: { [propName]: schema[propName] }

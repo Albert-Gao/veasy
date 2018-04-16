@@ -2,6 +2,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import './TextInput.css';
+import BaseInput from './BaseInput';
 
 const TextInput = ({
   name,
@@ -13,7 +14,7 @@ const TextInput = ({
 }) => (
   <div>
     <label htmlFor={name}>
-      <input
+      <BaseInput
         type="text"
         id={name}
         name={name}

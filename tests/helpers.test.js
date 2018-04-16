@@ -7,7 +7,10 @@ describe('Test the createInitialState method', () => {
   const component = { dummy: true };
 
   beforeEach(() => {
-    schema = { title: { minLength: 1 }, name: { notEmpty: true } };
+    schema = {
+      title: { minLength: 2 },
+      name: { notEmpty: true }
+    };
   });
 
   test('Should return an object with certain properties', () => {
@@ -32,12 +35,12 @@ describe('Test the createInitialState method', () => {
       title: {
         default: 'free'
       }
-    }
+    };
     const state = new VeasyClass(component, schema).createInitialState();
     expect(state).toEqual({
       isFormOK: true,
       title: {
-        status: 'normal',
+        status: 'ok',
         errorText: '',
         value: 'free'
       }
@@ -66,20 +69,20 @@ describe('Test the createInitialState method', () => {
   });
 
   test('Should return an object with value equal default if there is', () => {
-    schema.title.default = 'I am default';
+    schema.title.default = "a";
     schema.name.default = 'albert';
     const state = new VeasyClass(component, schema).createInitialState();
     expect(state).toEqual({
-      isFormOK: true,
+      isFormOK: false,
+      title: {
+        status: 'error',
+        errorText: 'title\'s length should be equal or greater than 2. Current: 1',
+        value: 'a'
+      },
       name: {
-        status: 'normal',
+        status: 'ok',
         errorText: '',
         value: 'albert'
-      },
-      title: {
-        status: 'normal',
-        errorText: '',
-        value: 'I am default'
       }
     });
   });
@@ -101,12 +104,12 @@ describe('Test the createInitialState method', () => {
     expect(state).toEqual({
       isFormOK: true,
       name: {
-        status: 'normal',
+        status: 'ok',
         errorText: '',
         value: 'albert'
       },
       title: {
-        status: 'normal',
+        status: 'ok',
         errorText: '',
         value: 'I am default'
       },
@@ -143,14 +146,14 @@ describe('Test the createInitialState method', () => {
     expect(state).toEqual({
       isFormOK: true,
       name: {
-        status: 'normal',
+        status: 'ok',
         errorText: '',
         value: 'albert',
         firstName: 'Albert',
         lastName: 'Gao'
       },
       title: {
-        status: 'normal',
+        status: 'ok',
         errorText: '',
         value: 'I am default',
         realLength: 123
@@ -338,7 +341,7 @@ describe('Test the checkIsFormOK method', () => {
 
     delete state.description;
     delete schema.description;
-    
+
     lib.checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(true);
   });
@@ -354,7 +357,7 @@ describe('Test the checkIsFormOK method', () => {
 
     delete state.description;
     delete schema.description;
-    
+
     lib.checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
   });
@@ -382,7 +385,7 @@ describe('Test the checkIsFormOK method', () => {
     expect(state.isFormOK).toBe(true);
   });
 
-  test('should honour isRequired = false', () => {  
+  test('should honour isRequired = false', () => {
     // It should ignore error field when isRequired = false
     state.isFormOK = true;
     state.description.status = 'error';
@@ -392,7 +395,7 @@ describe('Test the checkIsFormOK method', () => {
     expect(state.isFormOK).toBe(false);
   });
 
-  test('should honour isRequired = false', () => {  
+  test('should honour isRequired = false', () => {
     // It should ignore error field when isRequired = false
     state.description.status = 'normal';
     schema.description.isRequired = false;
@@ -400,7 +403,7 @@ describe('Test the checkIsFormOK method', () => {
     expect(state.isFormOK).toBe(true);
   });
 
-  test('should honour isRequired = false', () => {  
+  test('should honour isRequired = false', () => {
     // It should ignore error field when isRequired = false
     state.description.status = 'ok';
     schema.description.isRequired = false;
@@ -408,7 +411,7 @@ describe('Test the checkIsFormOK method', () => {
     expect(state.isFormOK).toBe(true);
   });
 
-  test('should honour isRequired = true', () => {  
+  test('should honour isRequired = true', () => {
     // It should ignore error field when isRequired = false
     state.isFormOK = true;
     state.description.status = 'error';
@@ -492,7 +495,7 @@ describe('Test the resetForm method', () => {
     expect(result).toEqual({
       isFormOK: false,
       title: {
-        status: 'normal',
+        status: 'ok',
         errorText: '',
         value: 'albert'
       },
@@ -527,7 +530,7 @@ describe('Test the resetForm method', () => {
     expect(result).toEqual({
       isFormOK: false,
       title: {
-        status: 'normal',
+        status: 'ok',
         errorText: '',
         value: 'albert',
         super: {
@@ -556,8 +559,8 @@ describe('Test the resetForm method', () => {
   });
 });
 
-describe('Test the validate method', () => { 
-  test('should invoke persist() on e', () => { 
+describe('Test the validate method', () => {
+  test('should invoke persist() on e', () => {
     const mockPersist = jest.fn();
     const mockSchema = 'schema';
     const mockUpdate = 'update';
@@ -568,7 +571,7 @@ describe('Test the validate method', () => {
     mockPersist.mockReset();
   });
 
-  test('should return undefined when targetName and target.name is null', async () => { 
+  test('should return undefined when targetName and target.name is null', async () => {
     const mockPersist = jest.fn();
     const mockSchema = 'schema';
     const mockUpdate = 'update';
