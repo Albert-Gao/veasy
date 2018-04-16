@@ -56,8 +56,10 @@ For instance:
   - It will get a value, and return a value.
   - The returned value will be used for this field.
   - Such that, you can change field to do some formatting thing before validation happens.
+- default: `Any`
+  - If you set this value, then the `createInitialState()` will return you an initial state with this default value. It will trigger the validation as well. Because it's a default value. You can add a `placeholder` to your `input` component if a hint is all you want.
 - inArray: `Array<string>`
-- isRequired: `boolean`
+- isRequired: `boolean`, default to `true`
   - Only affect the `isFormOK` currently, which means when it set to `false`, unless the field is `error`, the `isFormOK` will ignore its `status`.
 - matchRegex: `regex`
 - isEmail: `boolean`

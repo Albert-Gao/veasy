@@ -1,7 +1,7 @@
 /*
 *  This component is purely for solving the issue of jumping cursor of React controlled component
-*  If you don't mind or using another workaround.
-*  Feel free to ignore and change the BaseInput usage in `TextInput.js` to normal `input`
+*  If you don't mind or using another workaround,
+*  you can simply ignore and change the BaseInput usage in `TextInput.js` to normal `input`
 */
 
 import React from "react";
