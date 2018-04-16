@@ -126,6 +126,22 @@ export function checkIsFormOK(schema, componentState) {
 }
 
 /**
+ * This is the main entry for all validator.
+ * It will generate the initial state to start with
+ *
+ */
+export function rulesRunner(value, schema) {
+  const fieldState = createNewFieldState();
+  fieldState.value = value;
+
+  if (is.existy(value) && is.not.empty(value)) {
+    fieldState.status = FieldStatus.ok;
+  }
+
+  return runMatchers(handlerMatcher, fieldState, schema);
+}
+
+/**
  * When the schema contains a default rule
  */
 function validateStateIfHasDefaultValue(schema, fieldName, fieldValue) {
@@ -333,22 +349,6 @@ function runMatchers(matcher, fieldState, fieldSchema) {
     // }
   });
   return fieldState;
-}
-
-/**
- * This is the main entry for all validator.
- * It will generate the initial state to start with
- *
- */
-export function rulesRunner(value, schema) {
-  const fieldState = createNewFieldState();
-  fieldState.value = value;
-
-  if (is.existy(value) && is.not.empty(value)) {
-    fieldState.status = FieldStatus.ok;
-  }
-
-  return runMatchers(handlerMatcher, fieldState, schema);
 }
 
 function updateWhenNeeded(
