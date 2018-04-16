@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import {FieldStatus} from "./helpers";
 import is from 'is_js';
+import {FieldStatus} from "./helpers";
 
 function getNestedValue(key, obj) {
   return key.split('.').reduce((result1, key1) => result1[key1], obj);
