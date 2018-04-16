@@ -1,4 +1,7 @@
-import * as lib from '../src/helpers';
+import * as lib from '../src/helpers/helpers';
+import {createInitialValue} from '../src/helpers/initializationUtils';
+import {getFieldsValue} from "../src/helpers/collectValuesUtils";
+import {checkIsFormOK} from "../src/helpers/validationUtils";
 /* eslint-disable no-new */
 import VeasyClass from '../src/VeasyClass';
 
@@ -171,17 +174,17 @@ describe('Test the createInitialState method', () => {
 describe('Test the createInitialValue method', () => {
   test('Should return min when there is min', () => {
     const schema = { min: '6' };
-    expect(lib.createInitialValue(schema)).toBe('6');
+    expect(createInitialValue(schema)).toBe('6');
   });
 
   test('Should return default when there is default', () => {
     const schema = { default: '5' };
-    expect(lib.createInitialValue(schema)).toBe('5');
+    expect(createInitialValue(schema)).toBe('5');
   });
 
   test('Should return empty when there is no default and min', () => {
     const schema = { notEmpty: true };
-    expect(lib.createInitialValue(schema)).toBe('');
+    expect(createInitialValue(schema)).toBe('');
   });
 });
 
@@ -234,14 +237,14 @@ describe('Test the getFieldsValue method', () => {
   });
 
   test('should return all the values of fields which are ok', () => {
-    const result = lib.getFieldsValue(schema, state);
+    const result = getFieldsValue(schema, state);
     expect(result).toEqual({
       description: '12345678901'
     });
   });
 
   test('should return only the values of all fields', () => {
-    const result = lib.getFieldsValue(schema, state, false);
+    const result = getFieldsValue(schema, state, false);
     expect(result).toEqual({
       title: 'abc',
       description: '12345678901'
@@ -253,7 +256,7 @@ describe('Test the getFieldsValue method', () => {
     const mockConsole = jest.fn();
     // eslint-disable-next-line no-console
     console.warn = mockConsole;
-    const result = lib.getFieldsValue(schema, state, false);
+    const result = getFieldsValue(schema, state, false);
     expect(result).toEqual({
       title: 'abc'
     });
@@ -266,7 +269,7 @@ describe('Test the getFieldsValue method', () => {
   test('Should honour collectValue section -case 1 - mustOK=false', () => {
     schema.collectValues = { gender: 'genderInfo' };
     state.genderInfo = 'male';
-    const result = lib.getFieldsValue(schema, state, false);
+    const result = getFieldsValue(schema, state, false);
     expect(result).toEqual({
       title: 'abc',
       description: '12345678901',
@@ -277,7 +280,7 @@ describe('Test the getFieldsValue method', () => {
   test('Should honour collectValue section -case 2 - mustOK=true', () => {
     schema.collectValues = { gender: 'genderInfo' };
     state.genderInfo = 'male';
-    const result = lib.getFieldsValue(schema, state, true);
+    const result = getFieldsValue(schema, state, true);
     expect(result).toEqual({
       description: '12345678901',
       gender: 'male'
@@ -287,7 +290,7 @@ describe('Test the getFieldsValue method', () => {
   test('Should honour collectValue section -case 3 - nested', () => {
     schema.collectValues = { gender: 'genderInfo.user.gender.info' };
     state.genderInfo = { user: { gender: { info: 'male' } } };
-    const result = lib.getFieldsValue(schema, state, true);
+    const result = getFieldsValue(schema, state, true);
     expect(result).toEqual({
       description: '12345678901',
       gender: 'male'
@@ -326,7 +329,7 @@ describe('Test the checkIsFormOK method', () => {
   });
 
   test('shouldn`t change to ok if one status is normal without default in schema', () => {
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
   });
 
@@ -342,7 +345,7 @@ describe('Test the checkIsFormOK method', () => {
     delete state.description;
     delete schema.description;
 
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(true);
   });
 
@@ -358,21 +361,21 @@ describe('Test the checkIsFormOK method', () => {
     delete state.description;
     delete schema.description;
 
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
   });
 
   test('could restore the isFormOK to false - error', () => {
     state.isFormOK = true;
     state.title.status = 'error';
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
   });
 
   test('could restore the isFormOK to false - normal', () => {
     state.isFormOK = true;
     state.title.status = 'normal';
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
   });
 
@@ -381,7 +384,7 @@ describe('Test the checkIsFormOK method', () => {
       firstName: 'firstName'
     };
     state.description.status = 'ok';
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(true);
   });
 
@@ -391,7 +394,7 @@ describe('Test the checkIsFormOK method', () => {
     state.description.status = 'error';
     state.description.errorText = 'super error';
     schema.description.isRequired = false;
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
   });
 
@@ -399,7 +402,7 @@ describe('Test the checkIsFormOK method', () => {
     // It should ignore error field when isRequired = false
     state.description.status = 'normal';
     schema.description.isRequired = false;
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(true);
   });
 
@@ -407,7 +410,7 @@ describe('Test the checkIsFormOK method', () => {
     // It should ignore error field when isRequired = false
     state.description.status = 'ok';
     schema.description.isRequired = false;
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(true);
   });
 
@@ -416,7 +419,7 @@ describe('Test the checkIsFormOK method', () => {
     state.isFormOK = true;
     state.description.status = 'error';
     schema.description.isRequired = true;
-    lib.checkIsFormOK(schema, state);
+    checkIsFormOK(schema, state);
     expect(state.isFormOK).toBe(false);
   });
 });

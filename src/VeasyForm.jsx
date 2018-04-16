@@ -2,7 +2,7 @@
 import is from 'is_js';
 import PropTypes from 'prop-types';
 import React from 'react';
-import * as lib from './helpers';
+import * as lib from './helpers/helpers';
 
 export default class VeasyForm extends React.Component {
   triggerValidation = e => {
@@ -41,7 +41,7 @@ export default class VeasyForm extends React.Component {
   recursiveCloneChildren = children =>
     React.Children.map(children, child => {
       if (!React.isValidElement(child)) return child;
-      
+
       if (this.isRegisteredComponent(child)) {
         return this.cloneElement(child, child.props.name);
       }

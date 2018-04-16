@@ -1,5 +1,5 @@
 /* eslint-disable no-new,max-len */
-import { startValidating } from '../src/helpers';
+import { startValidating } from '../src/helpers/helpers';
 
 /**
  * There is a work flow to assemble the final result
