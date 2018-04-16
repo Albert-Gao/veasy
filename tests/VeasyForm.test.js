@@ -3,9 +3,9 @@ import Enzyme, { mount, shallow, render } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import toJson from 'enzyme-to-json';
 import React from 'react';
-import VeasyForm from '../src/VeasyForm';
-import * as lib from '../src/helpers';
 import renderer from 'react-test-renderer';
+import VeasyForm from '../src/VeasyForm';
+import * as lib from '../src/helpers/helpers';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -274,7 +274,7 @@ describe('Test the <VeasyForm /> rendering', () => {
       </VeasyForm>
     );
     expect(wrapper.find('form')).toHaveLength(0);
-    expect(wrapper.find('div')).toHaveLength(1);    
+    expect(wrapper.find('div')).toHaveLength(1);
     expect(wrapper.find('div').children()).toHaveLength(2);
   });
 });

@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import { startValidating } from '../src/helpers';
+import { startValidating } from '../src/helpers/helpers';
 
 describe('Test the before feature', () => {
   let mockSchema;
@@ -25,7 +25,7 @@ describe('Test the before feature', () => {
 
   test('Should execute the function in beforeValidation rule', async () => {
     mockSchema.title.beforeValidation = value => `${value}023`;
-    expect(mockTarget.value).toBe('1');    
+    expect(mockTarget.value).toBe('1');
     await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({
@@ -39,7 +39,7 @@ describe('Test the before feature', () => {
 
   test('Should ignore before rule if not a function', async () => {
     mockSchema.title.before = 1;
-    expect(mockTarget.value).toBe('1');    
+    expect(mockTarget.value).toBe('1');
     await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
     expect(mockUpdate).toBeCalledWith({

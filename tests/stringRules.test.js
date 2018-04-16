@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import { startValidating } from '../src/helpers';
+import { startValidating } from '../src/helpers/helpers';
 
 describe('Test the validate method - String', () => {
   let mockSchema;

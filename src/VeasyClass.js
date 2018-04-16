@@ -1,5 +1,8 @@
 // @ts-check
-import * as lib from './helpers';
+import * as lib from './helpers/helpers';
+import * as ClassLib from './helpers/veasyClassUtils';
+import {createInitialState} from './helpers/initializationUtils';
+import {getFieldsValue} from './helpers/collectValuesUtils';
 
 class VeasyClass {
   /**
@@ -9,7 +12,7 @@ class VeasyClass {
    * @memberof VeasyClass
    */
   constructor(component, schema) {
-    lib.typeCheck(component, schema);
+    ClassLib.typeCheck(component, schema);
     /** @type { { state:object, setState:Function } } */
     this.component = component;
     this.schema = schema;
@@ -22,7 +25,7 @@ class VeasyClass {
    * @memberof VeasyClass
    */
   createInitialState(userState) {
-    return lib.createInitialState(this.schema, userState);
+    return createInitialState(this.schema, userState);
   }
 
   /**
@@ -41,7 +44,7 @@ class VeasyClass {
   }
 
   getFieldsValue(mustOK=true) {
-    lib.getFieldsValue(
+    getFieldsValue(
       this.schema,
       this.component.state,
       mustOK

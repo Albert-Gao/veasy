@@ -1,8 +1,8 @@
 /* eslint-disable no-new */
-import * as lib from '../src/helpers';
+import * as lib from '../src/helpers/helpers';
+import * as collectLib from '../src/helpers/collectValuesUtils';
 import VeasyClass from '../src/VeasyClass';
-
-const { getConstructorErrorMessage } = lib;
+import {getConstructorErrorMessage} from "../src/helpers/veasyClassUtils";
 
 describe('test the constructor - Property component', () => {
   const schema = { dummy: { min: 0 } };
@@ -114,7 +114,7 @@ describe('test the constructor - Property schema', () => {
 describe('Test the class methods', () => {
   test('should invoke getFieldsValue', () => {
     const mockUpdate = jest.fn();
-    lib.getFieldsValue = mockUpdate;
+    collectLib.getFieldsValue = mockUpdate;
     const mockComponent = {
       state: { name: 'albert' },
       setState: () => {}
@@ -126,7 +126,7 @@ describe('Test the class methods', () => {
     expect(mockUpdate.mock.calls.length).toEqual(1);
     expect(mockUpdate.mock.calls[0][0]).toEqual(mockSchema);
     expect(mockUpdate.mock.calls[0][1]).toEqual(mockComponent.state);
-    expect(mockUpdate.mock.calls[0][2]).toEqual(true);    
+    expect(mockUpdate.mock.calls[0][2]).toEqual(true);
     mockUpdate.mockReset();
   });
 });
