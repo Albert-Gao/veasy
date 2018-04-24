@@ -29,7 +29,9 @@ For instance:
 ### String rules
 
 - minLength: `int`
+    - greater than or equal
 - maxLength: `int`
+    - less than or equal
 - include: `string`
 - exclude: `string`
 - startWith: `string`
