@@ -125,3 +125,6 @@ Your schema is like this:
 If the user enters `one`, `veasy` will stop at first rule and let the user know that it should be a number. If they then enter `1`, `veasy` will inform them that they `should be older than 16`, and so on until all rules are valid.
 
 This example is simple, you can chain all the rules to build your own. And thanks to `React`, it all happens immediately. All you need to do is to declare a schema.
+
+## Gitter channel
+[https://gitter.im/veasyjs/Lobby](https://gitter.im/veasyjs/Lobby)
