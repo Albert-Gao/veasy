@@ -109,12 +109,30 @@ export function startValidating(
       })
       .catch(errorState => errorState)
       .then(newFieldState =>
-        updateWhenNeeded(newFieldState, propName, update, schema, allState)
+        updateWhenNeeded(
+          newFieldState,
+          propName,
+          update,
+          schema,
+          allState
+        )
       )
   );
 }
 
-export function validate(e, schema, allState, update, targetName) {
+export function validate(
+  e,
+  schema,
+  allState,
+  update,
+  targetName
+) {
   e.persist();
-  startValidating(e.target, schema, update, allState, targetName);
+  startValidating(
+    e.target,
+    schema,
+    update,
+    allState,
+    targetName
+  );
 }

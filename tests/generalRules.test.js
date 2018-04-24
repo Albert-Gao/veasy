@@ -52,6 +52,70 @@ describe('Test the before feature', () => {
   });
 });
 
+describe('Test the reliesOn rule', () => {
+  let mockSchema;
+  const mockUpdate = jest.fn();
+  let mockTarget;
+  let mockState;
+
+  beforeEach(() => {
+    mockSchema = {
+      title: {
+        minLength: 2
+      },
+      description: {
+        minLength: 6,
+        reliesOn: {
+          title: {
+            maxLength: 3
+          }
+        }
+      }
+    };
+    mockTarget = {
+      name: 'description',
+      value: 'this-is-description'
+    };
+    mockState = {
+      isFormOK: false,
+      title: {
+        status: 'normal',
+        errorText: '',
+        value: '1234'
+      },
+      description: {
+        status: 'normal',
+        errorText: '',
+        value: '123456'
+      }
+    };
+  });
+
+  afterEach(() => {
+    mockUpdate.mockReset();
+  });
+
+  test('reliesOn should work - error case', async () => {
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockState
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      description: {
+        status: 'error',
+        errorText: 'title should be less than 3. Current: 4.',
+        value: mockTarget.value
+      }
+    });
+  });
+
+  test('reliesOn should report 2nd rule has error - error case ', () => {
+  });
+});
+
 describe('Test the Normal rules', () => {
   let mockSchema;
   const mockUpdate = jest.fn();
@@ -67,6 +131,7 @@ describe('Test the Normal rules', () => {
       name: 'title',
       value: '6'
     };
+
   });
 
   afterEach(() => {
