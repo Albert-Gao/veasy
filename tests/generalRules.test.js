@@ -1,5 +1,5 @@
 /* eslint-disable no-new */
-import { startValidating } from '../src/helpers/helpers';
+import {startValidating} from '../src/helpers/helpers';
 
 describe('Test the before feature', () => {
   let mockSchema;
@@ -63,6 +63,9 @@ describe('Test the reliesOn rule', () => {
       title: {
         minLength: 2
       },
+      author: {
+        startWith: 'a'
+      },
       description: {
         minLength: 6,
         reliesOn: {
@@ -83,6 +86,11 @@ describe('Test the reliesOn rule', () => {
         errorText: '',
         value: '1234'
       },
+      author: {
+        status: 'normal',
+        errorText: '',
+        value: 'abc'
+      },
       description: {
         status: 'normal',
         errorText: '',
@@ -96,6 +104,38 @@ describe('Test the reliesOn rule', () => {
   });
 
   test('reliesOn should work - error case', async () => {
+    delete mockSchema.author;
+    delete mockState.author;
+
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockState
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+        description: {
+          status: 'error',
+          errorText: 'title should be less than 3. Current: 4.',
+          value: mockTarget.value
+        },
+        isFormOK: false,
+        title: {
+          errorText: "",
+          status: "normal",
+          value: "1234"
+        }
+      }
+    );
+  });
+
+  test('should report 2nd rule has error - error case ', async () => {
+    delete mockSchema.author;
+    delete mockState.author;
+    mockSchema.description.reliesOn.title.maxLength = 4;
+    mockSchema.description.reliesOn.title.startWith = '0';
+
     await startValidating(
       mockTarget,
       mockSchema,
@@ -106,13 +146,51 @@ describe('Test the reliesOn rule', () => {
     expect(mockUpdate).toBeCalledWith({
       description: {
         status: 'error',
-        errorText: 'title should be less than 3. Current: 4.',
+        errorText: 'title should start with \'0\'.',
         value: mockTarget.value
+      },
+      isFormOK: false,
+      title: {
+        errorText: "",
+        status: "normal",
+        value: "1234"
       }
     });
   });
 
-  test('reliesOn should report 2nd rule has error - error case ', () => {
+  test('Should support reliesOn more than one field', async () => {
+    mockSchema.description.reliesOn.title.maxLength = 4;
+    mockSchema.description.reliesOn.author = {
+      startWith: 'al'
+    };
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockState
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      author: {
+        errorText: "",
+        status: "normal",
+        value: "abc"
+      },
+      description: {
+        errorText: 'author should start with \'ab\'.',
+        status: 'error',
+        value: mockTarget.value
+      },
+      isFormOK: false,
+      title: {
+        errorText: "",
+        status: "normal",
+        value: "1234"
+      }
+    });
+  });
+
+  test('should support the `test` sub-rule which runs regex against another field', () => {
   });
 });
 
