@@ -76,7 +76,7 @@ function updateWhenNeeded(
 
   const finalState = {
     ...formState,
-    [propName]: { ...newFieldState1 }
+    [propName]: newFieldState1
   };
   update(checkIsFormOK(schema, finalState));
 }
@@ -103,10 +103,11 @@ export function startValidating(
 
   return (
     Promise.resolve(fieldInfo)
-      // eslint-disable-next-line arrow-body-style
-      .then(info => {
-        return rulesRunner(info.value, info.schema);
-      })
+      .then(info => rulesRunner(
+        info.value,
+        info.schema,
+        allState)
+      )
       .catch(errorState => errorState)
       .then(newFieldState =>
         updateWhenNeeded(

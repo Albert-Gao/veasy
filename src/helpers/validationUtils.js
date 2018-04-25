@@ -49,6 +49,8 @@ export function checkIsFormOK(schema, componentState) {
   return componentState;
 }
 
+
+
 function handleBeforeValidation(fieldValue, handler) {
   if (is.function(handler)) {
     return handler(fieldValue);
@@ -59,58 +61,7 @@ while the value is ${handler}`);
   return fieldValue;
 }
 
-/**
- * It will run through the user's settings for a field,
- * and try matching to the matchers.js,
- * if according rule could be found,
- * it will then execute the according rule function.
- * For instance:
- * if user sets a `minLength` for a field,
- * This function will invoke the minLength()
- *
- */
-function runMatchers(matcher, fieldState, fieldSchema) {
-  const fieldName = Object.keys(fieldSchema)[0];
-  const schema = fieldSchema[fieldName];
-  Object.keys(schema).forEach(ruleInSchema => {
-    if (is.propertyDefined(matcher, ruleInSchema)) {
-      // eslint-disable-next-line no-use-before-define
-      ruleRunner(
-        ruleInSchema,
-        matcher[ruleInSchema],
-        fieldName,
-        fieldState.value,
-        schema
-      );
-    }
-    else if (ruleInSchema === 'beforeValidation') {
-      fieldState.value = handleBeforeValidation(
-        fieldState.value,
-        schema.beforeValidation
-      );
-    }
-    // TODO: Do something when the rule is not match
-    // else if (ruleInSchema !== 'default') {
-    // }
-  });
-  return fieldState;
-}
 
-/**
- * This is the main entry for all validator.
- * It will generate the initial state to start with
- *
- */
-export function rulesRunner(value, schema) {
-  const fieldState = createNewFieldState();
-  fieldState.value = value;
-
-  if (is.existy(value) && is.not.empty(value)) {
-    fieldState.status = FieldStatus.ok;
-  }
-
-  return runMatchers(handlerMatcher, fieldState, schema);
-}
 
 function extractUserDefinedMsg(handlerName, schema) {
   const result = { schema, userErrorText: '' };
@@ -134,7 +85,14 @@ function extractUserDefinedMsg(handlerName, schema) {
 }
 
 
-function ruleRunner(ruleName, ruleHandler, fieldName, value, pschema) {
+
+function ruleRunner(
+  ruleName,
+  ruleHandler,
+  fieldName,
+  value,
+  pschema
+) {
   const { schema, userErrorText } = extractUserDefinedMsg(
     ruleName,
     pschema
@@ -148,4 +106,113 @@ function ruleRunner(ruleName, ruleHandler, fieldName, value, pschema) {
   if (result.isValid) return;
 
   throwError(value, userErrorText || result.errorText);
+}
+
+
+
+function handleReliesOn(
+  fieldReliesOnSchema,
+  fieldState,
+  allState
+) {
+  const originalFieldState = {...fieldState};
+  Object.keys(fieldReliesOnSchema).forEach(reliedField => {
+    const reliesKeySchema = fieldReliesOnSchema[reliedField];
+    Object.keys(reliesKeySchema).forEach(rule => {
+      if (is.propertyDefined(handlerMatcher, rule)) {
+        try {
+          ruleRunner(
+            rule,
+            handlerMatcher[rule],
+            reliedField,
+            allState[reliedField].value, // Here we need to swap the field value to the target value
+            reliesKeySchema
+          );
+        } catch (err) {
+          // Restore the original value
+          err.value = originalFieldState.value;
+          throw err;
+        }
+      }
+    });
+  });
+}
+
+
+
+/**
+ * It will run through the user's settings for a field,
+ * and try matching to the matchers.js,
+ * if according rule could be found,
+ * it will then execute the according rule function.
+ * For instance:
+ * if user sets a `minLength` for a field,
+ * This function will invoke the minLength()
+ *
+ */
+function runMatchers(
+  matcher,
+  fieldState,
+  fieldSchema,
+  allState
+) {
+  const fieldName = Object.keys(fieldSchema)[0];
+  const schema = fieldSchema[fieldName];
+  Object.keys(schema).forEach(ruleInSchema => {
+    if (is.propertyDefined(matcher, ruleInSchema)) {
+      // eslint-disable-next-line no-use-before-define
+      ruleRunner(
+        ruleInSchema,
+        matcher[ruleInSchema],
+        fieldName,
+        fieldState.value,
+        schema
+      );
+    }
+    else if (ruleInSchema === 'beforeValidation') {
+      fieldState.value = handleBeforeValidation(
+        fieldState.value,
+        schema.beforeValidation
+      );
+    }
+    else if (ruleInSchema === 'reliesOn') {
+      const fieldReliesOnSchema = fieldSchema[fieldName].reliesOn;
+      handleReliesOn(
+        fieldReliesOnSchema,
+        fieldState,
+        allState
+      )
+    }
+    // TODO: Do something when the rule is not match
+    // else if (ruleInSchema !== 'default') {
+    // }
+  });
+  return fieldState;
+}
+
+
+
+/**
+ * This is the main entry for all validator.
+ * It will generate the initial state to start with
+ *
+ */
+export function rulesRunner(
+  value,
+  schema,
+  allState
+) {
+  const fieldState = createNewFieldState();
+  fieldState.value = value;
+
+  if (is.existy(value) && is.not.empty(value)) {
+    fieldState.status = FieldStatus.ok;
+  }
+
+  return runMatchers(
+    handlerMatcher,
+    fieldState,
+    schema,
+    allState
+  );
 }

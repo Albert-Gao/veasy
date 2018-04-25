@@ -117,7 +117,7 @@ describe('Test the reliesOn rule', () => {
     expect(mockUpdate).toBeCalledWith({
         description: {
           status: 'error',
-          errorText: 'title should be less than 3. Current: 4.',
+          errorText: 'title\'s length should be equal or less than 3. Current: 4',
           value: mockTarget.value
         },
         isFormOK: false,
@@ -177,7 +177,7 @@ describe('Test the reliesOn rule', () => {
         value: "abc"
       },
       description: {
-        errorText: 'author should start with \'ab\'.',
+        errorText: 'author should start with \'al\'.',
         status: 'error',
         value: mockTarget.value
       },
@@ -190,7 +190,36 @@ describe('Test the reliesOn rule', () => {
     });
   });
 
-  test('should support the `test` sub-rule which runs regex against another field', () => {
+  test('should work - ok case', async () => {
+    mockSchema.description.reliesOn.title.maxLength = 4;
+    mockSchema.description.reliesOn.author = {
+      startWith: 'a'
+    };
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockState
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      author: {
+        errorText: "",
+        status: "normal",
+        value: "abc"
+      },
+      description: {
+        errorText: '',
+        status: 'ok',
+        value: mockTarget.value
+      },
+      isFormOK: false,
+      title: {
+        errorText: "",
+        status: "normal",
+        value: "1234"
+      }
+    });
   });
 });
 
