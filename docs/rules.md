@@ -53,11 +53,6 @@ For instance:
 
 ### Normal rules
 
-- beforeValidation: `(fieldValue) => fieldValue`
-  - This is a function which will executed before validation.
-  - It will get a value, and return a value.
-  - The returned value will be used for this field.
-  - Such that, you can change field to do some formatting thing before validation happens.
 - default: `Any`
   - If you set this value, then the `createInitialState()` will return you an initial state with this default value. It will trigger the validation as well. Because it's a default value. You can add a `placeholder` to your `input` component if a hint is all you want.
 - inArray: `Array<string>`
@@ -71,6 +66,37 @@ For instance:
 - notEmpty: `boolean`
 - isIP: `string` within `v4`, `v6` or `all`
 
+
+### Special rules
+- beforeValidation: `(fieldValue) => fieldValue`
+  - This is a function which will executed before validation.
+  - It will get a value, and return a value.
+  - The returned value will be used for this field.
+  - Such that, you can change field to do some formatting thing before validation happens.
+- ReliesOn: `Schema`
+  - Here you can let a field A `reliesOn` another field B (which should exists in the state) with new rules, if the validation fails, then field A will be marked as `error`, because it `reliesOn` field B. 
+  - No matter how you defines the rules for field B in the root schema, inside `reliesOn`, you can define new rules. Any `veasy` rules will be supported!
+  - This won't affect the rules for fieldB in the `schema`
+  - Example
+      ```javascript
+      {
+           fieldA: {
+                minLength: 4,
+                maxLength: 6,
+                reliesOn: { 
+                    fieldB: {
+                         // you can use all `veasy` rules to validate against fieldB, 
+                         // if it fails, fieldA will be `error` because it `reliesOn` fieldB
+                         startWith: 'a'
+                    }
+                }
+           },       
+           fieldB: {
+              minLength: 1,
+              maxLength: 3
+           }
+      }
+      ```
 
 > Underneath, `veasy` use [is.js](http://is.js.org/), a fantastic micro check library, kudos to the creators!
 
