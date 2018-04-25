@@ -119,20 +119,21 @@ function handleReliesOn(
   Object.keys(fieldReliesOnSchema).forEach(reliedField => {
     const reliesKeySchema = fieldReliesOnSchema[reliedField];
     Object.keys(reliesKeySchema).forEach(rule => {
-      if (is.propertyDefined(handlerMatcher, rule)) {
-        try {
-          ruleRunner(
-            rule,
-            handlerMatcher[rule],
-            reliedField,
-            allState[reliedField].value, // Here we need to swap the field value to the target value
-            reliesKeySchema
-          );
-        } catch (err) {
-          // Restore the original value
-          err.value = originalFieldState.value;
-          throw err;
-        }
+
+      if (is.not.propertyDefined(handlerMatcher, rule)) return;
+
+      try {
+        ruleRunner(
+          rule,
+          handlerMatcher[rule],
+          reliedField,
+          allState[reliedField].value, // Here we need to swap the field value to the target value
+          reliesKeySchema
+        );
+      } catch (err) {
+        // Restore the original value
+        err.value = originalFieldState.value;
+        throw err;
       }
     });
   });
