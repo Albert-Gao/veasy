@@ -76,7 +76,7 @@ function updateWhenNeeded(
 
   const finalState = {
     ...formState,
-    [propName]: { ...newFieldState1 }
+    [propName]: newFieldState1
   };
   update(checkIsFormOK(schema, finalState));
 }
@@ -103,18 +103,37 @@ export function startValidating(
 
   return (
     Promise.resolve(fieldInfo)
-      // eslint-disable-next-line arrow-body-style
-      .then(info => {
-        return rulesRunner(info.value, info.schema);
-      })
+      .then(info => rulesRunner(
+        info.value,
+        info.schema,
+        allState)
+      )
       .catch(errorState => errorState)
       .then(newFieldState =>
-        updateWhenNeeded(newFieldState, propName, update, schema, allState)
+        updateWhenNeeded(
+          newFieldState,
+          propName,
+          update,
+          schema,
+          allState
+        )
       )
   );
 }
 
-export function validate(e, schema, allState, update, targetName) {
+export function validate(
+  e,
+  schema,
+  allState,
+  update,
+  targetName
+) {
   e.persist();
-  startValidating(e.target, schema, update, allState, targetName);
+  startValidating(
+    e.target,
+    schema,
+    update,
+    allState,
+    targetName
+  );
 }

@@ -19,6 +19,7 @@ A comprehensive react form solution which aims to eliminate all tedious logic.
 - Get fields value for submitting
 - Auto update fields `props` according to validation result
 - Auto binding fields `props`
+- Support chaining validation, field A `reliesOn` field B with different rules
 - onBlur: trigger validation automatically
 - onChange: trigger validation automatically
 - onReset: reset form to default state
