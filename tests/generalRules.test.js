@@ -221,6 +221,78 @@ describe('Test the reliesOn rule', () => {
       }
     });
   });
+
+  test('should work even with a wrong `reliesOn` rule - ok case', async () => {
+    mockSchema.description.reliesOn.title.maxLength = 4;
+    mockSchema.description.reliesOn.author = {
+      startWith: 'a',
+      asd: 'b'
+    };
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockState
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+      author: {
+        errorText: "",
+        status: "normal",
+        value: "abc"
+      },
+      description: {
+        errorText: '',
+        status: 'ok',
+        value: mockTarget.value
+      },
+      isFormOK: false,
+      title: {
+        errorText: "",
+        status: "normal",
+        value: "1234"
+      }
+    });
+  });
+
+  test('Should work when value is available through collectValues', async () => {
+    delete mockSchema.author;
+    delete mockSchema.title;
+    delete mockState.author;
+    delete mockState.title;
+    mockSchema.collectValues = {
+      title: 'my.little.title'
+    };
+    mockState.my = {
+      little: {
+        title: 'abcd'
+      }
+    };
+
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockState
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+        description: {
+          status: 'error',
+          errorText: 'title\'s length should be equal or less than 3. Current: 4',
+          value: mockTarget.value
+        },
+        isFormOK: false,
+        my: {
+          little: {
+            title: 'abcd'
+          }
+        }
+      }
+    );
+
+  });
+
 });
 
 describe('Test the Normal rules', () => {
