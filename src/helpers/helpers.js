@@ -83,7 +83,7 @@ function updateWhenNeeded(
 
 export function startValidating(
   target,
-  schema,
+  allSchema,
   update,
   allState,
   targetName = undefined
@@ -98,7 +98,7 @@ export function startValidating(
 
   const fieldInfo = {
     value: target.value,
-    schema: { [propName]: schema[propName] }
+    schema: { [propName]: allSchema[propName] }
   };
 
   return (
@@ -106,6 +106,7 @@ export function startValidating(
       .then(info => rulesRunner(
         info.value,
         info.schema,
+        allSchema,
         allState)
       )
       .catch(errorState => errorState)
@@ -114,7 +115,7 @@ export function startValidating(
           newFieldState,
           propName,
           update,
-          schema,
+          allSchema,
           allState
         )
       )

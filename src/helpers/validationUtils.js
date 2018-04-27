@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import is from 'is_js';
+import {getNestedValue} from "./collectValuesUtils";
 import {FieldStatus, throwError} from "./helpers";
 import handlerMatcher, {
   RuleWhichNeedsArray,
@@ -108,26 +109,57 @@ function ruleRunner(
   throwError(value, userErrorText || result.errorText);
 }
 
+function grabValueForReliesField(
+  allSchema,
+  allState,
+  reliedFieldName
+) {
+  let result;
 
+  if (
+    is.propertyDefined(allState, reliedFieldName) &&
+    is.propertyDefined(allState[reliedFieldName], "value")
+  ) {
+    result = allState[reliedFieldName].value
+  }
+  else if (
+    is.propertyDefined(allSchema, "collectValues") &&
+    is.propertyDefined(allSchema.collectValues, reliedFieldName)
+  ) {
+    result = getNestedValue(
+      allSchema.collectValues[reliedFieldName],
+      allState
+    )
+  }
+
+  return result;
+}
 
 function handleReliesOn(
   fieldReliesOnSchema,
   fieldState,
+  allSchema,
   allState
 ) {
   const originalFieldState = {...fieldState};
-  Object.keys(fieldReliesOnSchema).forEach(reliedField => {
-    const reliesKeySchema = fieldReliesOnSchema[reliedField];
+  Object.keys(fieldReliesOnSchema).forEach(reliedFieldName => {
+    const reliesKeySchema = fieldReliesOnSchema[reliedFieldName];
     Object.keys(reliesKeySchema).forEach(rule => {
 
       if (is.not.propertyDefined(handlerMatcher, rule)) return;
+
+      const reliedFieldValue = grabValueForReliesField(
+        allSchema,
+        allState,
+        reliedFieldName
+      );
 
       try {
         ruleRunner(
           rule,
           handlerMatcher[rule],
-          reliedField,
-          allState[reliedField].value, // Here we need to swap the field value to the target value
+          reliedFieldName,
+          reliedFieldValue, // Here we need to swap the field value to the target value
           reliesKeySchema
         );
       } catch (err) {
@@ -155,6 +187,7 @@ function runMatchers(
   matcher,
   fieldState,
   fieldSchema,
+  allSchema,
   allState
 ) {
   const fieldName = Object.keys(fieldSchema)[0];
@@ -181,6 +214,7 @@ function runMatchers(
       handleReliesOn(
         fieldReliesOnSchema,
         fieldState,
+        allSchema,
         allState
       )
     }
@@ -200,7 +234,8 @@ function runMatchers(
  */
 export function rulesRunner(
   value,
-  schema,
+  fieldSchema,
+  allSchema,
   allState
 ) {
   const fieldState = createNewFieldState();
@@ -213,7 +248,8 @@ export function rulesRunner(
   return runMatchers(
     handlerMatcher,
     fieldState,
-    schema,
+    fieldSchema,
+    allSchema,
     allState
   );
 }
