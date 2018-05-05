@@ -33,14 +33,14 @@ export function createNewFieldState() {
  * When the schema contains a default rule
  */
 function validateStateIfHasDefaultValue(
-  schema: SchemaType,
-  fieldName: string,
+  fieldSchema: FieldSchemaType,
   fieldValue: mixed
 ) {
   let result;
-  if (is.propertyDefined(schema[fieldName], 'default')){
+  const fieldName = Object.keys(fieldSchema)[0];
+  if (is.propertyDefined(fieldSchema[fieldName], 'default')){
     try {
-      result = rulesRunner(fieldValue, schema)
+      result = rulesRunner(fieldValue, fieldSchema)
     } catch (err) {
       result = err
     }
@@ -56,8 +56,7 @@ export function createFieldState(
   initialFieldState.value = createInitialValue(schema[fieldName]);
 
   const result = validateStateIfHasDefaultValue(
-    schema,
-    fieldName,
+    { [fieldName]: schema[fieldName] },
     initialFieldState.value
   );
 
@@ -68,7 +67,7 @@ export function createFieldState(
 }
 
 export function createInitialState(
-  schema:SchemaType,
+  schema: SchemaType,
   userState: ComponentStateType
 ) {
   const initialState = {

@@ -42,7 +42,7 @@ export function throwError(
 
 
 export function resetForm(
-  schema: FieldSchemaType,
+  schema: SchemaType,
   state: ComponentStateType
 ) {
   const newSchema = { ...schema };

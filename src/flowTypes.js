@@ -19,7 +19,7 @@ export type BeforeValidationHandlerType =
 export type FieldRuleSetType = {
   default?: mixed,
   min?: number,
-  isRequired?: number,
+  isRequired?: boolean,
   beforeValidation: BeforeValidationHandlerType,
   reliesOn: { [reliedFieldName: string]: FieldRuleSetType }
 }

@@ -4,7 +4,7 @@ import is from 'is_js';
 import type {
   ComponentStateType, FieldSchemaType, FieldStateType,
   HandlerFuncType,
-  SchemaType, MatcherType
+  SchemaType, MatcherType, FieldRuleSetType, BeforeValidationHandlerType
 } from "../flowTypes";
 import {getNestedValue} from "./collectValuesUtils";
 import {FieldStatus, throwError} from "./helpers";
@@ -63,14 +63,11 @@ export function checkIsFormOK(
 
 function handleBeforeValidation(
   fieldValue: mixed,
-  handler: HandlerFuncType
+  handler: BeforeValidationHandlerType
 ) {
   if (is.function(handler)) {
     return handler(fieldValue);
   }
-  /* eslint no-console: 0 */
-  console.warn(`[Veasy]: Expect beforeValidation to be a function \
-while the value is ${handler}`);
   return fieldValue;
 }
 
@@ -78,7 +75,7 @@ while the value is ${handler}`);
 
 function extractUserDefinedMsg(
   handlerName: string,
-  schema: SchemaType
+  schema: FieldRuleSetType
 ) {
   const result = { schema, userErrorText: '' };
 
@@ -94,9 +91,9 @@ function extractUserDefinedMsg(
   }
 
   // The most common case: [0] is rule and [1] is errText
-  result.schema = { [handlerName]: currentSchema[0] };
-  // eslint-disable-next-line prefer-destructuring
-  result.userErrorText = currentSchema[1];
+  const [rule, errText] = currentSchema;
+  result.schema[handlerName] = rule;
+  result.userErrorText = errText;
   return result;
 }
 
@@ -107,7 +104,7 @@ function ruleRunner(
   ruleHandler: HandlerFuncType,
   fieldName: string,
   value: mixed,
-  pschema: SchemaType
+  pschema: FieldRuleSetType
 ) {
   const { schema, userErrorText } = extractUserDefinedMsg(
     ruleName,
@@ -151,10 +148,10 @@ function grabValueForReliesField(
 }
 
 function handleReliesOn(
-  fieldReliesOnSchema,
-  fieldState,
-  allSchema,
-  allState
+  fieldReliesOnSchema: {},
+  fieldState: FieldStateType,
+  allSchema: SchemaType,
+  allState: ComponentStateType
 ) {
   const originalFieldState = {...fieldState};
   Object.keys(fieldReliesOnSchema).forEach(reliedFieldName => {
@@ -202,12 +199,12 @@ function runMatchers(
   matcher: MatcherType,
   fieldState: FieldStateType,
   fieldSchema: FieldSchemaType,
-  allSchema: SchemaType,
-  allState: ComponentStateType
+  allSchema?: SchemaType,
+  allState?: ComponentStateType
 ) {
   const fieldName = Object.keys(fieldSchema)[0];
-  const schema = fieldSchema[fieldName];
-  Object.keys(schema).forEach(ruleInSchema => {
+  const fieldRules = fieldSchema[fieldName];
+  Object.keys(fieldRules).forEach(ruleInSchema => {
     if (is.propertyDefined(matcher, ruleInSchema)) {
       // eslint-disable-next-line no-use-before-define
       ruleRunner(
@@ -215,23 +212,25 @@ function runMatchers(
         matcher[ruleInSchema],
         fieldName,
         fieldState.value,
-        schema
+        fieldRules
       );
     }
     else if (ruleInSchema === 'beforeValidation') {
       fieldState.value = handleBeforeValidation(
         fieldState.value,
-        schema.beforeValidation
+        fieldRules.beforeValidation
       );
     }
     else if (ruleInSchema === 'reliesOn') {
       const fieldReliesOnSchema = fieldSchema[fieldName].reliesOn;
-      handleReliesOn(
-        fieldReliesOnSchema,
-        fieldState,
-        allSchema,
-        allState
-      )
+      if (allSchema && allState) {
+        handleReliesOn(
+          fieldReliesOnSchema,
+          fieldState,
+          allSchema,
+          allState
+        )
+      }
     }
     // TODO: Do something when the rule is not match
     // else if (ruleInSchema !== 'default') {
@@ -250,8 +249,8 @@ function runMatchers(
 export function rulesRunner(
   value: mixed,
   fieldSchema: FieldSchemaType,
-  allSchema: SchemaType,
-  allState: ComponentStateType
+  allSchema?: SchemaType,
+  allState?: ComponentStateType
 ) {
   const fieldState = createNewFieldState();
   fieldState.value = value;
