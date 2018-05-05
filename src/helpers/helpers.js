@@ -5,7 +5,7 @@
 import is from 'is_js';
 import {rulesRunner, checkIsFormOK} from './validationUtils';
 import {createFieldState} from './initializationUtils';
-import {TargetType, UpdateFuncType, SchemaType, FieldStateType, ComponentStateType} from "../flowTypes";
+import type {TargetType, UpdateFuncType, SchemaType, FieldStateType, ComponentStateType, FieldSchemaType} from "../flowTypes";
 
 export const FieldStatus = {
   ok: 'ok',
@@ -32,8 +32,8 @@ export function shouldChange(
  * throw an error with defined text, usually calls by ruleRunner().
  */
 export function throwError(
-  value:mixed,
-  errorText:string
+  value: mixed,
+  errorText: string
 ) {
   // eslint-disable-next-line no-throw-literal
   throw { value, errorText, status: FieldStatus.error };
@@ -42,7 +42,7 @@ export function throwError(
 
 
 export function resetForm(
-  schema: SchemaType,
+  schema: FieldSchemaType,
   state: ComponentStateType
 ) {
   const newSchema = { ...schema };
@@ -50,7 +50,7 @@ export function resetForm(
   const newState = { ...state };
   const fieldNames = Object.keys(newSchema);
   fieldNames.forEach(name => {
-    const initialFieldState = createFieldState(schema, name);
+    const initialFieldState = createFieldState(newSchema, name);
     newState[name].value = initialFieldState.value;
     newState[name].status = initialFieldState.status;
     newState[name].errorText = initialFieldState.errorText;
@@ -101,12 +101,12 @@ export function startValidating(
   target: TargetType,
   allSchema: SchemaType,
   update: UpdateFuncType,
-  allState: {},
-  targetName:?string = undefined
+  allState: ComponentStateType,
+  targetName: ?string = undefined
 ) {
-  const propName = targetName || target.name;
+  const fieldName = targetName || target.name;
 
-  if (is.not.existy(propName)) {
+  if (is.not.existy(fieldName)) {
     // If the user includes non-form field component
     // Instead of throw, we should just ignore
     return undefined;
@@ -114,7 +114,7 @@ export function startValidating(
 
   const fieldInfo = {
     value: target.value,
-    schema: { [propName]: allSchema[propName] }
+    schema: { [fieldName]: allSchema[fieldName] }
   };
 
   return (
@@ -129,7 +129,7 @@ export function startValidating(
       .then(newFieldState =>
         updateWhenNeeded(
           newFieldState,
-          propName,
+          fieldName,
           update,
           allSchema,
           allState
@@ -139,11 +139,11 @@ export function startValidating(
 }
 
 export function validate(
-  e: {persist: ()=>void, target:TargetType},
-  schema:SchemaType,
-  allState:{},
-  update:UpdateFuncType,
-  targetName:string
+  e: {persist: ()=>void, target: TargetType},
+  schema: SchemaType,
+  allState: ComponentStateType,
+  update: UpdateFuncType,
+  targetName: string
 ) {
   e.persist();
   startValidating(

@@ -21,15 +21,13 @@ function getCollectValues(collectSchema, state) {
 export function getFieldsValue(
   schema: SchemaType,
   state: ComponentStateType,
-  mustOK:boolean = true
+  mustOK: ?boolean = true
 ) {
   const fieldNames = Object.keys(schema);
   let result = {};
 
   if (is.propertyDefined(schema, 'collectValues')) {
-    result = {
-      ...getCollectValues(schema.collectValues, state)
-    };
+    result = getCollectValues(schema.collectValues, state);
   }
 
   fieldNames.forEach(name => {

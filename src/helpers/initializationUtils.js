@@ -1,7 +1,7 @@
 // @flow
 
 import is from 'is_js';
-import type {FieldSchemaType, SchemaType, ComponentStateType} from "../flowTypes";
+import type {FieldSchemaType, SchemaType, ComponentStateType, FieldRuleSetType} from "../flowTypes";
 import {FieldStatus} from "./helpers";
 import {checkIsFormOK, rulesRunner} from "./validationUtils";
 
@@ -9,7 +9,7 @@ import {checkIsFormOK, rulesRunner} from "./validationUtils";
  * Create initial value for a field if no default is provided.
  *
  */
-export function createInitialValue(schema: FieldSchemaType) {
+export function createInitialValue(schema: FieldRuleSetType) {
   if (is.propertyDefined(schema, 'default')) {
     return schema.default;
   } else if (is.propertyDefined(schema, 'min')) {
@@ -22,17 +22,10 @@ export function createInitialValue(schema: FieldSchemaType) {
  * Create a new state for a field in componentState.formStatus.fields.field
  *
  */
-export function createNewFieldState(
-  needValue: boolean = false,
-  fieldSchema: FieldSchemaType
-) {
+export function createNewFieldState() {
   const result = {};
   result.status = FieldStatus.normal;
   result.errorText = '';
-
-  if (needValue) {
-    result.value = createInitialValue(fieldSchema);
-  }
   return result;
 }
 
@@ -59,7 +52,8 @@ export function createFieldState(
   schema: SchemaType,
   fieldName: string
 ){
-  const initialFieldState = createNewFieldState(true, schema[fieldName]);
+  const initialFieldState = createNewFieldState();
+  initialFieldState.value = createInitialValue(schema[fieldName]);
 
   const result = validateStateIfHasDefaultValue(
     schema,
