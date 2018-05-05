@@ -1,3 +1,5 @@
+// @flow
+import type {MatcherType} from "../flowTypes";
 import * as normal from './generalRules';
 import * as number from './numberRules';
 import * as string from './stringRules';
@@ -5,11 +7,11 @@ import * as string from './stringRules';
 // If the rule expects an array as value, please put
 // it here, so we can extract user defined error message
 // without problem.
-export const RuleWhichNeedsArray = ['inArray'];
+export const RuleWhichNeedsArray: string[] = ['inArray'];
 
 // This is for rule which expect a boolean value,
 // Will ignore the check if the value if false.
-export const RuleWhichNeedsBoolean = [
+export const RuleWhichNeedsBoolean: string[] = [
   'isEmail',
   'isUrl',
   'isCreditCard',
@@ -21,7 +23,7 @@ export const RuleWhichNeedsBoolean = [
   'isIntOrDecimal'
 ];
 
-const handlerMatcher = {
+const handlerMatcher: MatcherType = {
   /* String handlers */
   minLength: string.minLength,
   maxLength: string.maxLength,

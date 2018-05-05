@@ -1,5 +1,11 @@
+// @flow
 /* eslint-disable no-param-reassign */
 import is from 'is_js';
+import type {
+  ComponentStateType, FieldSchemaType, FieldStateType,
+  HandlerFuncType,
+  SchemaType, MatcherType
+} from "../flowTypes";
 import {getNestedValue} from "./collectValuesUtils";
 import {FieldStatus, throwError} from "./helpers";
 import handlerMatcher, {
@@ -14,7 +20,10 @@ import {createNewFieldState} from './initializationUtils';
  * Just mutate the value since it's already a new state object
  *
  */
-export function checkIsFormOK(schema, componentState) {
+export function checkIsFormOK(
+  schema: SchemaType,
+  componentState: ComponentStateType
+) {
   const properties = Object.keys(schema);
   let isError = false;
   properties.some(prop => {
@@ -52,7 +61,10 @@ export function checkIsFormOK(schema, componentState) {
 
 
 
-function handleBeforeValidation(fieldValue, handler) {
+function handleBeforeValidation(
+  fieldValue: mixed,
+  handler: HandlerFuncType
+) {
   if (is.function(handler)) {
     return handler(fieldValue);
   }
@@ -64,7 +76,10 @@ while the value is ${handler}`);
 
 
 
-function extractUserDefinedMsg(handlerName, schema) {
+function extractUserDefinedMsg(
+  handlerName: string,
+  schema: SchemaType
+) {
   const result = { schema, userErrorText: '' };
 
   // No user message, just return
@@ -88,11 +103,11 @@ function extractUserDefinedMsg(handlerName, schema) {
 
 
 function ruleRunner(
-  ruleName,
-  ruleHandler,
-  fieldName,
-  value,
-  pschema
+  ruleName: string,
+  ruleHandler: HandlerFuncType,
+  fieldName: string,
+  value: mixed,
+  pschema: SchemaType
 ) {
   const { schema, userErrorText } = extractUserDefinedMsg(
     ruleName,
@@ -184,11 +199,11 @@ function handleReliesOn(
  *
  */
 function runMatchers(
-  matcher,
-  fieldState,
-  fieldSchema,
-  allSchema,
-  allState
+  matcher: MatcherType,
+  fieldState: FieldStateType,
+  fieldSchema: FieldSchemaType,
+  allSchema: SchemaType,
+  allState: ComponentStateType
 ) {
   const fieldName = Object.keys(fieldSchema)[0];
   const schema = fieldSchema[fieldName];
@@ -233,10 +248,10 @@ function runMatchers(
  *
  */
 export function rulesRunner(
-  value,
-  fieldSchema,
-  allSchema,
-  allState
+  value: mixed,
+  fieldSchema: FieldSchemaType,
+  allSchema: SchemaType,
+  allState: ComponentStateType
 ) {
   const fieldState = createNewFieldState();
   fieldState.value = value;

@@ -1,4 +1,7 @@
+// @flow
+
 import is from 'is_js';
+import type {FieldSchemaType, SchemaType, ComponentStateType} from "../flowTypes";
 import {FieldStatus} from "./helpers";
 import {checkIsFormOK, rulesRunner} from "./validationUtils";
 
@@ -6,7 +9,7 @@ import {checkIsFormOK, rulesRunner} from "./validationUtils";
  * Create initial value for a field if no default is provided.
  *
  */
-export function createInitialValue(schema) {
+export function createInitialValue(schema: FieldSchemaType) {
   if (is.propertyDefined(schema, 'default')) {
     return schema.default;
   } else if (is.propertyDefined(schema, 'min')) {
@@ -19,11 +22,14 @@ export function createInitialValue(schema) {
  * Create a new state for a field in componentState.formStatus.fields.field
  *
  */
-export function createNewFieldState(needValue = false, fieldSchema) {
-  const result = {
-    status: FieldStatus.normal,
-    errorText: ''
-  };
+export function createNewFieldState(
+  needValue: boolean = false,
+  fieldSchema: FieldSchemaType
+) {
+  const result = {};
+  result.status = FieldStatus.normal;
+  result.errorText = '';
+
   if (needValue) {
     result.value = createInitialValue(fieldSchema);
   }
@@ -33,7 +39,11 @@ export function createNewFieldState(needValue = false, fieldSchema) {
 /**
  * When the schema contains a default rule
  */
-function validateStateIfHasDefaultValue(schema, fieldName, fieldValue) {
+function validateStateIfHasDefaultValue(
+  schema: SchemaType,
+  fieldName: string,
+  fieldValue: mixed
+) {
   let result;
   if (is.propertyDefined(schema[fieldName], 'default')){
     try {
@@ -45,7 +55,10 @@ function validateStateIfHasDefaultValue(schema, fieldName, fieldValue) {
   return result;
 }
 
-export function createFieldState(schema, fieldName){
+export function createFieldState(
+  schema: SchemaType,
+  fieldName: string
+){
   const initialFieldState = createNewFieldState(true, schema[fieldName]);
 
   const result = validateStateIfHasDefaultValue(
@@ -60,7 +73,10 @@ export function createFieldState(schema, fieldName){
   return initialFieldState;
 }
 
-export function createInitialState(schema, userState) {
+export function createInitialState(
+  schema:SchemaType,
+  userState: ComponentStateType
+) {
   const initialState = {
     ...userState
   };
