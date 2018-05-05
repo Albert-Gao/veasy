@@ -1,11 +1,8 @@
 // @flow
 /* eslint-disable no-param-reassign */
 import is from 'is_js';
-import type {
-  ComponentStateType, FieldSchemaType, FieldStateType,
-  HandlerFuncType,
-  SchemaType, MatcherType, FieldRuleSetType, BeforeValidationHandlerType
-} from "../flowTypes";
+// eslint-disable-next-line max-len
+import type {ComponentState, FieldSchema, FieldState, HandlerFunc, Schema, Matcher, FieldRules, BeforeValidationHandler} from "../flowTypes";
 import {getNestedValue} from "./collectValuesUtils";
 import {FieldStatus, throwError} from "./helpers";
 import handlerMatcher, {
@@ -21,8 +18,8 @@ import {createNewFieldState} from './initializationUtils';
  *
  */
 export function checkIsFormOK(
-  schema: SchemaType,
-  componentState: ComponentStateType
+  schema: Schema,
+  componentState: ComponentState
 ) {
   const properties = Object.keys(schema);
   let isError = false;
@@ -63,7 +60,7 @@ export function checkIsFormOK(
 
 function handleBeforeValidation(
   fieldValue: mixed,
-  handler: BeforeValidationHandlerType
+  handler: BeforeValidationHandler
 ) {
   if (is.function(handler)) {
     return handler(fieldValue);
@@ -75,7 +72,7 @@ function handleBeforeValidation(
 
 function extractUserDefinedMsg(
   handlerName: string,
-  schema: FieldRuleSetType
+  schema: FieldRules
 ) {
   const result = { schema, userErrorText: '' };
 
@@ -101,14 +98,14 @@ function extractUserDefinedMsg(
 
 function ruleRunner(
   ruleName: string,
-  ruleHandler: HandlerFuncType,
+  ruleHandler: HandlerFunc,
   fieldName: string,
   value: mixed,
-  pschema: FieldRuleSetType
+  fieldRules: FieldRules
 ) {
   const { schema, userErrorText } = extractUserDefinedMsg(
     ruleName,
-    pschema
+    fieldRules
   );
 
   if (RuleWhichNeedsBoolean.includes(ruleName)) {
@@ -149,9 +146,9 @@ function grabValueForReliesField(
 
 function handleReliesOn(
   fieldReliesOnSchema: {},
-  fieldState: FieldStateType,
-  allSchema: SchemaType,
-  allState: ComponentStateType
+  fieldState: FieldState,
+  allSchema: Schema,
+  allState: ComponentState
 ) {
   const originalFieldState = {...fieldState};
   Object.keys(fieldReliesOnSchema).forEach(reliedFieldName => {
@@ -196,11 +193,11 @@ function handleReliesOn(
  *
  */
 function runMatchers(
-  matcher: MatcherType,
-  fieldState: FieldStateType,
-  fieldSchema: FieldSchemaType,
-  allSchema?: SchemaType,
-  allState?: ComponentStateType
+  matcher: Matcher,
+  fieldState: FieldState,
+  fieldSchema: FieldSchema,
+  allSchema?: Schema,
+  allState?: ComponentState
 ) {
   const fieldName = Object.keys(fieldSchema)[0];
   const fieldRules = fieldSchema[fieldName];
@@ -248,9 +245,9 @@ function runMatchers(
  */
 export function rulesRunner(
   value: mixed,
-  fieldSchema: FieldSchemaType,
-  allSchema?: SchemaType,
-  allState?: ComponentStateType
+  fieldSchema: FieldSchema,
+  allSchema?: Schema,
+  allState?: ComponentState
 ) {
   const fieldState = createNewFieldState();
   fieldState.value = value;

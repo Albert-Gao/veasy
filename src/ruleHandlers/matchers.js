@@ -1,5 +1,5 @@
 // @flow
-import type {MatcherType} from "../flowTypes";
+import type {Matcher} from "../flowTypes";
 import * as normal from './generalRules';
 import * as number from './numberRules';
 import * as string from './stringRules';
@@ -23,7 +23,7 @@ export const RuleWhichNeedsBoolean: string[] = [
   'isIntOrDecimal'
 ];
 
-const handlerMatcher: MatcherType = {
+const handlerMatcher: Matcher = {
   /* String handlers */
   minLength: string.minLength,
   maxLength: string.maxLength,

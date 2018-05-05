@@ -1,14 +1,14 @@
 // @flow
 import {FieldStatus} from "./helpers/helpers";
 
-export type TargetType = {
+export type Target = {
   value: mixed,
   name: string
 };
 
-export type UpdateFuncType = (mixed) => void;
+export type UpdateFunc = (mixed) => void;
 
-export type BeforeValidationHandlerType =
+export type BeforeValidationHandler =
   (mixed) => mixed;
 
 /*
@@ -16,44 +16,44 @@ export type BeforeValidationHandlerType =
  * However, due to the issue of flow: https://github.com/facebook/flow/issues/6250
  * Seems we need to mark it as always there to pass the flow check
  */
-export type FieldRuleSetType = {
+export type FieldRules = {
   default?: mixed,
   min?: number,
   isRequired?: boolean,
-  beforeValidation: BeforeValidationHandlerType,
-  reliesOn: { [reliedFieldName: string]: FieldRuleSetType }
+  beforeValidation: BeforeValidationHandler,
+  reliesOn: { [reliedFieldName: string]: FieldRules }
 }
 
-export type FieldSchemaType = {
-  [fieldName: string]: FieldRuleSetType
+export type FieldSchema = {
+  [fieldName: string]: FieldRules
 };
 
-/* Same problem as FieldRuleSetType comment, it shouldn't be marked as non-optional */
-export type SchemaType = {
+/* Same problem as FieldRules comment, it shouldn't be marked as non-optional */
+export type Schema = {
   collectValues: {[string]: string},
-  [fieldName: string]: FieldRuleSetType
+  [fieldName: string]: FieldRules
 };
 
-export type FieldStateType = {
+export type FieldState = {
   value: mixed,
   status: $Keys<typeof FieldStatus>,
   errorText: string
 };
 
-export type ComponentStateType = {
+export type ComponentState = {
   isFormOK: boolean,
-  [fieldName: string]: FieldStateType
+  [fieldName: string]: FieldState
 };
 
-export type HandlerFuncType = (
+export type HandlerFunc = (
   fieldName: string,
   fieldValue: mixed,
-  fieldSchema: FieldRuleSetType
+  fieldSchema: FieldRules
 ) => {
   isValid: boolean,
   errorText: string
 };
 
-export type MatcherType = {
-  [ruleName: string]: HandlerFuncType
+export type Matcher = {
+  [ruleName: string]: HandlerFunc
 };

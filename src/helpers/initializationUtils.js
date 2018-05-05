@@ -1,7 +1,7 @@
 // @flow
 
 import is from 'is_js';
-import type {FieldSchemaType, SchemaType, ComponentStateType, FieldRuleSetType} from "../flowTypes";
+import type {FieldSchema, Schema, ComponentState, FieldRules} from "../flowTypes";
 import {FieldStatus} from "./helpers";
 import {checkIsFormOK, rulesRunner} from "./validationUtils";
 
@@ -9,7 +9,7 @@ import {checkIsFormOK, rulesRunner} from "./validationUtils";
  * Create initial value for a field if no default is provided.
  *
  */
-export function createInitialValue(schema: FieldRuleSetType) {
+export function createInitialValue(schema: FieldRules) {
   if (is.propertyDefined(schema, 'default')) {
     return schema.default;
   } else if (is.propertyDefined(schema, 'min')) {
@@ -33,7 +33,7 @@ export function createNewFieldState() {
  * When the schema contains a default rule
  */
 function validateStateIfHasDefaultValue(
-  fieldSchema: FieldSchemaType,
+  fieldSchema: FieldSchema,
   fieldValue: mixed
 ) {
   let result;
@@ -49,7 +49,7 @@ function validateStateIfHasDefaultValue(
 }
 
 export function createFieldState(
-  schema: SchemaType,
+  schema: Schema,
   fieldName: string
 ){
   const initialFieldState = createNewFieldState();
@@ -67,8 +67,8 @@ export function createFieldState(
 }
 
 export function createInitialState(
-  schema: SchemaType,
-  userState: ComponentStateType
+  schema: Schema,
+  userState: ComponentState
 ) {
   const initialState = {
     ...userState

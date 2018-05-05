@@ -5,7 +5,7 @@
 import is from 'is_js';
 import {rulesRunner, checkIsFormOK} from './validationUtils';
 import {createFieldState} from './initializationUtils';
-import type {TargetType, UpdateFuncType, SchemaType, FieldStateType, ComponentStateType, FieldSchemaType} from "../flowTypes";
+import type {Target, UpdateFunc, Schema, FieldState, ComponentState} from "../flowTypes";
 
 export const FieldStatus = {
   ok: 'ok',
@@ -20,8 +20,8 @@ export const FieldStatus = {
  *
  */
 export function shouldChange(
-  oldState: FieldStateType,
-  newState: FieldStateType
+  oldState: FieldState,
+  newState: FieldState
 ) {
   const isErrorDifferent = oldState.status !== newState.status;
   const isValueDifferent = oldState.value !== newState.value;
@@ -42,8 +42,8 @@ export function throwError(
 
 
 export function resetForm(
-  schema: SchemaType,
-  state: ComponentStateType
+  schema: Schema,
+  state: ComponentState
 ) {
   const newSchema = { ...schema };
   delete newSchema.collectValues;
@@ -62,11 +62,11 @@ export function resetForm(
 
 
 function updateWhenNeeded(
-  newFieldState: FieldStateType,
+  newFieldState: FieldState,
   propName: string,
-  update: UpdateFuncType,
-  schema: SchemaType,
-  formState: ?ComponentStateType = undefined
+  update: UpdateFunc,
+  schema: Schema,
+  formState: ?ComponentState = undefined
 ) {
   const fieldState = { [propName]: newFieldState };
   if (!formState) {
@@ -98,10 +98,10 @@ function updateWhenNeeded(
 
 
 export function startValidating(
-  target: TargetType,
-  allSchema: SchemaType,
-  update: UpdateFuncType,
-  allState: ComponentStateType,
+  target: Target,
+  allSchema: Schema,
+  update: UpdateFunc,
+  allState: ComponentState,
   targetName: ?string = undefined
 ) {
   const fieldName = targetName || target.name;
@@ -139,10 +139,10 @@ export function startValidating(
 }
 
 export function validate(
-  e: {persist: ()=>void, target: TargetType},
-  schema: SchemaType,
-  allState: ComponentStateType,
-  update: UpdateFuncType,
+  e: {persist: ()=>void, target: Target},
+  schema: Schema,
+  allState: ComponentState,
+  update: UpdateFunc,
   targetName: string
 ) {
   e.persist();

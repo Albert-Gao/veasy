@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable import/prefer-default-export */
 import is from 'is_js';
-import type {SchemaType, ComponentStateType} from "../flowTypes";
+import type {Schema, ComponentState} from "../flowTypes";
 import {FieldStatus} from "./helpers";
 
 export const getNestedValue = (key: string, obj: {}) =>
@@ -19,8 +19,8 @@ function getCollectValues(collectSchema, state) {
 }
 
 export function getFieldsValue(
-  schema: SchemaType,
-  state: ComponentStateType,
+  schema: Schema,
+  state: ComponentState,
   mustOK: ?boolean = true
 ) {
   const fieldNames = Object.keys(schema);
