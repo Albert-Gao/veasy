@@ -9,7 +9,7 @@ import {checkIsFormOK, rulesRunner} from "./validationUtils";
  * Create initial value for a field if no default is provided.
  *
  */
-export function createInitialValue(schema: FieldRules) {
+export function createInitialValue(schema: FieldRules): mixed {
   if (is.propertyDefined(schema, 'default')) {
     return schema.default;
   } else if (is.propertyDefined(schema, 'min')) {
@@ -23,10 +23,11 @@ export function createInitialValue(schema: FieldRules) {
  *
  */
 export function createNewFieldState() {
-  const result = {};
-  result.status = FieldStatus.normal;
-  result.errorText = '';
-  return result;
+  return {
+    status: FieldStatus.normal,
+    errorText: '',
+    value: undefined
+  };
 }
 
 /**

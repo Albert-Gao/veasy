@@ -1,6 +1,7 @@
 // @flow
 
 import is from 'is_js';
+import type {ComponentState, Schema} from "../flowTypes";
 
 /**
  * Check if an object is a non-empty object
@@ -14,16 +15,19 @@ export function isNonEmptyObject(obj: mixed): Boolean {
  */
 export function getConstructorErrorMessage(
   paramName: string,
-  value: any
+  value: mixed
 ) {
-  return `[Veasy - ${paramName}] Expect: non empty object. Actual: ${value}`;
+  return `[Veasy - ${paramName}] Expect: non empty object. Actual: ${String(value)}`;
 }
 
 /**
  * Type check for 2 parameters of the constructor
  *
  */
-export function typeCheck(component: {}, schema: {}) {
+export function typeCheck(
+  component: ComponentState,
+  schema: Schema
+) {
   const isComponentValid = isNonEmptyObject(component);
   const isSchemaValid = isNonEmptyObject(schema);
 
