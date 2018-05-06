@@ -73,7 +73,7 @@ For instance:
   - It will get a value, and return a value.
   - The returned value will be used for this field.
   - Such that, you can change field to do some formatting thing before validation happens.
-- ReliesOn: `Schema`
+- reliesOn: `Schema`
   - Here you can let a field A `reliesOn` another field B (which should exists in the state) with new rules, if the validation fails, then field A will be marked as `error`, because it `reliesOn` field B. 
   - No matter how you defines the rules for field B in the root schema, inside `reliesOn`, you can define new rules. Any `veasy` rules will be supported!
   - This won't affect the rules for fieldB in the `schema`
@@ -97,7 +97,31 @@ For instance:
            }
       }
       ```
-
+- onlyWhen: `Schema`
+  - The syntax is as same as `reliesOn`!
+  - But if the validation in `onlyWhen` returns `false`, then this field will be ruled out from validation even it gets a wrong value.
+  - Which mean, the validation happens `onlyWhen` this rule itself passes validation.
+  - Example
+      ```javascript
+      {
+           fieldA: {
+                minLength: 4,
+                maxLength: 6,
+                onlyWhen: { 
+                    fieldB: {
+                         // you can use all `veasy` rules to validate against fieldB, 
+                         // if it fails, fieldA will be `error` because it `reliesOn` fieldB
+                         startWith: 'a'
+                    }
+                }
+           },       
+           fieldB: {
+              minLength: 1,
+              maxLength: 3
+           }
+      }
+      ```
+      
 > Underneath, `veasy` use [is.js](http://is.js.org/), a fantastic micro check library, kudos to the creators!
 
 Need some rules which not listed here or need to extend the current rule? Check our [repo](https://github.com/Albert-Gao/veasy) for creating a PR or issue, thanks. :)
