@@ -23,9 +23,7 @@ export default class VeasyForm extends React.Component {
 
     const childName = child.props.name;
     const names = Object.keys(this.props.schema);
-    if (names.includes(childName)) return true;
-
-    return false;
+    return names.includes(childName);
   };
 
   cloneElement = (child, childName) => {

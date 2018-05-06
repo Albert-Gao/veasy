@@ -1,10 +1,11 @@
+// @flow
 /* eslint-disable import/prefer-default-export */
 import is from 'is_js';
+import type {Schema, ComponentState} from "../flowTypes";
 import {FieldStatus} from "./helpers";
 
-export function getNestedValue(key, obj) {
-  return key.split('.').reduce((result1, key1) => result1[key1], obj);
-}
+export const getNestedValue = (key: string, obj: {}) =>
+  key.split('.').reduce((result1, key1) => result1[key1], obj);
 
 function getCollectValues(collectSchema, state) {
   const fieldsToCollect = Object.keys(collectSchema);
@@ -17,14 +18,16 @@ function getCollectValues(collectSchema, state) {
   return result;
 }
 
-export function getFieldsValue(schema, state, mustOK = true) {
+export function getFieldsValue(
+  schema: Schema,
+  state: ComponentState,
+  mustOK: ?boolean = true
+) {
   const fieldNames = Object.keys(schema);
   let result = {};
 
   if (is.propertyDefined(schema, 'collectValues')) {
-    result = {
-      ...getCollectValues(schema.collectValues, state)
-    };
+    result = getCollectValues(schema.collectValues, state);
   }
 
   fieldNames.forEach(name => {

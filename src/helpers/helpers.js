@@ -1,10 +1,11 @@
-// @ts-check
-/* eslint-disable no-param-reassign */
+// @flow
+/* eslint-disable no-param-reassign,max-len */
 // This file contain any `private` method for the Veasy
 
 import is from 'is_js';
 import {rulesRunner, checkIsFormOK} from './validationUtils';
 import {createFieldState} from './initializationUtils';
+import type {Target, UpdateFunc, Schema, FieldState, ComponentState} from "../flowTypes";
 
 export const FieldStatus = {
   ok: 'ok',
@@ -13,11 +14,15 @@ export const FieldStatus = {
 };
 
 
+
 /**
  * Check if we should change the state or not.
  *
  */
-export function shouldChange(oldState, newState) {
+export function shouldChange(
+  oldState: FieldState,
+  newState: FieldState
+) {
   const isErrorDifferent = oldState.status !== newState.status;
   const isValueDifferent = oldState.value !== newState.value;
   return isErrorDifferent || isValueDifferent;
@@ -26,18 +31,26 @@ export function shouldChange(oldState, newState) {
 /**
  * throw an error with defined text, usually calls by ruleRunner().
  */
-export function throwError(value, errorText) {
+export function throwError(
+  value: mixed,
+  errorText: string
+) {
   // eslint-disable-next-line no-throw-literal
   throw { value, errorText, status: FieldStatus.error };
 }
 
-export function resetForm(schema, state) {
+
+
+export function resetForm(
+  schema: Schema,
+  state: ComponentState
+) {
   const newSchema = { ...schema };
   delete newSchema.collectValues;
   const newState = { ...state };
   const fieldNames = Object.keys(newSchema);
   fieldNames.forEach(name => {
-    const initialFieldState = createFieldState(schema, name);
+    const initialFieldState = createFieldState(newSchema, name);
     newState[name].value = initialFieldState.value;
     newState[name].status = initialFieldState.status;
     newState[name].errorText = initialFieldState.errorText;
@@ -46,15 +59,17 @@ export function resetForm(schema, state) {
   return newState;
 }
 
+
+
 function updateWhenNeeded(
-  newFieldState,
-  propName,
-  update,
-  schema,
-  formState = undefined
+  newFieldState: FieldState,
+  propName: string,
+  update: UpdateFunc,
+  schema: Schema,
+  formState: ?ComponentState = undefined
 ) {
   const fieldState = { [propName]: newFieldState };
-  if (formState === undefined) {
+  if (!formState) {
     update(fieldState);
     return;
   }
@@ -81,16 +96,17 @@ function updateWhenNeeded(
   update(checkIsFormOK(schema, finalState));
 }
 
-export function startValidating(
-  target,
-  allSchema,
-  update,
-  allState,
-  targetName = undefined
-) {
-  const propName = targetName || target.name;
 
-  if (is.not.existy(propName)) {
+export function startValidating(
+  target: Target,
+  allSchema: Schema,
+  update: UpdateFunc,
+  allState: ComponentState,
+  targetName: ?string = undefined
+) {
+  const fieldName = targetName || target.name;
+
+  if (is.not.existy(fieldName)) {
     // If the user includes non-form field component
     // Instead of throw, we should just ignore
     return undefined;
@@ -98,7 +114,7 @@ export function startValidating(
 
   const fieldInfo = {
     value: target.value,
-    schema: { [propName]: allSchema[propName] }
+    schema: { [fieldName]: allSchema[fieldName] }
   };
 
   return (
@@ -113,7 +129,7 @@ export function startValidating(
       .then(newFieldState =>
         updateWhenNeeded(
           newFieldState,
-          propName,
+          fieldName,
           update,
           allSchema,
           allState
@@ -123,11 +139,11 @@ export function startValidating(
 }
 
 export function validate(
-  e,
-  schema,
-  allState,
-  update,
-  targetName
+  e: {persist: ()=>void, target: Target},
+  schema: Schema,
+  allState: ComponentState,
+  update: UpdateFunc,
+  targetName: string
 ) {
   e.persist();
   startValidating(

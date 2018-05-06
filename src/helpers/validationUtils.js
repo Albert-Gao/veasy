@@ -1,5 +1,7 @@
-/* eslint-disable no-param-reassign */
+// @flow
+/* eslint-disable no-param-reassign,array-callback-return,consistent-return, max-len */
 import is from 'is_js';
+import type {ComponentState, FieldSchema, FieldState, HandlerFunc, Schema, Matcher, FieldRules, BeforeValidationHandler, ReliesFieldRules} from "../flowTypes";
 import {getNestedValue} from "./collectValuesUtils";
 import {FieldStatus, throwError} from "./helpers";
 import handlerMatcher, {
@@ -14,7 +16,10 @@ import {createNewFieldState} from './initializationUtils';
  * Just mutate the value since it's already a new state object
  *
  */
-export function checkIsFormOK(schema, componentState) {
+export function checkIsFormOK(
+  schema: Schema,
+  componentState: ComponentState
+) {
   const properties = Object.keys(schema);
   let isError = false;
   properties.some(prop => {
@@ -52,19 +57,22 @@ export function checkIsFormOK(schema, componentState) {
 
 
 
-function handleBeforeValidation(fieldValue, handler) {
+function handleBeforeValidation(
+  fieldValue: mixed,
+  handler: BeforeValidationHandler
+) {
   if (is.function(handler)) {
     return handler(fieldValue);
   }
-  /* eslint no-console: 0 */
-  console.warn(`[Veasy]: Expect beforeValidation to be a function \
-while the value is ${handler}`);
   return fieldValue;
 }
 
 
 
-function extractUserDefinedMsg(handlerName, schema) {
+function extractUserDefinedMsg(
+  handlerName: string,
+  schema: FieldRules
+) {
   const result = { schema, userErrorText: '' };
 
   // No user message, just return
@@ -79,24 +87,24 @@ function extractUserDefinedMsg(handlerName, schema) {
   }
 
   // The most common case: [0] is rule and [1] is errText
-  result.schema = { [handlerName]: currentSchema[0] };
-  // eslint-disable-next-line prefer-destructuring
-  result.userErrorText = currentSchema[1];
+  const [rule, errText] = currentSchema;
+  result.schema[handlerName] = rule;
+  result.userErrorText = errText;
   return result;
 }
 
 
 
 function ruleRunner(
-  ruleName,
-  ruleHandler,
-  fieldName,
-  value,
-  pschema
+  ruleName: string,
+  ruleHandler: HandlerFunc,
+  fieldName: string,
+  value: mixed,
+  fieldRules: FieldRules
 ) {
   const { schema, userErrorText } = extractUserDefinedMsg(
     ruleName,
-    pschema
+    fieldRules
   );
 
   if (RuleWhichNeedsBoolean.includes(ruleName)) {
@@ -110,9 +118,9 @@ function ruleRunner(
 }
 
 function grabValueForReliesField(
-  allSchema,
-  allState,
-  reliedFieldName
+  allSchema: Schema,
+  allState: ComponentState,
+  reliedFieldName: string
 ) {
   let result;
 
@@ -126,20 +134,20 @@ function grabValueForReliesField(
     is.propertyDefined(allSchema, "collectValues") &&
     is.propertyDefined(allSchema.collectValues, reliedFieldName)
   ) {
-    result = getNestedValue(
-      allSchema.collectValues[reliedFieldName],
-      allState
-    )
+      result = getNestedValue(
+        allSchema.collectValues[reliedFieldName],
+        allState
+      )
   }
 
   return result;
 }
 
 function handleReliesOn(
-  fieldReliesOnSchema,
-  fieldState,
-  allSchema,
-  allState
+  fieldReliesOnSchema: ReliesFieldRules,
+  fieldState: FieldState,
+  allSchema: Schema,
+  allState: ComponentState
 ) {
   const originalFieldState = {...fieldState};
   Object.keys(fieldReliesOnSchema).forEach(reliedFieldName => {
@@ -172,6 +180,40 @@ function handleReliesOn(
 }
 
 
+function handleOnlyWhen(
+  fieldOnlyWhenSchema: ReliesFieldRules,
+  fieldState: FieldState,
+  allSchema: Schema,
+  allState: ComponentState
+): boolean {
+  return Object.keys(fieldOnlyWhenSchema).every(reliedFieldName => {
+    const reliesKeySchema = fieldOnlyWhenSchema[reliedFieldName];
+
+    return Object.keys(reliesKeySchema).every(rule => {
+      if (is.not.propertyDefined(handlerMatcher, rule)) return;
+
+      const reliedFieldValue = grabValueForReliesField(
+        allSchema,
+        allState,
+        reliedFieldName
+      );
+
+      try {
+        ruleRunner(
+          rule,
+          handlerMatcher[rule],
+          reliedFieldName,
+          reliedFieldValue, // Here we need to swap the field value to the target value
+          reliesKeySchema
+        );
+      } catch (err) {
+        return false;
+      }
+      return true;
+    });
+  });
+}
+
 
 /**
  * It will run through the user's settings for a field,
@@ -184,40 +226,69 @@ function handleReliesOn(
  *
  */
 function runMatchers(
-  matcher,
-  fieldState,
-  fieldSchema,
-  allSchema,
-  allState
+  matcher: Matcher,
+  fieldState: FieldState,
+  fieldSchema: FieldSchema,
+  allSchema?: Schema,
+  allState?: ComponentState
 ) {
   const fieldName = Object.keys(fieldSchema)[0];
-  const schema = fieldSchema[fieldName];
-  Object.keys(schema).forEach(ruleInSchema => {
-    if (is.propertyDefined(matcher, ruleInSchema)) {
+  const fieldRules = fieldSchema[fieldName];
+
+  if (
+    'onlyWhen' in fieldRules &&
+    is.not.empty(fieldRules.onlyWhen)
+  ) {
+    const fieldOnlyWhenOnSchema = fieldSchema[fieldName].onlyWhen;
+    if (allSchema && allState && fieldOnlyWhenOnSchema) {
+      const result = handleOnlyWhen(
+        fieldOnlyWhenOnSchema,
+        {...fieldState},
+        allSchema,
+        allState
+      );
+
+      if (result === false) {
+        fieldState.status = FieldStatus.normal;
+        return fieldState;
+      }
+    }
+  }
+
+  if (
+    'beforeValidation' in fieldRules &&
+    fieldRules.beforeValidation != null &&
+    is.function(fieldRules.beforeValidation)
+  ) {
+    fieldState.value = handleBeforeValidation(
+      fieldState.value,
+      fieldRules.beforeValidation
+    );
+  }
+
+  Object.keys(fieldRules).forEach(ruleInSchema => {
+    if (ruleInSchema === 'reliesOn') {
+      const fieldReliesOnSchema = fieldSchema[fieldName].reliesOn;
+      if (allSchema && allState && fieldReliesOnSchema) {
+        handleReliesOn(
+          fieldReliesOnSchema,
+          fieldState,
+          allSchema,
+          allState
+        )
+      }
+    }
+    else if (is.propertyDefined(matcher, ruleInSchema)) {
       // eslint-disable-next-line no-use-before-define
       ruleRunner(
         ruleInSchema,
         matcher[ruleInSchema],
         fieldName,
         fieldState.value,
-        schema
+        fieldRules
       );
     }
-    else if (ruleInSchema === 'beforeValidation') {
-      fieldState.value = handleBeforeValidation(
-        fieldState.value,
-        schema.beforeValidation
-      );
-    }
-    else if (ruleInSchema === 'reliesOn') {
-      const fieldReliesOnSchema = fieldSchema[fieldName].reliesOn;
-      handleReliesOn(
-        fieldReliesOnSchema,
-        fieldState,
-        allSchema,
-        allState
-      )
-    }
+
     // TODO: Do something when the rule is not match
     // else if (ruleInSchema !== 'default') {
     // }
@@ -233,10 +304,10 @@ function runMatchers(
  *
  */
 export function rulesRunner(
-  value,
-  fieldSchema,
-  allSchema,
-  allState
+  value: mixed,
+  fieldSchema: FieldSchema,
+  allSchema?: Schema,
+  allState?: ComponentState
 ) {
   const fieldState = createNewFieldState();
   fieldState.value = value;
