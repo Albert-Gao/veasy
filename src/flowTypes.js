@@ -1,3 +1,4 @@
+/* eslint-disable no-use-before-define */
 // @flow
 import {FieldStatus} from "./helpers/helpers";
 
@@ -16,8 +17,13 @@ export type FieldRules = {
   min?: number,
   isRequired?: boolean,
   beforeValidation?: BeforeValidationHandler,
-  reliesOn?: { [reliedFieldName: string]: FieldRules }
+  reliesOn?: ReliesFieldRules,
+  onlyWhen?: ReliesFieldRules
 }
+
+export type ReliesFieldRules = {
+  [reliedFieldName: string]: FieldRules
+};
 
 export type FieldSchema = {
   [fieldName: string]: FieldRules

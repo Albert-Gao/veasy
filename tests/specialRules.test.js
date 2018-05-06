@@ -425,7 +425,7 @@ describe('Test the onlyWhen rule', () => {
     );
   });
 
-  test('onlyWhen - When return true, this field will be validated - error case', async () => {
+  test('When return true, this field will be validated - error case', async () => {
     delete mockSchema.author;
     delete mockState.author;
     mockSchema.description.onlyWhen.title.maxLength = 4;

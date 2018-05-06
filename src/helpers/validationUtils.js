@@ -1,8 +1,7 @@
 // @flow
-/* eslint-disable no-param-reassign */
+/* eslint-disable no-param-reassign,array-callback-return,consistent-return, max-len */
 import is from 'is_js';
-// eslint-disable-next-line max-len
-import type {ComponentState, FieldSchema, FieldState, HandlerFunc, Schema, Matcher, FieldRules, BeforeValidationHandler} from "../flowTypes";
+import type {ComponentState, FieldSchema, FieldState, HandlerFunc, Schema, Matcher, FieldRules, BeforeValidationHandler, ReliesFieldRules} from "../flowTypes";
 import {getNestedValue} from "./collectValuesUtils";
 import {FieldStatus, throwError} from "./helpers";
 import handlerMatcher, {
@@ -145,7 +144,7 @@ function grabValueForReliesField(
 }
 
 function handleReliesOn(
-  fieldReliesOnSchema: {},
+  fieldReliesOnSchema: ReliesFieldRules,
   fieldState: FieldState,
   allSchema: Schema,
   allState: ComponentState
@@ -181,6 +180,40 @@ function handleReliesOn(
 }
 
 
+function handleOnlyWhen(
+  fieldOnlyWhenSchema: ReliesFieldRules,
+  fieldState: FieldState,
+  allSchema: Schema,
+  allState: ComponentState
+): boolean {
+  return Object.keys(fieldOnlyWhenSchema).every(reliedFieldName => {
+    const reliesKeySchema = fieldOnlyWhenSchema[reliedFieldName];
+
+    return Object.keys(reliesKeySchema).every(rule => {
+      if (is.not.propertyDefined(handlerMatcher, rule)) return;
+
+      const reliedFieldValue = grabValueForReliesField(
+        allSchema,
+        allState,
+        reliedFieldName
+      );
+
+      try {
+        ruleRunner(
+          rule,
+          handlerMatcher[rule],
+          reliedFieldName,
+          reliedFieldValue, // Here we need to swap the field value to the target value
+          reliesKeySchema
+        );
+      } catch (err) {
+        return false;
+      }
+      return true;
+    });
+  });
+}
+
 
 /**
  * It will run through the user's settings for a field,
@@ -201,26 +234,40 @@ function runMatchers(
 ) {
   const fieldName = Object.keys(fieldSchema)[0];
   const fieldRules = fieldSchema[fieldName];
-  Object.keys(fieldRules).forEach(ruleInSchema => {
-    if (is.propertyDefined(matcher, ruleInSchema)) {
-      // eslint-disable-next-line no-use-before-define
-      ruleRunner(
-        ruleInSchema,
-        matcher[ruleInSchema],
-        fieldName,
-        fieldState.value,
-        fieldRules
+
+  if (
+    'onlyWhen' in fieldRules &&
+    is.not.empty(fieldRules.onlyWhen)
+  ) {
+    const fieldOnlyWhenOnSchema = fieldSchema[fieldName].onlyWhen;
+    if (allSchema && allState && fieldOnlyWhenOnSchema) {
+      const result = handleOnlyWhen(
+        fieldOnlyWhenOnSchema,
+        {...fieldState},
+        allSchema,
+        allState
       );
-    }
-    else if (ruleInSchema === 'beforeValidation') {
-      if (typeof fieldRules.beforeValidation === 'function') {
-        fieldState.value = handleBeforeValidation(
-          fieldState.value,
-          fieldRules.beforeValidation
-        );
+
+      if (result === false) {
+        fieldState.status = FieldStatus.normal;
+        return fieldState;
       }
     }
-    else if (ruleInSchema === 'reliesOn') {
+  }
+
+  if (
+    'beforeValidation' in fieldRules &&
+    fieldRules.beforeValidation != null &&
+    is.function(fieldRules.beforeValidation)
+  ) {
+    fieldState.value = handleBeforeValidation(
+      fieldState.value,
+      fieldRules.beforeValidation
+    );
+  }
+
+  Object.keys(fieldRules).forEach(ruleInSchema => {
+    if (ruleInSchema === 'reliesOn') {
       const fieldReliesOnSchema = fieldSchema[fieldName].reliesOn;
       if (allSchema && allState && fieldReliesOnSchema) {
         handleReliesOn(
@@ -231,6 +278,17 @@ function runMatchers(
         )
       }
     }
+    else if (is.propertyDefined(matcher, ruleInSchema)) {
+      // eslint-disable-next-line no-use-before-define
+      ruleRunner(
+        ruleInSchema,
+        matcher[ruleInSchema],
+        fieldName,
+        fieldState.value,
+        fieldRules
+      );
+    }
+
     // TODO: Do something when the rule is not match
     // else if (ruleInSchema !== 'default') {
     // }
