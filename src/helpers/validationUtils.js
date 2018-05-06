@@ -119,9 +119,9 @@ function ruleRunner(
 }
 
 function grabValueForReliesField(
-  allSchema,
-  allState,
-  reliedFieldName
+  allSchema: Schema,
+  allState: ComponentState,
+  reliedFieldName: string
 ) {
   let result;
 
@@ -135,10 +135,10 @@ function grabValueForReliesField(
     is.propertyDefined(allSchema, "collectValues") &&
     is.propertyDefined(allSchema.collectValues, reliedFieldName)
   ) {
-    result = getNestedValue(
-      allSchema.collectValues[reliedFieldName],
-      allState
-    )
+      result = getNestedValue(
+        allSchema.collectValues[reliedFieldName],
+        allState
+      )
   }
 
   return result;
@@ -213,14 +213,16 @@ function runMatchers(
       );
     }
     else if (ruleInSchema === 'beforeValidation') {
-      fieldState.value = handleBeforeValidation(
-        fieldState.value,
-        fieldRules.beforeValidation
-      );
+      if (typeof fieldRules.beforeValidation === 'function') {
+        fieldState.value = handleBeforeValidation(
+          fieldState.value,
+          fieldRules.beforeValidation
+        );
+      }
     }
     else if (ruleInSchema === 'reliesOn') {
       const fieldReliesOnSchema = fieldSchema[fieldName].reliesOn;
-      if (allSchema && allState) {
+      if (allSchema && allState && fieldReliesOnSchema) {
         handleReliesOn(
           fieldReliesOnSchema,
           fieldState,

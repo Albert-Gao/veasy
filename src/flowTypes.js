@@ -11,17 +11,12 @@ export type UpdateFunc = (mixed) => void;
 export type BeforeValidationHandler =
   (mixed) => mixed;
 
-/*
- * All the below rules shouldn't marked as optional
- * However, due to the issue of flow: https://github.com/facebook/flow/issues/6250
- * Seems we need to mark it as always there to pass the flow check
- */
 export type FieldRules = {
   default?: mixed,
   min?: number,
   isRequired?: boolean,
-  beforeValidation: BeforeValidationHandler,
-  reliesOn: { [reliedFieldName: string]: FieldRules }
+  beforeValidation?: BeforeValidationHandler,
+  reliesOn?: { [reliedFieldName: string]: FieldRules }
 }
 
 export type FieldSchema = {
