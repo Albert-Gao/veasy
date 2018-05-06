@@ -110,7 +110,7 @@ For instance:
                 onlyWhen: { 
                     fieldB: {
                          // you can use all `veasy` rules to validate against fieldB, 
-                         // if it fails, fieldA will be `error` because it `reliesOn` fieldB
+                         // if it fails, fieldA won't be included in validation its validation will happen when `onlyWhen` pass the check
                          startWith: 'a'
                     }
                 }
