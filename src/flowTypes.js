@@ -29,11 +29,12 @@ export type FieldSchema = {
   [fieldName: string]: FieldRules
 };
 
+export type CollectValuesSchema = { [string]: string };
+
 /* Same problem as FieldRules comment, it shouldn't be marked as non-optional */
 export type Schema = {
-  collectValues: {[string]: string},
-  [fieldName: string]: FieldRules
-};
+  collectValues?: CollectValuesSchema,
+} & FieldSchema;
 
 export type FieldState = {
   value: mixed,

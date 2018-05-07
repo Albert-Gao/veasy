@@ -26,7 +26,7 @@ export function checkIsFormOK(
     if (prop === 'collectValues') return false;
 
     if (
-      is.propertyDefined(schema[prop], 'isRequired') &&
+      schema[prop].isRequired != null &&
       schema[prop].isRequired === false &&
       componentState[prop].status !== FieldStatus.error
     )
@@ -38,7 +38,7 @@ export function checkIsFormOK(
     }
 
     if (componentState[prop].status === FieldStatus.normal) {
-      if (is.not.propertyDefined(schema[prop], 'default')) {
+      if (schema[prop].default == null) {
         isError = true;
         return true;
       }
@@ -125,14 +125,14 @@ function grabValueForReliesField(
   let result;
 
   if (
-    is.propertyDefined(allState, reliedFieldName) &&
-    is.propertyDefined(allState[reliedFieldName], "value")
+    allState[reliedFieldName] != null &&
+    allState[reliedFieldName].value != null
   ) {
     result = allState[reliedFieldName].value
   }
   else if (
-    is.propertyDefined(allSchema, "collectValues") &&
-    is.propertyDefined(allSchema.collectValues, reliedFieldName)
+    allSchema.collectValues != null &&
+    allSchema.collectValues[reliedFieldName] != null
   ) {
       result = getNestedValue(
         allSchema.collectValues[reliedFieldName],
@@ -154,7 +154,7 @@ function handleReliesOn(
     const reliesKeySchema = fieldReliesOnSchema[reliedFieldName];
     Object.keys(reliesKeySchema).forEach(rule => {
 
-      if (is.not.propertyDefined(handlerMatcher, rule)) return;
+      if (handlerMatcher[rule] == null) return;
 
       const reliedFieldValue = grabValueForReliesField(
         allSchema,
@@ -190,7 +190,7 @@ function handleOnlyWhen(
     const reliesKeySchema = fieldOnlyWhenSchema[reliedFieldName];
 
     return Object.keys(reliesKeySchema).every(rule => {
-      if (is.not.propertyDefined(handlerMatcher, rule)) return;
+      if (handlerMatcher[rule] == null) return;
 
       const reliedFieldValue = grabValueForReliesField(
         allSchema,
@@ -256,7 +256,6 @@ function runMatchers(
   }
 
   if (
-    'beforeValidation' in fieldRules &&
     fieldRules.beforeValidation != null &&
     is.function(fieldRules.beforeValidation)
   ) {
@@ -278,7 +277,7 @@ function runMatchers(
         )
       }
     }
-    else if (is.propertyDefined(matcher, ruleInSchema)) {
+    else if (matcher[ruleInSchema] != null) {
       // eslint-disable-next-line no-use-before-define
       ruleRunner(
         ruleInSchema,
@@ -312,7 +311,10 @@ export function rulesRunner(
   const fieldState = createNewFieldState();
   fieldState.value = value;
 
-  if (is.existy(value) && is.not.empty(value)) {
+  if (
+    is.existy(value) &&
+    is.not.empty(value)
+  ) {
     fieldState.status = FieldStatus.ok;
   }
 
