@@ -136,6 +136,12 @@ function ruleRunner(
   value: mixed,
   fieldRules: FieldRules
 ) {
+  if (ruleHandler == null) {
+    // eslint-disable-next-line no-console
+    console.warn(`[Veasy.js] ${ruleName} is invalid. Please check the online doc for more reference: https://albert-gao.github.io/veasy/#/rules`);
+    return;
+  }
+
   const { schema, userErrorText } = extractUserDefinedMsg(
     ruleName,
     fieldRules
@@ -224,8 +230,6 @@ function isOnlyWhenFulfilled(
     const reliesKeySchema = fieldOnlyWhenSchema[reliedFieldName];
 
     return Object.keys(reliesKeySchema).every(rule => {
-      if (handlerMatcher[rule] == null) return;
-
       const reliedFieldValue = grabValueForReliesField(
         allSchema,
         allState,
@@ -271,10 +275,9 @@ function runMatchers(
   const fieldRules = fieldSchema[fieldName];
 
   if (fieldRules.onlyWhen != null) {
-    const fieldOnlyWhenOnSchema = fieldSchema[fieldName].onlyWhen;
-    if (allSchema && allState && fieldOnlyWhenOnSchema) {
+    if (allSchema && allState) {
       const result = isOnlyWhenFulfilled(
-        fieldOnlyWhenOnSchema,
+        fieldRules.onlyWhen,
         {...fieldState},
         allSchema,
         allState
@@ -288,8 +291,7 @@ function runMatchers(
   }
 
   if (
-    fieldRules.beforeValidation != null &&
-    is.function(fieldRules.beforeValidation)
+    fieldRules.beforeValidation != null
   ) {
     fieldState.value = handleBeforeValidation(
       fieldState.value,
@@ -300,7 +302,7 @@ function runMatchers(
   Object.keys(fieldRules).forEach(ruleInSchema => {
     if (ruleInSchema === 'reliesOn') {
       const fieldReliesOnSchema = fieldSchema[fieldName].reliesOn;
-      if (allSchema && allState && fieldReliesOnSchema) {
+      if (allSchema && allState && (fieldReliesOnSchema != null) ) {
         handleReliesOn(
           fieldReliesOnSchema,
           fieldState,
@@ -309,7 +311,7 @@ function runMatchers(
         )
       }
     }
-    else if (matcher[ruleInSchema] != null) {
+    else {
       // eslint-disable-next-line no-use-before-define
       ruleRunner(
         ruleInSchema,
