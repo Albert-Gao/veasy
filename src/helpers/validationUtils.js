@@ -1,5 +1,5 @@
 // @flow
-/* eslint-disable no-param-reassign,array-callback-return,consistent-return, max-len */
+/* eslint-disable no-use-before-define,max-len,no-param-reassign,array-callback-return,consistent-return */
 import is from 'is_js';
 import type {ComponentState, FieldSchema, FieldState, HandlerFunc, Schema, Matcher, FieldRules, BeforeValidationHandler, ReliesFieldRules} from "../flowTypes";
 import {getNestedValue} from "./collectValuesUtils";
@@ -26,7 +26,7 @@ export function checkIsFormOK(
     if (prop === 'collectValues') return false;
 
     if (
-      is.propertyDefined(schema[prop], 'isRequired') &&
+      schema[prop].isRequired != null &&
       schema[prop].isRequired === false &&
       componentState[prop].status !== FieldStatus.error
     )
@@ -38,7 +38,41 @@ export function checkIsFormOK(
     }
 
     if (componentState[prop].status === FieldStatus.normal) {
-      if (is.not.propertyDefined(schema[prop], 'default')) {
+      if (schema[prop].onlyWhen != null) {
+        const result = isOnlyWhenFulfilled(
+          schema[prop].onlyWhen,
+          {...componentState[prop]},
+          schema,
+          componentState
+        );
+
+        if (result) {
+          const fieldSchema = schema[prop];
+          delete fieldSchema.onlyWhen;
+          let validationResult;
+          try {
+            validationResult = rulesRunner(
+              componentState[prop].value,
+              { [prop]: fieldSchema },
+              schema,
+              componentState
+            )
+          } catch (err) {
+            isError = true;
+            validationResult = err;
+          }
+
+          if (validationResult != null) {
+            componentState[prop] = {...validationResult};
+          }
+
+          return isError;
+        }
+
+        return false;
+      }
+
+      if (schema[prop].default == null) {
         isError = true;
         return true;
       }
@@ -125,14 +159,14 @@ function grabValueForReliesField(
   let result;
 
   if (
-    is.propertyDefined(allState, reliedFieldName) &&
-    is.propertyDefined(allState[reliedFieldName], "value")
+    allState[reliedFieldName] != null &&
+    allState[reliedFieldName].value != null
   ) {
     result = allState[reliedFieldName].value
   }
   else if (
-    is.propertyDefined(allSchema, "collectValues") &&
-    is.propertyDefined(allSchema.collectValues, reliedFieldName)
+    allSchema.collectValues != null &&
+    allSchema.collectValues[reliedFieldName] != null
   ) {
       result = getNestedValue(
         allSchema.collectValues[reliedFieldName],
@@ -154,7 +188,7 @@ function handleReliesOn(
     const reliesKeySchema = fieldReliesOnSchema[reliedFieldName];
     Object.keys(reliesKeySchema).forEach(rule => {
 
-      if (is.not.propertyDefined(handlerMatcher, rule)) return;
+      if (handlerMatcher[rule] == null) return;
 
       const reliedFieldValue = grabValueForReliesField(
         allSchema,
@@ -180,7 +214,7 @@ function handleReliesOn(
 }
 
 
-function handleOnlyWhen(
+function isOnlyWhenFulfilled(
   fieldOnlyWhenSchema: ReliesFieldRules,
   fieldState: FieldState,
   allSchema: Schema,
@@ -190,7 +224,7 @@ function handleOnlyWhen(
     const reliesKeySchema = fieldOnlyWhenSchema[reliedFieldName];
 
     return Object.keys(reliesKeySchema).every(rule => {
-      if (is.not.propertyDefined(handlerMatcher, rule)) return;
+      if (handlerMatcher[rule] == null) return;
 
       const reliedFieldValue = grabValueForReliesField(
         allSchema,
@@ -209,6 +243,7 @@ function handleOnlyWhen(
       } catch (err) {
         return false;
       }
+
       return true;
     });
   });
@@ -235,13 +270,10 @@ function runMatchers(
   const fieldName = Object.keys(fieldSchema)[0];
   const fieldRules = fieldSchema[fieldName];
 
-  if (
-    'onlyWhen' in fieldRules &&
-    is.not.empty(fieldRules.onlyWhen)
-  ) {
+  if (fieldRules.onlyWhen != null) {
     const fieldOnlyWhenOnSchema = fieldSchema[fieldName].onlyWhen;
     if (allSchema && allState && fieldOnlyWhenOnSchema) {
-      const result = handleOnlyWhen(
+      const result = isOnlyWhenFulfilled(
         fieldOnlyWhenOnSchema,
         {...fieldState},
         allSchema,
@@ -256,7 +288,6 @@ function runMatchers(
   }
 
   if (
-    'beforeValidation' in fieldRules &&
     fieldRules.beforeValidation != null &&
     is.function(fieldRules.beforeValidation)
   ) {
@@ -278,7 +309,7 @@ function runMatchers(
         )
       }
     }
-    else if (is.propertyDefined(matcher, ruleInSchema)) {
+    else if (matcher[ruleInSchema] != null) {
       // eslint-disable-next-line no-use-before-define
       ruleRunner(
         ruleInSchema,
@@ -312,7 +343,10 @@ export function rulesRunner(
   const fieldState = createNewFieldState();
   fieldState.value = value;
 
-  if (is.existy(value) && is.not.empty(value)) {
+  if (
+    is.existy(value) &&
+    is.not.empty(value)
+  ) {
     fieldState.status = FieldStatus.ok;
   }
 

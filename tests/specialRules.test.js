@@ -369,6 +369,34 @@ describe('Test the onlyWhen rule', () => {
     );
   });
 
+  test('When return false, and other field is right, isFormOK should be true', async () => {
+    delete mockSchema.author;
+    delete mockState.author;
+    mockState.title.status = 'ok';
+
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockState
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+        description: {
+          status: 'normal',
+          errorText: '',
+          value: mockTarget.value
+        },
+        isFormOK: true,
+        title: {
+          errorText: "",
+          status: "ok",
+          value: "1234"
+        }
+      }
+    );
+  });
+
   test('When return false, this field should be ignored even field not passes check', async () => {
     delete mockSchema.author;
     delete mockState.author;
@@ -449,6 +477,76 @@ describe('Test the onlyWhen rule', () => {
           errorText: "",
           status: "normal",
           value: "1234"
+        }
+      }
+    );
+  });
+
+  test('When return true, and other fields are ok, but this field failed - isFormOK should be false', async () => {
+    delete mockSchema.author;
+    delete mockState.author;
+    // The trick here is, we need to enable the check for onlyWhen in description,
+    // even it's triggered by another field (title in this case)
+    mockTarget = {
+      name: 'title',
+      value: '4321'
+    };
+    mockState.description.value = 'desc';
+    mockSchema.description.onlyWhen.title.maxLength = 4;
+
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockState
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+        description: {
+          status: 'error',
+          errorText: 'description\'s length should be equal or greater than 6. Current: 4',
+          value: 'desc'
+        },
+        isFormOK: false,
+        title: {
+          errorText: "",
+          status: "ok",
+          value: "4321"
+        }
+      }
+    );
+  });
+
+  test('When return true, and other fields are ok as well as this field - isFormOK should be true', async () => {
+    delete mockSchema.author;
+    delete mockState.author;
+    // The trick here is, we need to enable the check for onlyWhen in description,
+    // even it's triggered by another field (title in this case)
+    mockTarget = {
+      name: 'title',
+      value: '4321'
+    };
+    mockState.description.value = 'description';
+    mockSchema.description.onlyWhen.title.maxLength = 4;
+
+    await startValidating(
+      mockTarget,
+      mockSchema,
+      mockUpdate,
+      mockState
+    );
+    expect(mockUpdate.mock.calls.length).toBe(1);
+    expect(mockUpdate).toBeCalledWith({
+        description: {
+          status: 'ok',
+          errorText: '',
+          value: 'description'
+        },
+        isFormOK: true,
+        title: {
+          errorText: "",
+          status: "ok",
+          value: "4321"
         }
       }
     );

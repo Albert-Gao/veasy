@@ -10,9 +10,9 @@ import {checkIsFormOK, rulesRunner} from "./validationUtils";
  *
  */
 export function createInitialValue(schema: FieldRules): mixed {
-  if (is.propertyDefined(schema, 'default')) {
+  if (schema.default != null) {
     return schema.default;
-  } else if (is.propertyDefined(schema, 'min')) {
+  } else if (schema.min != null) {
     return schema.min;
   }
   return '';
@@ -39,7 +39,7 @@ function validateStateIfHasDefaultValue(
 ) {
   let result;
   const fieldName = Object.keys(fieldSchema)[0];
-  if (is.propertyDefined(fieldSchema[fieldName], 'default')){
+  if (fieldSchema[fieldName].default != null){
     try {
       result = rulesRunner(fieldValue, fieldSchema)
     } catch (err) {

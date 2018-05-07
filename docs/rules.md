@@ -101,14 +101,13 @@ For instance:
   - The syntax is as same as `reliesOn`!
   - But if the validation in `onlyWhen` returns `false`, then this field will be ruled out from validation even it gets a wrong value.
   - Which mean, the validation happens `onlyWhen` this rule itself passes validation.
-  - It will affect the `isFormOK` property, so even this field is ruled out from validation, `isFormOK` will still set to `false`. You need to add `isRequired: false` rule to this field to make `isFormOK` ignore this field.
+  - And when the other fields gets validated, this field will **GET VALIDATED** as well to ensure the `isFormOK` has the correct value.
   - Example
       ```javascript
       {
            fieldA: {
                 minLength: 4,
                 maxLength: 6,
-                isRequired: false,
                 onlyWhen: { 
                     fieldB: {
                          // you can use all `veasy` rules to validate against fieldB, 
