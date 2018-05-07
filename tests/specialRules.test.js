@@ -1,7 +1,7 @@
 /* eslint-disable no-new */
 import {startValidating} from '../src/helpers/helpers';
 
-describe('Test the before feature', () => {
+describe('Test the beforeValidation feature', () => {
   let mockSchema;
   const mockUpdate = jest.fn();
   let mockTarget;
@@ -37,8 +37,8 @@ describe('Test the before feature', () => {
     });
   });
 
-  test('Should ignore before rule if not a function', async () => {
-    mockSchema.title.before = 1;
+  test('Should ignore before rule if not a function, it\'s undefined', async () => {
+    mockSchema.title.beforeValidation = 1;
     expect(mockTarget.value).toBe('1');
     await startValidating(mockTarget, mockSchema, mockUpdate);
     expect(mockUpdate.mock.calls.length).toBe(1);
@@ -50,6 +50,7 @@ describe('Test the before feature', () => {
       }
     });
   });
+
 });
 
 describe('Test the reliesOn rule', () => {
