@@ -1,5 +1,5 @@
 // @flow
-/* eslint-disable no-param-reassign,array-callback-return,consistent-return, max-len */
+/* eslint-disable no-use-before-define,max-len,no-param-reassign,array-callback-return,consistent-return */
 import is from 'is_js';
 import type {ComponentState, FieldSchema, FieldState, HandlerFunc, Schema, Matcher, FieldRules, BeforeValidationHandler, ReliesFieldRules} from "../flowTypes";
 import {getNestedValue} from "./collectValuesUtils";
@@ -38,6 +38,40 @@ export function checkIsFormOK(
     }
 
     if (componentState[prop].status === FieldStatus.normal) {
+      if (schema[prop].onlyWhen != null) {
+        const result = isOnlyWhenFulfilled(
+          schema[prop].onlyWhen,
+          {...componentState[prop]},
+          schema,
+          componentState
+        );
+
+        if (result) {
+          const fieldSchema = schema[prop];
+          delete fieldSchema.onlyWhen;
+          let validationResult;
+          try {
+            validationResult = rulesRunner(
+              componentState[prop].value,
+              { [prop]: fieldSchema },
+              schema,
+              componentState
+            )
+          } catch (err) {
+            isError = true;
+            validationResult = err;
+          }
+
+          if (validationResult != null) {
+            componentState[prop] = {...validationResult};
+          }
+
+          return isError;
+        }
+
+        return false;
+      }
+
       if (schema[prop].default == null) {
         isError = true;
         return true;
@@ -180,7 +214,7 @@ function handleReliesOn(
 }
 
 
-function handleOnlyWhen(
+function isOnlyWhenFulfilled(
   fieldOnlyWhenSchema: ReliesFieldRules,
   fieldState: FieldState,
   allSchema: Schema,
@@ -209,6 +243,7 @@ function handleOnlyWhen(
       } catch (err) {
         return false;
       }
+
       return true;
     });
   });
@@ -235,13 +270,10 @@ function runMatchers(
   const fieldName = Object.keys(fieldSchema)[0];
   const fieldRules = fieldSchema[fieldName];
 
-  if (
-    'onlyWhen' in fieldRules &&
-    is.not.empty(fieldRules.onlyWhen)
-  ) {
+  if (fieldRules.onlyWhen != null) {
     const fieldOnlyWhenOnSchema = fieldSchema[fieldName].onlyWhen;
     if (allSchema && allState && fieldOnlyWhenOnSchema) {
-      const result = handleOnlyWhen(
+      const result = isOnlyWhenFulfilled(
         fieldOnlyWhenOnSchema,
         {...fieldState},
         allSchema,
