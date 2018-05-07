@@ -84,7 +84,8 @@
         ],
         "collectCoverage": true,
         "collectCoverageFrom": [
-            "src/**/*.*"
+            "src/**/*.*",
+            "!src/flowTypes.js"
         ]
     }
 }
